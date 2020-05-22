@@ -14,24 +14,28 @@ func main() {
 	runFile(os.Args[1])
 }
 
-func runFile(path string) (bytes []byte, err error) {
-	bytes, err = ioutil.ReadFile(path)
+func runFile(path string) {
+	bytes, err := ioutil.ReadFile(path)
 	check(err)
 	run(string(bytes))
-	return bytes, err
 }
 
 func run(source string) {
-	scanner := &Scanner{}
-	tokens := scanner.scanTokens()
+	// scanner := &Scanner{}
+	// tokens := scanner.scanTokens()
 
-	for i, token := range tokens {
-		fmt.Println(i, token)
-	}
+	// for i, token := range tokens {
+	// 	fmt.Println(i, token)
+	// }
+}
+
+func reportError(line int, loc string, message string) {
+	fmt.Println("[line", line, "] Error", loc, ":", message)
 }
 
 func check(e error) {
 	if e != nil {
 		fmt.Println("Error:", e)
+		os.Exit(-1)
 	}
 }
