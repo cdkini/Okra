@@ -22,7 +22,12 @@ func runFile(path string) (bytes []byte, err error) {
 }
 
 func run(source string) {
+	scanner := &Scanner{}
+	tokens := scanner.scanTokens()
 
+	for i, token := range tokens {
+		fmt.Println(i, token)
+	}
 }
 
 func check(e error) {
