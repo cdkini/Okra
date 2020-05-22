@@ -28,3 +28,14 @@ func run(source string) {
 	// 	fmt.Println(i, token)
 	// }
 }
+
+func reportError(line int, loc string, message string) {
+	fmt.Println("[line", line, "] Error", loc, ":", message)
+}
+
+func check(e error) {
+	if e != nil {
+		fmt.Println("Error:", e)
+		os.Exit(-1)
+	}
+}
