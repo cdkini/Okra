@@ -2,6 +2,13 @@ package main
 
 type TokenType int
 
+type Token struct {
+	tokenType TokenType
+	lexeme    string
+	literal   string
+	line      int
+}
+
 const (
 	LeftParen TokenType = iota
 	RightParen
