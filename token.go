@@ -35,7 +35,7 @@ const (
 	String
 	Numeric
 	And
-	Class
+	Struct
 	Else
 	False
 	Func
