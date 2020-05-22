@@ -2,7 +2,7 @@ package main
 
 type Scanner struct {
 	source   string
-	tokens   []Token
+	tokens   []*Token
 	start    int
 	current  int
 	line     int
@@ -10,7 +10,7 @@ type Scanner struct {
 }
 
 func NewScanner(source string) *Scanner {
-	return &Scanner{source, make([]Token, 0), 0, 0, 0, false}
+	return &Scanner{source, make([]*Token, 0), 0, 0, 0, false}
 }
 
 func (s *Scanner) scanTokens() ([]Token, error) {

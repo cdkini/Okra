@@ -17,16 +17,9 @@ func main() {
 func runFile(path string) {
 	bytes, err := ioutil.ReadFile(path)
 	check(err)
-	run(string(bytes))
-}
+	scanner := Scanner{}
+	tokens, err = scanner.scanTokens()
 
-func run(source string) {
-	// scanner := &Scanner{}
-	// tokens := scanner.scanTokens()
-
-	// for i, token := range tokens {
-	// 	fmt.Println(i, token)
-	// }
 }
 
 func reportError(line int, loc string, message string) {
