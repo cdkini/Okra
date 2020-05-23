@@ -1,24 +1,27 @@
 package main
 
-import "errors"
+import (
+	"errors"
+	"unicode"
+)
 
 type Scanner struct {
-	source  string
-	tokens  []*Token
-	start   int
-	current int
-	line    int
+	source []rune
+	tokens []*Token
+	start  int
+	curr   int
+	line   int
 }
 
 func NewScanner(source string) *Scanner {
-	return &Scanner{source, make([]*Token, 0), 0, 0, 0}
+	return &Scanner{[]rune(source), make([]*Token, 0), 0, 0, 0}
 }
 
 func (s *Scanner) scanTokens() []*Token {
-	for s.current < len(s.source) {
-		s.start = s.current
+	for s.curr < len(s.source) {
+		s.start = s.curr
 		err := s.scan()
-		checkErr(err, -1)
+		checkErr(-1, err)
 	}
 	s.tokens = append(s.tokens, &Token{EOF, "", nil, s.line})
 	return s.tokens
@@ -29,12 +32,10 @@ func (s *Scanner) scan() error {
 	switch c {
 
 	// Ignore all whitespace but record line break
-	case " ":
-	case "\\r":
-	case "\\t":
-		break
-	case "\\n":
-		s.line++
+	case unicode.IsSpace(c):
+		if (c == '\n') {
+			s.line++
+		}
 		break
 
 	// Single character tokens
@@ -59,60 +60,60 @@ func (s *Scanner) scan() error {
 	case ",":
 		s.addToken(COMMA, nil)
 		break
-	case ".":
+	case '.':
 		s.addToken(DOT, nil)
 		break
-	case "-":
+	case '-':
 		s.addToken(MINUS, nil)
 		break
-	case "+":
+	case '+':
 		s.addToken(PLUS, nil)
 		break
-	case ";":
+	case ';':
 		s.addToken(SEMICOLON, nil)
 		break
 
 	// Single or double character tokens
-	case "!":
-		s.addToken(s.ternaryMatch("=", BANGEQUAL, BANG), nil)
+	case '!':
+		s.addToken(s.ternaryMatch('=', BANGEQUAL, BANG), nil)
 		break
-	case "=":
-		s.addToken(s.ternaryMatch("=", EQUALEQUAL, EQUAL), nil)
+	case '=':
+		s.addToken(s.ternaryMatch('=', EQUALEQUAL, EQUAL), nil)
 		break
-	case "<":
-		s.addToken(s.ternaryMatch("=", LESSEQUAL, LESS), nil)
+	case '<':
+		s.addToken(s.ternaryMatch('=', LESSEQUAL, LESS), nil)
 		break
-	case ">":
-		s.addToken(s.ternaryMatch("=", GREATEREQUAL, GREATER), nil)
+	case '>':
+		s.addToken(s.ternaryMatch('=', GREATEREQUAL, GREATER), nil)
 		break
-	case "&":
-		if s.match("&") {
+	case '&':
+		if s.match('&') {
 			s.addToken(AND, nil)
 		}
 		break
-	case "|":
-		if s.match("|") {
+	case '|':
+		if s.match('|') {
 			s.addToken(OR, nil)
 		}
 		break
 
 	// Comments (single and multiline)
-	case "/":
-		if s.match("/") {
+	case '/':
+		if s.match('/') {
 			// TODO: Fix comment implementation
 		} else {
 			s.addToken(SLASH, nil)
 		}
 		break
-	case "*":
-		if s.match("/") {
+	case '*':
+		if s.match('/') {
 			// TODO: Fix comment implementation
 		} else {
 			s.addToken(STAR, nil)
 		}
 		break
 
-	case "\"":
+	case '"':
 		tokenType, err := s.addStringToken()
 
 	default:
@@ -121,28 +122,28 @@ func (s *Scanner) scan() error {
 	return nil
 }
 
-func (s *Scanner) advance() string {
-	s.current++
-	return string(s.source[s.current-1])
+func (s *Scanner) advance() rune {
+	s.curr++
+	return s.source[s.curr-1]
 }
 
 func (s *Scanner) addToken(tokenType TokenType, literal interface{}) {
-	s.tokens = append(s.tokens, &Token{tokenType, s.source[s.start:s.current], literal, s.line})
+	s.tokens = append(s.tokens, &Token{tokenType, string(s.source[s.start:s.curr]), literal, s.line})
 }
 
-func (s *Scanner) match(expectedChar string) bool {
-	if s.current >= len(s.source) {
+func (s *Scanner) match(expectedChar rune) bool {
+	if s.curr >= len(s.source) {
 		return false
 	}
-	if s.source[s.current+1] == expectedChar {
-		s.current++
+	if s.source[s.curr+1] == expectedChar {
+		s.curr++
 		return true
 	}
 	return false
 }
 
 func (s *Scanner) addStringToken() (TokenType, error) {
-	for s.peek() != "\"" && s.current < len(s.source) {
+	for s.peek() != '\' && s.curr < len(s.source) {
 		if s.peek() == '\n' {
 			s.line++
 		}
@@ -154,20 +155,20 @@ func (s *Scanner) addNumericToken() (TokenType, error) {
 	// TODO: Open to implement
 }
 
-func (s *Scanner) ternaryMatch(expectedChar string, ifTrue TokenType, ifFalse TokenType) TokenType {
-	if s.current >= len(s.source) {
+func (s *Scanner) ternaryMatch(expectedChar rune, ifTrue TokenType, ifFalse TokenType) TokenType {
+	if s.curr >= len(s.source) {
 		return ifFalse
 	}
-	if s.source[s.current+1] == expectedChar {
-		s.current++
+	if string(s.source[s.curr+1]) == expectedChar {
+		s.curr++
 		return ifTrue
 	}
 	return ifFalse
 }
 
-func (s *Scanner) peek() string {
-	if s.current >= len(s.source) {
-		return "\\0"
+func (s *Scanner) peek() rune {
+	if s.curr < len(s.source) {
+		return -1
 	}
-	return s.source[s.current]
+	return s.source[s.curr]
 }
