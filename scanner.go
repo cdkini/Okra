@@ -12,15 +12,16 @@ func NewScanner(source string) *Scanner {
 	return &Scanner{source, make([]*Token, 0), 0, 0, 0}
 }
 
-func (s *Scanner) scanTokens() ([]Token, error) {
+func (s *Scanner) scanTokens() []*Token {
 	for s.current < len(s.source) {
 		s.start = s.current
 		s.scan()
 	}
 	s.tokens = append(s.tokens, &Token{EOF, "", nil, s.line})
+	return s.tokens
 }
 
-func (s *Scanner) scan() {
+func (s *Scanner) scan() error {
 	c := s.advance()
 	switch c {
 
@@ -94,14 +95,14 @@ func (s *Scanner) scan() {
 
 	// Comments (single and multiline)
 	case "/":
-		if match("/") {
+		if s.match("/") {
 			// TODO: Fix comment implementation
 		} else {
 			s.addToken(SLASH, nil)
 		}
 		break
 	case "*":
-		if match("/") {
+		if s.match("/") {
 			// TODO: Fix comment implementation
 		} else {
 			s.addToken(STAR, nil)
@@ -109,11 +110,12 @@ func (s *Scanner) scan() {
 		break
 
 	case "\"":
-		tokenType, err := addStringToken()
+		tokenType, err := s.addStringToken()
 
-
-
-
+	default:
+		return error
+	}
+	return nil
 }
 
 func (s *Scanner) advance() string {
@@ -138,16 +140,20 @@ func (s *Scanner) match(expectedChar string) bool {
 
 func (s *Scanner) addStringToken() (TokenType, error) {
 	for s.peek() != "\"" && s.current < len(s.source) {
-		if (speek() == '\n') {
-			s.line++;                           
+		if s.peek() == '\n' {
+			s.line++
 		}
-		advance();  
+		s.advance()
 	}
+}
+
+func (s *Scanner) addNumericToken() (TokenType, error) {
+	// TODO: Open to implement
 }
 
 func (s *Scanner) ternaryMatch(expectedChar string, ifTrue TokenType, ifFalse TokenType) TokenType {
 	if s.current >= len(s.source) {
-		return false
+		return ifFalse
 	}
 	if s.source[s.current+1] == expectedChar {
 		s.current++
