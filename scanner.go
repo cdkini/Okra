@@ -1,5 +1,7 @@
 package main
 
+import "errors"
+
 type Scanner struct {
 	source  string
 	tokens  []*Token
@@ -15,7 +17,8 @@ func NewScanner(source string) *Scanner {
 func (s *Scanner) scanTokens() []*Token {
 	for s.current < len(s.source) {
 		s.start = s.current
-		s.scan()
+		err := s.scan()
+		checkErr(err, -1)
 	}
 	s.tokens = append(s.tokens, &Token{EOF, "", nil, s.line})
 	return s.tokens
@@ -113,14 +116,14 @@ func (s *Scanner) scan() error {
 		tokenType, err := s.addStringToken()
 
 	default:
-		return error
+		return errors.New("Invalid character")
 	}
 	return nil
 }
 
 func (s *Scanner) advance() string {
 	s.current++
-	return s.source[s.current-1]
+	return string(s.source[s.current-1])
 }
 
 func (s *Scanner) addToken(tokenType TokenType, literal interface{}) {

@@ -26,6 +26,7 @@ func reportError(line int, loc string, message string) {
 }
 
 func checkErr(e error, code int) {
+	// TODO: Update this to include a specific error type / message
 	if e != nil {
 		fmt.Println("Error:", e)
 		os.Exit(code)
