@@ -5,7 +5,7 @@ type TokenType int
 type Token struct {
 	tokenType TokenType
 	lexeme    string
-	literal   string
+	literal   interface{}
 	line      int
 }
 
@@ -49,5 +49,5 @@ const (
 	This
 	True
 	Variable
-	EndOfFile
+	EOF
 )
