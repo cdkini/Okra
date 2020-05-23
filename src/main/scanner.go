@@ -168,7 +168,7 @@ func (s *Scanner) ternaryMatch(expectedChar rune, ifTrue TokenType, ifFalse Toke
 
 func (s *Scanner) peek() rune {
 	if s.curr < len(s.source) {
-		return -1
+		return nil
 	}
 	return s.source[s.curr]
 }
