@@ -16,17 +16,17 @@ func main() {
 
 func runFile(path string) {
 	bytes, err := ioutil.ReadFile(path)
-	check(err, -1)
+	errorCheck(err, -1)
 	scanner := NewScanner(string(bytes))
 	tokens, err := scanner.scanTokens()
-	check(err, -1)
+	errorCheck(err, -1)
 }
 
 func reportError(line int, loc string, message string) {
-	fmt.Println("[line", line, "] Error", loc, ":", message)
+	fmt.Println("[Line", line, "] Error", loc, ":", message)
 }
 
-func check(e error, code int) {
+func errorCheck(e error, code int) {
 	if e != nil {
 		fmt.Println("Error:", e)
 		os.Exit(code)

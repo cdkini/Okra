@@ -24,6 +24,15 @@ func (s *Scanner) scan() {
 	c := s.advance()
 	switch c {
 
+	// Ignore all whitespace but record line break
+	case " ":
+	case "\\r":
+	case "\\t":
+		break
+	case "\\n":
+		s.line++
+		break
+
 	// Single character tokens
 	case "(":
 		s.addToken(LEFTPAREN, nil)
@@ -83,15 +92,6 @@ func (s *Scanner) scan() {
 		}
 		break
 
-	// Ignore all whitespace but record line break
-	case " ":
-	case "\\r":
-	case "\\t":
-		break
-	case "\\n":
-		s.line++
-		break
-
 	// Comments (single and multiline)
 	case "/":
 		if match("/") {
@@ -107,6 +107,9 @@ func (s *Scanner) scan() {
 			s.addToken(STAR, nil)
 		}
 		break
+
+	case "\"":
+		tokenType, err := addStringToken()
 
 
 
@@ -131,6 +134,15 @@ func (s *Scanner) match(expectedChar string) bool {
 		return true
 	}
 	return false
+}
+
+func (s *Scanner) addStringToken() (TokenType, error) {
+	for s.peek() != "\"" && s.current < len(s.source) {
+		if (speek() == '\n') {
+			s.line++;                           
+		}
+		advance();  
+	}
 }
 
 func (s *Scanner) ternaryMatch(expectedChar string, ifTrue TokenType, ifFalse TokenType) TokenType {
