@@ -21,5 +21,37 @@ func (s *Scanner) scanTokens() ([]Token, error) {
 }
 
 func (s *Scanner) scan() {
+	c := s.advance()
+	switch c {
+	case "(":
+		s.addToken(LeftParen, nil)
+		break
+	case ")":
+		s.addToken(RightParen, nil)
+		break
+	case "{":
+		s.addToken(LeftBracket, nil)
+		break
+	case "}":
+		s.addToken(RightBracket, nil)
+		break
+	case "[":
+		s.addToken(LeftBrace, nil)
+		break
+	case "]":
+		s.addToken(RightBrace, nil)
+		break
 
+	default:
+		reportError(s.line, )
+
+}
+
+func (s *Scanner) advance() string {
+	s.current++
+	return string(s.source[s.current-1])
+}
+
+func (s *Scanner) addToken(tokenType TokenType, literal interface{}) {
+	s.tokens = append(s.tokens, &Token{tokenType, s.source[s.start:s.current], literal, s.line})
 }
