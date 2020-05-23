@@ -26,40 +26,59 @@ func (s *Scanner) scan() {
 
 	// Single character tokens
 	case "(":
-		s.addToken(LeftParen, nil)
+		s.addToken(LEFTPAREN, nil)
 		break
 	case ")":
-		s.addToken(RightParen, nil)
+		s.addToken(RIGHTPAREN, nil)
 		break
 	case "{":
-		s.addToken(LeftBracket, nil)
+		s.addToken(LEFTBRACKET, nil)
 		break
 	case "}":
-		s.addToken(RightBracket, nil)
+		s.addToken(RIGHTBRACKET, nil)
 		break
 	case "[":
-		s.addToken(LeftBrace, nil)
+		s.addToken(LEFTBRACE, nil)
 		break
 	case "]":
-		s.addToken(RightBrace, nil)
+		s.addToken(RIGHTBRACE, nil)
 		break
 	case ",":
-		s.addToken(RightBrace, nil)
+		s.addToken(COMMA, nil)
 		break
 	case ".":
-		s.addToken(RightBrace, nil)
+		s.addToken(DOT, nil)
 		break
 	case "-":
-		s.addToken(RightBrace, nil)
+		s.addToken(MINUS, nil)
 		break
 	case "+":
-		s.addToken(RightBrace, nil)
+		s.addToken(PLUS, nil)
 		break
 	case ";":
-		s.addToken(Semicolon, nil)
+		s.addToken(SEMICOLON, nil)
 		break
 	case "*":
-		s.addToken(Star, nil)
+		s.addToken(STAR, nil)
+		break
+
+	case "!":
+		s.addToken(s.nextCharMatch("="), BANGEQUAL, BANG)
+		break
+	case "=":
+		s.addToken(s.nextCharMatch("="), EQUALEQUAL, EQUAL)
+		break
+	case "<":
+		s.addToken(s.nextCharMatch("="), LESSEQUAL, LESS)
+		break
+	case ">":
+		s.addToken(s.nextCharMatch("="), GREATEREQUAL, GREATER)
+		break
+	case "&":
+		s.addToken(s.nextCharMatch("&"), AND, INVALID)
+		break
+	case "|":
+		s.addToken(s.nextCharMatch("|"), OR, INVALID)
 		break
 
 }
@@ -71,4 +90,15 @@ func (s *Scanner) advance() string {
 
 func (s *Scanner) addToken(tokenType TokenType, literal interface{}) {
 	s.tokens = append(s.tokens, &Token{tokenType, s.source[s.start:s.current], literal, s.line})
+}
+
+func (s *Scanner) nextCharMatch(expectedChar string, ifTrue TokenType, ifFalse TokenType) bool {
+	if s.current >= len(s.source) {
+		return false
+	}
+	if s.source[s.current + 1] == expectedChar {
+		s.current++
+		return ifTrue
+	}
+	return ifFalse
 }
