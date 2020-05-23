@@ -58,47 +58,95 @@ func (s *Scanner) scan() {
 	case ";":
 		s.addToken(SEMICOLON, nil)
 		break
-	case "*":
-		s.addToken(STAR, nil)
-		break
 
+	// Single or double character tokens
 	case "!":
-		s.addToken(s.nextCharMatch("="), BANGEQUAL, BANG)
+		s.addToken(s.ternaryMatch("=", BANGEQUAL, BANG), nil)
 		break
 	case "=":
-		s.addToken(s.nextCharMatch("="), EQUALEQUAL, EQUAL)
+		s.addToken(s.ternaryMatch("=", EQUALEQUAL, EQUAL), nil)
 		break
 	case "<":
-		s.addToken(s.nextCharMatch("="), LESSEQUAL, LESS)
+		s.addToken(s.ternaryMatch("=", LESSEQUAL, LESS), nil)
 		break
 	case ">":
-		s.addToken(s.nextCharMatch("="), GREATEREQUAL, GREATER)
+		s.addToken(s.ternaryMatch("=", GREATEREQUAL, GREATER), nil)
 		break
 	case "&":
-		s.addToken(s.nextCharMatch("&"), AND, INVALID)
+		if s.match("&") {
+			s.addToken(AND, nil)
+		}
 		break
 	case "|":
-		s.addToken(s.nextCharMatch("|"), OR, INVALID)
+		if s.match("|") {
+			s.addToken(OR, nil)
+		}
 		break
+
+	// Ignore all whitespace but record line break
+	case " ":
+	case "\\r":
+	case "\\t":
+		break
+	case "\\n":
+		s.line++
+		break
+
+	// Comments (single and multiline)
+	case "/":
+		if match("/") {
+			// TODO: Fix comment implementation
+		} else {
+			s.addToken(SLASH, nil)
+		}
+		break
+	case "*":
+		if match("/") {
+			// TODO: Fix comment implementation
+		} else {
+			s.addToken(STAR, nil)
+		}
+		break
+
+
+
 
 }
 
 func (s *Scanner) advance() string {
 	s.current++
-	return string(s.source[s.current-1])
+	return s.source[s.current-1]
 }
 
 func (s *Scanner) addToken(tokenType TokenType, literal interface{}) {
 	s.tokens = append(s.tokens, &Token{tokenType, s.source[s.start:s.current], literal, s.line})
 }
 
-func (s *Scanner) nextCharMatch(expectedChar string, ifTrue TokenType, ifFalse TokenType) bool {
+func (s *Scanner) match(expectedChar string) bool {
 	if s.current >= len(s.source) {
 		return false
 	}
-	if s.source[s.current + 1] == expectedChar {
+	if s.source[s.current+1] == expectedChar {
+		s.current++
+		return true
+	}
+	return false
+}
+
+func (s *Scanner) ternaryMatch(expectedChar string, ifTrue TokenType, ifFalse TokenType) TokenType {
+	if s.current >= len(s.source) {
+		return false
+	}
+	if s.source[s.current+1] == expectedChar {
 		s.current++
 		return ifTrue
 	}
 	return ifFalse
+}
+
+func (s *Scanner) peek() string {
+	if s.current >= len(s.source) {
+		return "\\0"
+	}
+	return s.source[s.current]
 }
