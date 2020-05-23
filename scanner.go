@@ -23,6 +23,8 @@ func (s *Scanner) scanTokens() ([]Token, error) {
 func (s *Scanner) scan() {
 	c := s.advance()
 	switch c {
+
+	// Single character tokens
 	case "(":
 		s.addToken(LeftParen, nil)
 		break
@@ -41,9 +43,24 @@ func (s *Scanner) scan() {
 	case "]":
 		s.addToken(RightBrace, nil)
 		break
-
-	default:
-		reportError(s.line, )
+	case ",":
+		s.addToken(RightBrace, nil)
+		break
+	case ".":
+		s.addToken(RightBrace, nil)
+		break
+	case "-":
+		s.addToken(RightBrace, nil)
+		break
+	case "+":
+		s.addToken(RightBrace, nil)
+		break
+	case ";":
+		s.addToken(Semicolon, nil)
+		break
+	case "*":
+		s.addToken(Star, nil)
+		break
 
 }
 
