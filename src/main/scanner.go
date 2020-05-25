@@ -72,6 +72,9 @@ func (s *Scanner) scan() error {
 	case ';':
 		s.addToken(Semicolon, nil)
 		break
+	case '*':
+		s.addToken(Star, nil)
+		break
 
 	// Single or double character tokens
 	case '!':
@@ -100,16 +103,19 @@ func (s *Scanner) scan() error {
 	// Comments (single and multiline)
 	case '/':
 		if s.match('/') {
-			// TODO: Fix comment implementation
+			for s.peek() != '\n' && s.curr < len(s.source) {
+				s.advance()
+			}
+		} else if s.match('*') {
+			for s.peek() != '*' && s.peekNext() != '/' && s.curr < len(s.source) {
+				if s.peek() == '\n' {
+					s.line++
+				}
+				s.advance()
+				s.advance()
+			}
 		} else {
 			s.addToken(Slash, nil)
-		}
-		break
-	case '*':
-		if s.match('/') {
-			// TODO: Fix comment implementation
-		} else {
-			s.addToken(Star, nil)
 		}
 		break
 
@@ -118,6 +124,9 @@ func (s *Scanner) scan() error {
 		checkErr(-1, err)
 
 	default:
+		if unicode.IsDigit(c) {
+			s.addNumericToken()
+		}
 		return errors.New("Invalid character")
 	}
 	return nil
@@ -163,14 +172,20 @@ func (s *Scanner) addStringToken() error {
 }
 
 func (s *Scanner) addNumericToken() (TokenType, error) {
-	// TODO: Open to implement
+	while unicode.IsDigit(s.peek()) {
+		s.advance()
+	}
+
+	if s.peek() == '.' && unicode.IsDigit(s.peekNext())) {
+
+	}
 }
 
 func (s *Scanner) ternaryMatch(expectedChar rune, ifTrue TokenType, ifFalse TokenType) TokenType {
 	if s.curr >= len(s.source) {
 		return ifFalse
 	}
-	if string(s.source[s.curr+1]) == expectedChar {
+	if s.source[s.curr+1] == expectedChar {
 		s.curr++
 		return ifTrue
 	}
@@ -182,4 +197,8 @@ func (s *Scanner) peek() rune {
 		return nil
 	}
 	return s.source[s.curr]
+}
+
+func (s *Scanner) peekNext() rune {
+
 }
