@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"strconv"
 	"unicode"
 )
 
@@ -127,7 +128,7 @@ func (s *Scanner) scan() error {
 		if unicode.IsDigit(c) {
 			s.addNumericToken()
 			break
-		} else { 
+		} else {
 			return errors.New("Invalid character")
 		}
 	}
@@ -173,14 +174,24 @@ func (s *Scanner) addStringToken() error {
 	return nil
 }
 
-func (s *Scanner) addNumericToken() (TokenType, error) {
-	while unicode.IsDigit(s.peek(0)) {
+func (s *Scanner) addNumericToken() error {
+	for unicode.IsDigit(s.peek(0)) {
 		s.advance()
 	}
 
-	if s.peek() == '.' && unicode.IsDigit(s.peek(1))) {
-
+	// Consumes floating point values by ignoring DOT TokenType
+	if s.peek(0) == '.' && unicode.IsDigit(s.peek(1)) {
+		s.advance()
+		for unicode.IsDigit(s.peek(0)) {
+			s.advance()
+		}
 	}
+
+	num, err := strconv.ParseFloat(string(s.source[s.start:s.curr]), 64)
+	checkErr(-1, err)
+	s.addToken(Numeric, num)
+
+	return nil
 }
 
 func (s *Scanner) ternaryMatch(expectedChar rune, ifTrue TokenType, ifFalse TokenType) TokenType {
@@ -195,7 +206,7 @@ func (s *Scanner) ternaryMatch(expectedChar rune, ifTrue TokenType, ifFalse Toke
 }
 
 func (s *Scanner) peek(n int) rune {
-	if s.curr + n >= len(s.source) {
+	if s.curr+n >= len(s.source) {
 		return '\u0000' // Null terminator
 	}
 	return s.source[s.curr]
