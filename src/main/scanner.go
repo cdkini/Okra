@@ -214,7 +214,13 @@ func (s *Scanner) addIdentifierToken() {
 	for unicode.IsLetter(s.source[s.curr]) || unicode.IsDigit(s.source[s.curr]) {
 		s.advance()
 	}
-	s.addToken(Identifier)
+	text := string(s.source[s.start:s.curr])
+	id := keywordDict[text]
+	if id == 0 {
+		s.addToken(Identifier)
+	} else {
+		s.addToken(id)
+	}
 }
 
 func (s *Scanner) peek(n int) rune {

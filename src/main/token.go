@@ -13,6 +13,7 @@ const (
 	And TokenType = iota
 	Bang
 	BangEqual
+	Class
 	Comma
 	Construct
 	Dot
@@ -53,3 +54,21 @@ const (
 	True
 	Variable
 )
+
+var keywordDict = map[string]TokenType{
+	"and":    And,
+	"class":  Class,
+	"else":   Else,
+	"false":  False,
+	"for":    For,
+	"func":   Func,
+	"if":     If,
+	"null":   Null,
+	"or":     Or,
+	"log":    Log,
+	"return": Return,
+	"super":  Super,
+	"this":   This,
+	"true":   True,
+	"var":    Variable,
+}
