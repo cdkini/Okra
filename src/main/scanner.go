@@ -33,71 +33,71 @@ func (s *Scanner) scan() error {
 	switch c {
 
 	// Ignore all whitespace but record line break
-	case unicode.IsSpace(c):
-		if c == '\n' {
-			s.line++
-		}
+	case '\t', '\v', '\f', '\r', ' ':
+		break
+	case '\n':
+		s.line++
 		break
 
 	// Single character tokens
 	case '(':
-		s.addToken(LeftParen, nil)
+		s.addToken(LeftParen)
 		break
 	case ')':
-		s.addToken(RightParen, nil)
+		s.addToken(RightParen)
 		break
 	case '{':
-		s.addToken(LeftBracket, nil)
+		s.addToken(LeftBracket)
 		break
 	case '}':
-		s.addToken(RightBracket, nil)
+		s.addToken(RightBracket)
 		break
 	case '[':
-		s.addToken(LeftBrace, nil)
+		s.addToken(LeftBrace)
 		break
 	case ']':
-		s.addToken(RightBrace, nil)
+		s.addToken(RightBrace)
 		break
 	case ',':
-		s.addToken(Comma, nil)
+		s.addToken(Comma)
 		break
 	case '.':
-		s.addToken(Dot, nil)
+		s.addToken(Dot)
 		break
 	case '-':
-		s.addToken(Minus, nil)
+		s.addToken(Minus)
 		break
 	case '+':
-		s.addToken(Plus, nil)
+		s.addToken(Plus)
 		break
 	case ';':
-		s.addToken(Semicolon, nil)
+		s.addToken(Semicolon)
 		break
 	case '*':
-		s.addToken(Star, nil)
+		s.addToken(Star)
 		break
 
 	// Single or double character tokens
 	case '!':
-		s.addToken(s.ternaryMatch('=', BangEqual, Bang), nil)
+		s.addToken(s.ternaryMatch('=', BangEqual, Bang))
 		break
 	case '=':
-		s.addToken(s.ternaryMatch('=', EqualEqual, Equal), nil)
+		s.addToken(s.ternaryMatch('=', EqualEqual, Equal))
 		break
 	case '<':
-		s.addToken(s.ternaryMatch('=', LessEqual, Less), nil)
+		s.addToken(s.ternaryMatch('=', LessEqual, Less))
 		break
 	case '>':
-		s.addToken(s.ternaryMatch('=', GreaterEqual, Greater), nil)
+		s.addToken(s.ternaryMatch('=', GreaterEqual, Greater))
 		break
 	case '&':
 		if s.match('&') {
-			s.addToken(And, nil)
+			s.addToken(And)
 		}
 		break
 	case '|':
 		if s.match('|') {
-			s.addToken(Or, nil)
+			s.addToken(Or)
 		}
 		break
 
@@ -116,7 +116,7 @@ func (s *Scanner) scan() error {
 				s.advance()
 			}
 		} else {
-			s.addToken(Slash, nil)
+			s.addToken(Slash)
 		}
 		break
 
@@ -127,7 +127,8 @@ func (s *Scanner) scan() error {
 	default:
 		if unicode.IsDigit(c) {
 			s.addNumericToken()
-			break
+		} else if unicode.IsLetter(c) {
+			s.addIdentifierToken()
 		} else {
 			return errors.New("Invalid character")
 		}
@@ -140,8 +141,12 @@ func (s *Scanner) advance() rune {
 	return s.source[s.curr-1]
 }
 
-func (s *Scanner) addToken(tokenType TokenType, literal interface{}) {
-	s.tokens = append(s.tokens, &Token{tokenType, string(s.source[s.start:s.curr]), literal, s.line})
+func (s *Scanner) addToken(tokenType TokenType, literal ...interface{}) {
+	if len(literal) == 1 {
+		s.tokens = append(s.tokens, &Token{tokenType, string(s.source[s.start:s.curr]), literal[0], s.line})
+	} else {
+		s.tokens = append(s.tokens, &Token{tokenType, string(s.source[s.start:s.curr]), nil, s.line})
+	}
 }
 
 func (s *Scanner) match(expectedChar rune) bool {
@@ -153,6 +158,17 @@ func (s *Scanner) match(expectedChar rune) bool {
 		return true
 	}
 	return false
+}
+
+func (s *Scanner) ternaryMatch(expectedChar rune, ifTrue TokenType, ifFalse TokenType) TokenType {
+	if s.curr >= len(s.source) {
+		return ifFalse
+	}
+	if s.source[s.curr+1] == expectedChar {
+		s.curr++
+		return ifTrue
+	}
+	return ifFalse
 }
 
 func (s *Scanner) addStringToken() error {
@@ -194,15 +210,11 @@ func (s *Scanner) addNumericToken() error {
 	return nil
 }
 
-func (s *Scanner) ternaryMatch(expectedChar rune, ifTrue TokenType, ifFalse TokenType) TokenType {
-	if s.curr >= len(s.source) {
-		return ifFalse
+func (s *Scanner) addIdentifierToken() {
+	for unicode.IsLetter(s.source[s.curr]) || unicode.IsDigit(s.source[s.curr]) {
+		s.advance()
 	}
-	if s.source[s.curr+1] == expectedChar {
-		s.curr++
-		return ifTrue
-	}
-	return ifFalse
+	s.addToken(Identifier)
 }
 
 func (s *Scanner) peek(n int) rune {
