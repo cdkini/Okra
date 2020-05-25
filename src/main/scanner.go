@@ -103,12 +103,12 @@ func (s *Scanner) scan() error {
 	// Comments (single and multiline)
 	case '/':
 		if s.match('/') {
-			for s.peek() != '\n' && s.curr < len(s.source) {
+			for s.peek(0) != '\n' && s.curr < len(s.source) {
 				s.advance()
 			}
 		} else if s.match('*') {
-			for s.peek() != '*' && s.peekNext() != '/' && s.curr < len(s.source) {
-				if s.peek() == '\n' {
+			for s.peek(0) != '*' && s.peek(1) != '/' && s.curr < len(s.source) {
+				if s.peek(0) == '\n' {
 					s.line++
 				}
 				s.advance()
@@ -126,8 +126,10 @@ func (s *Scanner) scan() error {
 	default:
 		if unicode.IsDigit(c) {
 			s.addNumericToken()
+			break
+		} else { 
+			return errors.New("Invalid character")
 		}
-		return errors.New("Invalid character")
 	}
 	return nil
 }
@@ -153,8 +155,8 @@ func (s *Scanner) match(expectedChar rune) bool {
 }
 
 func (s *Scanner) addStringToken() error {
-	for s.peek() != '\\' && s.curr < len(s.source) {
-		if s.peek() == '\n' {
+	for s.peek(0) != '\\' && s.curr < len(s.source) {
+		if s.peek(0) == '\n' {
 			s.line++
 		}
 		s.advance()
@@ -172,11 +174,11 @@ func (s *Scanner) addStringToken() error {
 }
 
 func (s *Scanner) addNumericToken() (TokenType, error) {
-	while unicode.IsDigit(s.peek()) {
+	while unicode.IsDigit(s.peek(0)) {
 		s.advance()
 	}
 
-	if s.peek() == '.' && unicode.IsDigit(s.peekNext())) {
+	if s.peek() == '.' && unicode.IsDigit(s.peek(1))) {
 
 	}
 }
@@ -192,13 +194,9 @@ func (s *Scanner) ternaryMatch(expectedChar rune, ifTrue TokenType, ifFalse Toke
 	return ifFalse
 }
 
-func (s *Scanner) peek() rune {
-	if s.curr < len(s.source) {
-		return nil
+func (s *Scanner) peek(n int) rune {
+	if s.curr + n >= len(s.source) {
+		return '\u0000' // Null terminator
 	}
 	return s.source[s.curr]
-}
-
-func (s *Scanner) peekNext() rune {
-
 }
