@@ -215,11 +215,11 @@ func (s *Scanner) addIdentifierToken() {
 		s.advance()
 	}
 	text := string(s.source[s.start:s.curr])
-	id := keywordDict[text]
-	if id == 0 {
+	i := keywordDict[text]
+	if i == 0 {
 		s.addToken(Identifier)
 	} else {
-		s.addToken(id)
+		s.addToken(i)
 	}
 }
 
