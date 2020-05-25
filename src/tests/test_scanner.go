@@ -1,5 +1,1 @@
 package tests
-
-func main() {
-
-}

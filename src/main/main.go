@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 func main() {
-	if len(os.Args) != 2 {
+	if len(os.Args) != 2 || !strings.HasSuffix(os.Args[1], ".okr") {
 		fmt.Println("Error: Must use \"okra [script]\" to run a .okr file")
 		os.Exit(-1)
 	}
@@ -16,7 +17,7 @@ func main() {
 
 func runFile(path string) {
 	bytes, err := ioutil.ReadFile(path)
-	checkErr(-1, err) // Error if file path invalid
+	checkErr(-1, err)
 	scanner := NewScanner(string(bytes))
 	tokens := scanner.scanTokens()
 }
@@ -26,7 +27,6 @@ func reportError(line int, loc string, message string) {
 }
 
 func checkErr(code int, err error) {
-	// TODO: Update this to include a specific error type / message
 	if err != nil {
 		fmt.Println("Error:", err)
 		os.Exit(code)

@@ -33,67 +33,67 @@ func (s *Scanner) scan() error {
 
 	// Ignore all whitespace but record line break
 	case unicode.IsSpace(c):
-		if (c == '\n') {
+		if c == '\n' {
 			s.line++
 		}
 		break
 
 	// Single character tokens
-	case "(":
-		s.addToken(LEFTPAREN, nil)
+	case '(':
+		s.addToken(LeftParen, nil)
 		break
-	case ")":
-		s.addToken(RIGHTPAREN, nil)
+	case ')':
+		s.addToken(RightParen, nil)
 		break
-	case "{":
-		s.addToken(LEFTBRACKET, nil)
+	case '{':
+		s.addToken(LeftBracket, nil)
 		break
-	case "}":
-		s.addToken(RIGHTBRACKET, nil)
+	case '}':
+		s.addToken(RightBracket, nil)
 		break
-	case "[":
-		s.addToken(LEFTBRACE, nil)
+	case '[':
+		s.addToken(LeftBrace, nil)
 		break
-	case "]":
-		s.addToken(RIGHTBRACE, nil)
+	case ']':
+		s.addToken(RightBrace, nil)
 		break
-	case ",":
-		s.addToken(COMMA, nil)
+	case ',':
+		s.addToken(Comma, nil)
 		break
 	case '.':
-		s.addToken(DOT, nil)
+		s.addToken(Dot, nil)
 		break
 	case '-':
-		s.addToken(MINUS, nil)
+		s.addToken(Minus, nil)
 		break
 	case '+':
-		s.addToken(PLUS, nil)
+		s.addToken(Plus, nil)
 		break
 	case ';':
-		s.addToken(SEMICOLON, nil)
+		s.addToken(Semicolon, nil)
 		break
 
 	// Single or double character tokens
 	case '!':
-		s.addToken(s.ternaryMatch('=', BANGEQUAL, BANG), nil)
+		s.addToken(s.ternaryMatch('=', BangEqual, Bang), nil)
 		break
 	case '=':
-		s.addToken(s.ternaryMatch('=', EQUALEQUAL, EQUAL), nil)
+		s.addToken(s.ternaryMatch('=', EqualEqual, Equal), nil)
 		break
 	case '<':
-		s.addToken(s.ternaryMatch('=', LESSEQUAL, LESS), nil)
+		s.addToken(s.ternaryMatch('=', LessEqual, Less), nil)
 		break
 	case '>':
-		s.addToken(s.ternaryMatch('=', GREATEREQUAL, GREATER), nil)
+		s.addToken(s.ternaryMatch('=', GreaterEqual, Greater), nil)
 		break
 	case '&':
 		if s.match('&') {
-			s.addToken(AND, nil)
+			s.addToken(And, nil)
 		}
 		break
 	case '|':
 		if s.match('|') {
-			s.addToken(OR, nil)
+			s.addToken(Or, nil)
 		}
 		break
 
@@ -102,19 +102,20 @@ func (s *Scanner) scan() error {
 		if s.match('/') {
 			// TODO: Fix comment implementation
 		} else {
-			s.addToken(SLASH, nil)
+			s.addToken(Slash, nil)
 		}
 		break
 	case '*':
 		if s.match('/') {
 			// TODO: Fix comment implementation
 		} else {
-			s.addToken(STAR, nil)
+			s.addToken(Star, nil)
 		}
 		break
 
 	case '"':
-		tokenType, err := s.addStringToken()
+		err := s.addStringToken()
+		checkErr(-1, err)
 
 	default:
 		return errors.New("Invalid character")
@@ -142,13 +143,23 @@ func (s *Scanner) match(expectedChar rune) bool {
 	return false
 }
 
-func (s *Scanner) addStringToken() (TokenType, error) {
-	for s.peek() != '\' && s.curr < len(s.source) {
+func (s *Scanner) addStringToken() error {
+	for s.peek() != '\\' && s.curr < len(s.source) {
 		if s.peek() == '\n' {
 			s.line++
 		}
 		s.advance()
 	}
+
+	if s.curr >= len(s.source) {
+		return errors.New("Unterminated string")
+	}
+
+	s.advance()
+	str := s.source[s.start+1 : s.curr-1]
+	s.addToken(String, str)
+
+	return nil
 }
 
 func (s *Scanner) addNumericToken() (TokenType, error) {
