@@ -5,6 +5,8 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+
+	"github.com/cdkini/Okra/interpret"
 )
 
 func main() {
@@ -17,8 +19,8 @@ func main() {
 
 func runFile(path string) {
 	bytes, err := ioutil.ReadFile(path)
-	CheckErr(-1, err)
-	scanner := NewScanner(string(bytes))
+	interpret.CheckErr(-1, err)
+	scanner := interpret.NewScanner(string(bytes))
 	tokens := scanner.scanTokens()
 	fmt.Println(tokens)
 }
