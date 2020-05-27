@@ -6,23 +6,24 @@ import (
 
 func TestScanTokens(t *testing.T) {
 	table := []struct {
-		input string
-		output []TokenType
+		in  string
+		out []TokenType
 	}{
-		{"()[]{}", []TokenType{LeftParen, RightParen, LeftBracket, RightBracket, LeftBrace, RightBrace, EOF}}
+		{"+*", []TokenType{Plus, Star, EOF}},
 	}
 
 	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			s := NewScanner(test.input)
-			tokens := s.scanTokens()
+		t.Run(test.in, func(t *testing.T) {
+			scanner := NewScanner(test.in)
+			scanner.scanTokens()
+			tokens := scanner.tokens
 
-			if len(tokens) != len(test.output) {
-				t.Errorf("Error: Expected %d tokens, got %d", len(test.output), len(tokens))
+			if len(tokens) != len(test.out) {
+				t.Errorf("Expected %d tokens, received %d", len(tokens), len(test.out))
 			} else {
 				for i := range tokens {
-					if tokens[i] != test.out[i] {
-						t.Errorf("Error: Expected %v, got %v", test.output[i], tokens[i])
+					if tokens[i].tokenType != test.out[i] {
+						t.Errorf("Expected %v, received %v", tokens[i].tokenType, test.out[i])
 					}
 				}
 			}
