@@ -10,7 +10,9 @@ func TestScanWhitespace(t *testing.T) {
 		out  []TokenType
 		line int
 	}{
-		{} // TODO: Fill out tests!
+		{" ", []TokenType{EOF}, 1},
+		{"\t\r\v\f", []TokenType{EOF}, 1},
+		{"\n", []TokenType{EOF}, 2},
 	}
 
 	for _, test := range table {
@@ -26,6 +28,9 @@ func TestScanWhitespace(t *testing.T) {
 					if tokens[i].tokenType != test.out[i] {
 						t.Errorf("Expected %v, received %v", tokens[i].tokenType, test.out[i])
 					}
+					if scanner.line != test.line {
+						t.Errorf("Expected to be on line %d, actually on %d", scanner.line, test.line)
+					}
 				}
 			}
 		})
@@ -37,7 +42,10 @@ func TestScanSingleCharTokens(t *testing.T) {
 		in  string
 		out []TokenType
 	}{
-		{}, // TODO: Fill out tests!
+		{"({[", []TokenType{LeftParen, LeftBracket, LeftBrace, EOF}},
+		{")}]", []TokenType{RightParen, RightBracket, RightBrace, EOF}},
+		{",.-", []TokenType{Comma, Dot, Minus, EOF}},
+		{"+;*", []TokenType{Plus, Semicolon, Star, EOF}},
 	}
 
 	for _, test := range table {
@@ -91,7 +99,8 @@ func TestScanComments(t *testing.T) {
 		in  string
 		out []TokenType
 	}{
-		{}, // TODO: Fill out tests!
+		{"// This is a comment", []TokenType{EOF}},
+		{"// Random text: +-=&&!forclass", []TokenType{EOF}},
 	}
 
 	for _, test := range table {
