@@ -166,7 +166,7 @@ func (s *Scanner) ternaryMatch(expectedChar rune, ifTrue TokenType, ifFalse Toke
 	if s.curr >= len(s.source) {
 		return ifFalse
 	}
-	if s.source[s.curr+1] == expectedChar {
+	if s.source[s.curr] == expectedChar {
 		s.curr++
 		return ifTrue
 	}
