@@ -1,0 +1,9 @@
+/*
+ * Your typical first program
+ */
+log "Hello, World!";
+
+/* 
+ * Output:
+ * "Hello, World!"
+ */
