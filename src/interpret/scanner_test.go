@@ -22,14 +22,14 @@ func TestScanWhitespace(t *testing.T) {
 			tokens := scanner.tokens
 
 			if len(tokens) != len(test.output) {
-				t.Errorf("Expected %d tokens, received %d", len(tokens), len(test.output))
+				t.Errorf("Expected %d tokens, received %d", len(test.output), len(tokens))
 			} else {
 				for i := range tokens {
 					if tokens[i].tokenType != test.output[i] {
-						t.Errorf("Expected %v, received %v", tokens[i].tokenType, test.output[i])
+						t.Errorf("Expected %v, received %v", test.output[i], tokens[i].tokenType)
 					}
 					if scanner.line != test.line {
-						t.Errorf("Expected to be on line %d, actually on %d", scanner.line, test.line)
+						t.Errorf("Expected to be on line %d, actually on %d", test.line, scanner.line)
 					}
 				}
 			}
@@ -55,11 +55,11 @@ func TestScanSingleCharTokens(t *testing.T) {
 			tokens := scanner.tokens
 
 			if len(tokens) != len(test.output) {
-				t.Errorf("Expected %d tokens, received %d", len(tokens), len(test.output))
+				t.Errorf("Expected %d tokens, received %d", len(test.output), len(tokens))
 			} else {
 				for i := range tokens {
 					if tokens[i].tokenType != test.output[i] {
-						t.Errorf("Expected %v, received %v", tokens[i].tokenType, test.output[i])
+						t.Errorf("Expected %v, received %v", test.output[i], tokens[i].tokenType)
 					}
 				}
 			}
@@ -91,11 +91,11 @@ func TestScanDoubleCharTokens(t *testing.T) {
 			tokens := scanner.tokens
 
 			if len(tokens) != len(test.output) {
-				t.Errorf("Expected %d tokens, received %d", len(tokens), len(test.output))
+				t.Errorf("Expected %d tokens, received %d", len(test.output), len(tokens))
 			} else {
 				for i := range tokens {
 					if tokens[i].tokenType != test.output[i] {
-						t.Errorf("Expected %v, received %v", tokens[i].tokenType, test.output[i])
+						t.Errorf("Expected %v, received %v", test.output[i], tokens[i].tokenType)
 					}
 				}
 			}
@@ -113,7 +113,7 @@ func TestScanComments(t *testing.T) {
 		{"// Random text: +-=&&!forclassfunc", []TokenType{EOF}, 1},
 		{"// Line break ends comment \n", []TokenType{EOF}, 2},
 		{"/* Yet another comment */", []TokenType{EOF}, 1},
-		// {"/* \n * A \n * proper \n * multiline * \n comment", []TokenType{EOF}, 5},
+		{"/* \n * A \n * proper \n * multiline * \n comment */", []TokenType{EOF}, 5},
 	}
 
 	for _, test := range table {
@@ -123,14 +123,14 @@ func TestScanComments(t *testing.T) {
 			tokens := scanner.tokens
 
 			if len(tokens) != len(test.output) {
-				t.Errorf("Expected %d tokens, received %d", len(tokens), len(test.output))
+				t.Errorf("Expected %d tokens, received %d", len(test.output), len(tokens))
 			} else {
 				for i := range tokens {
 					if tokens[i].tokenType != test.output[i] {
-						t.Errorf("Expected %v, received %v", tokens[i].tokenType, test.output[i])
+						t.Errorf("Expected %v, received %v", test.output[i], tokens[i].tokenType)
 					}
 					if scanner.line != test.line {
-						t.Errorf("Expected to be on line %d, actually on %d", scanner.line, test.line)
+						t.Errorf("Expected to be on line %d, actually on %d", test.line, scanner.line)
 					}
 				}
 			}
@@ -153,11 +153,11 @@ func TestScanString(t *testing.T) {
 			tokens := scanner.tokens
 
 			if len(tokens) != len(test.output) {
-				t.Errorf("Expected %d tokens, received %d", len(tokens), len(test.output))
+				t.Errorf("Expected %d tokens, received %d", len(test.output), len(tokens))
 			} else {
 				for i := range tokens {
 					if tokens[i].tokenType != test.output[i] {
-						t.Errorf("Expected %v, received %v", tokens[i].tokenType, test.output[i])
+						t.Errorf("Expected %v, received %v", test.output[i], tokens[i].tokenType)
 					}
 				}
 			}
@@ -180,11 +180,11 @@ func TestScanNumeric(t *testing.T) {
 			tokens := scanner.tokens
 
 			if len(tokens) != len(test.output) {
-				t.Errorf("Expected %d tokens, received %d", len(tokens), len(test.output))
+				t.Errorf("Expected %d tokens, received %d", len(test.output), len(tokens))
 			} else {
 				for i := range tokens {
 					if tokens[i].tokenType != test.output[i] {
-						t.Errorf("Expected %v, received %v", tokens[i].tokenType, test.output[i])
+						t.Errorf("Expected %v, received %v", test.output[i], tokens[i].tokenType)
 					}
 				}
 			}
@@ -207,11 +207,11 @@ func TestScanIdentifierAndKeyword(t *testing.T) {
 			tokens := scanner.tokens
 
 			if len(tokens) != len(test.output) {
-				t.Errorf("Expected %d tokens, received %d", len(tokens), len(test.output))
+				t.Errorf("Expected %d tokens, received %d", len(test.output), len(tokens))
 			} else {
 				for i := range tokens {
 					if tokens[i].tokenType != test.output[i] {
-						t.Errorf("Expected %v, received %v", tokens[i].tokenType, test.output[i])
+						t.Errorf("Expected %v, received %v", test.output[i], tokens[i].tokenType)
 					}
 				}
 			}

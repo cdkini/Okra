@@ -115,8 +115,9 @@ func (s *Scanner) scan() error {
 					s.line++
 				}
 				s.advance()
-				s.advance()
 			}
+			s.advance()
+			s.advance()
 		} else {
 			s.addToken(Slash)
 		}
