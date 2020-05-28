@@ -6,12 +6,11 @@ import (
 
 func TestScanWhitespace(t *testing.T) {
 	table := []struct {
-		in  string
-		out []TokenType
+		in   string
+		out  []TokenType
+		line int
 	}{
-		{" ", []TokenType{EOF}},
-		{"\t\v\f\r", []TokenType{EOF}},
-		{"\n", []TokenType{EOF}},
+		{} // TODO: Fill out tests!
 	}
 
 	for _, test := range table {
