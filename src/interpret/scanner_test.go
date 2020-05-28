@@ -72,7 +72,16 @@ func TestScanDoubleCharTokens(t *testing.T) {
 		in  string
 		out []TokenType
 	}{
-		{}, // TODO: Fill out tests!
+		{"!", []TokenType{Bang, EOF}},
+		// {"!=", []TokenType{BangEqual, EOF}},
+		{"=", []TokenType{Equal, EOF}},
+		// {"==", []TokenType{EqualEqual, EOF}},
+		{">", []TokenType{Greater, EOF}},
+		// {">=", []TokenType{GreaterEqual, EOF}},
+		{"<", []TokenType{Less, EOF}},
+		// {"<=", []TokenType{LessEqual, EOF}},
+		{"&&", []TokenType{And, EOF}},
+		// {"||", []TokenType{Or, EOF}},
 	}
 
 	for _, test := range table {

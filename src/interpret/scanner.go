@@ -15,7 +15,7 @@ type Scanner struct {
 }
 
 func NewScanner(source string) *Scanner {
-	return &Scanner{[]rune(source), make([]*Token, 0), 0, 0, 0}
+	return &Scanner{[]rune(source), make([]*Token, 0), 0, 0, 1}
 }
 
 func (s *Scanner) scanTokens() []*Token {
@@ -93,13 +93,15 @@ func (s *Scanner) scan() error {
 	case '&':
 		if s.match('&') {
 			s.addToken(And)
+			break
 		}
-		break
+		return errors.New("Invalid character")
 	case '|':
 		if s.match('|') {
 			s.addToken(Or)
+			break
 		}
-		break
+		return errors.New("Invalid character")
 
 	// Comments (single and multiline)
 	case '/':
