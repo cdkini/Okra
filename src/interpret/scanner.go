@@ -155,7 +155,7 @@ func (s *Scanner) match(expectedChar rune) bool {
 	if s.curr >= len(s.source) {
 		return false
 	}
-	if s.source[s.curr+1] == expectedChar {
+	if s.source[s.curr] == expectedChar {
 		s.curr++
 		return true
 	}
