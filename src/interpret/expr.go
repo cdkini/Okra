@@ -1,6 +1,14 @@
 package interpret
 
-type Expr struct {
+type Expr interface {
+	accept(Visitor) error
+}
+
+type Visitor interface {
+	visitUnary(Unary) error
+	visitBinary(Binary) error
+	visitGrouping(Grouping) error
+	visitLiteral(Literal) error
 }
 
 type Unary struct {
