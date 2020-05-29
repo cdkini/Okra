@@ -56,7 +56,6 @@ const (
 )
 
 var keywordDict = map[string]TokenType{
-	"and":    And,
 	"class":  Class,
 	"else":   Else,
 	"false":  False,
@@ -64,7 +63,6 @@ var keywordDict = map[string]TokenType{
 	"func":   Func,
 	"if":     If,
 	"null":   Null,
-	"or":     Or,
 	"log":    Log,
 	"return": Return,
 	"super":  Super,

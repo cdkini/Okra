@@ -110,13 +110,12 @@ func (s *Scanner) scan() error {
 				s.advance()
 			}
 		} else if s.match('*') {
-			for s.peek(0) != '*' && s.peek(1) != '/' && s.curr < len(s.source) {
+			for s.curr < len(s.source)-1 || (s.peek(0) != '*' && s.peek(1) != '/') {
 				if s.peek(0) == '\n' {
 					s.line++
 				}
 				s.advance()
 			}
-			s.advance()
 			s.advance()
 		} else {
 			s.addToken(Slash)

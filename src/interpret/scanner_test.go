@@ -4,6 +4,14 @@ import (
 	"testing"
 )
 
+/* TODO: Fix all tests:
+TestScanWhitespace - PASS
+TestScanSingleCharTokens - PASS
+TestScanDoubleCharTokens - PASS
+TestScanComments - FAIL
+TestScanRemaining - FAIL
+*/
+
 func TestScanWhitespace(t *testing.T) {
 	table := []struct {
 		input  string
@@ -11,7 +19,10 @@ func TestScanWhitespace(t *testing.T) {
 		line   int
 	}{
 		{" ", []TokenType{EOF}, 1},
-		{"\t\r\v\f", []TokenType{EOF}, 1},
+		{"\t", []TokenType{EOF}, 1},
+		{"\r", []TokenType{EOF}, 1},
+		{"\v", []TokenType{EOF}, 1},
+		{"\f", []TokenType{EOF}, 1},
 		{"\n", []TokenType{EOF}, 2},
 	}
 
@@ -42,10 +53,18 @@ func TestScanSingleCharTokens(t *testing.T) {
 		input  string
 		output []TokenType
 	}{
-		{"({[", []TokenType{LeftParen, LeftBracket, LeftBrace, EOF}},
-		{")}]", []TokenType{RightParen, RightBracket, RightBrace, EOF}},
-		{",.-", []TokenType{Comma, Dot, Minus, EOF}},
-		{"+;*", []TokenType{Plus, Semicolon, Star, EOF}},
+		{"(", []TokenType{LeftParen, EOF}},
+		{"{", []TokenType{LeftBracket, EOF}},
+		{"[", []TokenType{LeftBrace, EOF}},
+		{")", []TokenType{RightParen, EOF}},
+		{"}", []TokenType{RightBracket, EOF}},
+		{"]", []TokenType{RightBrace, EOF}},
+		{",", []TokenType{Comma, EOF}},
+		{".", []TokenType{Dot, EOF}},
+		{"-", []TokenType{Minus, EOF}},
+		{"+", []TokenType{Plus, EOF}},
+		{";", []TokenType{Semicolon, EOF}},
+		{"*", []TokenType{Star, EOF}},
 	}
 
 	for _, test := range table {
@@ -112,6 +131,7 @@ func TestScanComments(t *testing.T) {
 		{"// This is a comment", []TokenType{EOF}, 1},
 		{"// Random text: +-=&&!forclassfunc", []TokenType{EOF}, 1},
 		{"// Line break ends comment \n", []TokenType{EOF}, 2},
+		// FIXME: Fix scanning of multiline comments!
 		{"/* Yet another comment */", []TokenType{EOF}, 1},
 		{"/* \n * A \n * proper \n * multiline * \n comment */", []TokenType{EOF}, 5},
 	}
@@ -138,66 +158,37 @@ func TestScanComments(t *testing.T) {
 	}
 }
 
-func TestScanString(t *testing.T) {
+func TestScanRemaining(t *testing.T) {
 	table := []struct {
 		input  string
 		output []TokenType
 	}{
-		{}, // TODO: Fill output tests!
-	}
+		// FIXME: Index out of bounds issue with all types
+		// String
+		{"\"example\"", []TokenType{String, EOF}},
 
-	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := NewScanner(test.input)
-			scanner.scanTokens()
-			tokens := scanner.tokens
+		// Numeric
+		{"7", []TokenType{String, EOF}},
+		{"3.1415", []TokenType{Numeric, EOF}},
 
-			if len(tokens) != len(test.output) {
-				t.Errorf("Expected %d tokens, received %d", len(test.output), len(tokens))
-			} else {
-				for i := range tokens {
-					if tokens[i].tokenType != test.output[i] {
-						t.Errorf("Expected %v, received %v", test.output[i], tokens[i].tokenType)
-					}
-				}
-			}
-		})
-	}
-}
+		// Id
+		{"name", []TokenType{Identifier, EOF}},
+		{"x", []TokenType{Identifier, EOF}},
 
-func TestScanNumeric(t *testing.T) {
-	table := []struct {
-		input  string
-		output []TokenType
-	}{
-		{}, // TODO: Fill output tests!
-	}
-
-	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := NewScanner(test.input)
-			scanner.scanTokens()
-			tokens := scanner.tokens
-
-			if len(tokens) != len(test.output) {
-				t.Errorf("Expected %d tokens, received %d", len(test.output), len(tokens))
-			} else {
-				for i := range tokens {
-					if tokens[i].tokenType != test.output[i] {
-						t.Errorf("Expected %v, received %v", test.output[i], tokens[i].tokenType)
-					}
-				}
-			}
-		})
-	}
-}
-
-func TestScanIdentifierAndKeyword(t *testing.T) {
-	table := []struct {
-		input  string
-		output []TokenType
-	}{
-		{}, // TODO: Fill output tests!
+		// Keyword
+		{"class", []TokenType{Class, EOF}},
+		{"else", []TokenType{Else, EOF}},
+		{"false", []TokenType{False, EOF}},
+		{"for", []TokenType{For, EOF}},
+		{"func", []TokenType{Func, EOF}},
+		{"if", []TokenType{If, EOF}},
+		{"null", []TokenType{Null, EOF}},
+		{"log", []TokenType{Log, EOF}},
+		{"return", []TokenType{Return, EOF}},
+		{"super", []TokenType{Super, EOF}},
+		{"this", []TokenType{This, EOF}},
+		{"true", []TokenType{True, EOF}},
+		{"var", []TokenType{Variable, EOF}},
 	}
 
 	for _, test := range table {
