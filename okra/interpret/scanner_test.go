@@ -5,9 +5,6 @@ import (
 )
 
 /* TODO: Fix all tests:
-TestScanWhitespace - PASS
-TestScanSingleCharTokens - PASS
-TestScanDoubleCharTokens - PASS
 TestScanComments - FAIL
 TestScanRemaining - FAIL
 */
@@ -128,11 +125,11 @@ func TestScanComments(t *testing.T) {
 		output []TokenType
 		line   int
 	}{
-		// {"// This is a comment", []TokenType{EOF}, 1},
-		// {"// Random text: +-=&&!forclassfunc", []TokenType{EOF}, 1},
-		// {"// Line break ends comment \n", []TokenType{EOF}, 2},
+		{"// This is a comment", []TokenType{EOF}, 1},
+		{"// Random text: +-=&&!forclassfunc", []TokenType{EOF}, 1},
+		{"// Line break ends comment \n", []TokenType{EOF}, 2},
 		// FIXME: Fix scanning of multiline comments!
-		{"/* Yet another comment */", []TokenType{EOF}, 1},
+		{"/* This is yet another comment */", []TokenType{EOF}, 1},
 		{"/* \n * A \n * proper \n * multiline * \n comment */", []TokenType{EOF}, 5},
 	}
 
