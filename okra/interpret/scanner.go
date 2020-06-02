@@ -199,7 +199,7 @@ func (s *Scanner) addNumericToken() error {
 	}
 
 	// Consumes floating point values by ignoring DOT TokenType
-	if s.peek(0) == '.' && unicode.IsDigit(s.peek(1)) {
+	if s.peek(0) == '.' {
 		s.advance()
 		for unicode.IsDigit(s.peek(0)) {
 			s.advance()
@@ -214,7 +214,7 @@ func (s *Scanner) addNumericToken() error {
 }
 
 func (s *Scanner) addIdentifierToken() {
-	for unicode.IsLetter(s.source[s.curr]) || unicode.IsDigit(s.source[s.curr]) {
+	for s.curr < len(s.source) && (unicode.IsLetter(s.source[s.curr]) || unicode.IsDigit(s.source[s.curr])) {
 		s.advance()
 	}
 	text := string(s.source[s.start:s.curr])
