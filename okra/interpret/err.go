@@ -5,6 +5,12 @@ import (
 	"os"
 )
 
+type OkraError struct {
+	line int
+	col  int
+	msg  string
+}
+
 func reportError(line int, loc string, message string) {
 	fmt.Println("[Line", line, "] Error", loc, ":", message)
 }

@@ -114,3 +114,7 @@ func (p *Parser) currTokenType() TokenType {
 func (p *Parser) prevTokenType() TokenType {
 	return p.tokens[p.curr-1].tokenType
 }
+
+func (p *Parser) consume() Token, error {
+	
+}
