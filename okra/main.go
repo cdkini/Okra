@@ -21,6 +21,6 @@ func runFile(path string) {
 	bytes, err := ioutil.ReadFile(path)
 	interpret.CheckErr(-1, err)
 	scanner := interpret.NewScanner(string(bytes))
-	tokens := scanner.scanTokens()
+	tokens := scanner.ScanTokens()
 	fmt.Println(tokens)
 }

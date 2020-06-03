@@ -21,7 +21,7 @@ func TestScanWhitespace(t *testing.T) {
 	for _, test := range table {
 		t.Run(test.input, func(t *testing.T) {
 			scanner := NewScanner(test.input)
-			scanner.scanTokens()
+			scanner.ScanTokens()
 			tokens := scanner.tokens
 
 			if len(tokens) != len(test.output) {
@@ -62,7 +62,7 @@ func TestScanSingleCharTokens(t *testing.T) {
 	for _, test := range table {
 		t.Run(test.input, func(t *testing.T) {
 			scanner := NewScanner(test.input)
-			scanner.scanTokens()
+			scanner.ScanTokens()
 			tokens := scanner.tokens
 
 			if len(tokens) != len(test.output) {
@@ -98,7 +98,7 @@ func TestScanDoubleCharTokens(t *testing.T) {
 	for _, test := range table {
 		t.Run(test.input, func(t *testing.T) {
 			scanner := NewScanner(test.input)
-			scanner.scanTokens()
+			scanner.ScanTokens()
 			tokens := scanner.tokens
 
 			if len(tokens) != len(test.output) {
@@ -130,7 +130,7 @@ func TestScanComments(t *testing.T) {
 	for _, test := range table {
 		t.Run(test.input, func(t *testing.T) {
 			scanner := NewScanner(test.input)
-			scanner.scanTokens()
+			scanner.ScanTokens()
 			tokens := scanner.tokens
 
 			if len(tokens) != len(test.output) {
@@ -184,7 +184,7 @@ func TestScanRemaining(t *testing.T) {
 	for _, test := range table {
 		t.Run(test.input, func(t *testing.T) {
 			scanner := NewScanner(test.input)
-			scanner.scanTokens()
+			scanner.ScanTokens()
 			tokens := scanner.tokens
 
 			if len(tokens) != len(test.output) {

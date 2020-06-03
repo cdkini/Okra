@@ -1,63 +1,81 @@
 package interpret
 
-struct Parser {
-	tokens Tokens[]
-	curr int
+type Parser struct {
+	tokens []Token
+	curr   int
 }
 
 func (p *Parser) evaluate() Expr {
-	return equality()
+	return p.equality()
 }
 
 func (p *Parser) equality() Expr {
-	expr := comparison()
+	expr := p.comparison()
 
-	for tokenMatch(BangEqual, EqualEqual) {
-		operator := prev()
-		right := comparison()
+	for p.match(BangEqual, EqualEqual) {
+		operator := p.tokens[p.curr]
+		right := p.comparison()
 		expr = Binary{expr, operator, right}
 	}
 	return expr
 }
 
 func (p *Parser) comparison() Expr {
-	expr := addition()
+	expr := p.addOrSubtract()
 
-	for tokenMatch(Greater, GreaterEqual, Less, LessEqual) {
-		operator := prev()
-		right := addition()
+	for p.match(Greater, GreaterEqual, Less, LessEqual) {
+		operator := p.tokens[p.curr]
+		right := p.addOrSubtract()
 		expr = Binary{expr, operator, right}
 	}
-	return expr 
+
+	return expr
 }
 
 func (p *Parser) addOrSubtract() Expr {
+	expr := p.multiplyOrDivide()
 
+	for p.match(Plus, Minus) {
+		operator := p.tokens[p.curr]
+		right := p.multiplyOrDivide()
+		expr = Binary{expr, operator, right}
+	}
+	return expr
 }
 
 func (p *Parser) multiplyOrDivide() Expr {
-
+	return nil
 }
 
 func (p *Parser) unary() Expr {
-
+	return nil
 }
 
 func (p *Parser) primary() Expr {
-
+	return nil
 }
 
 func (p *Parser) match(tokens ...TokenType) bool {
-	for i, token := range tokens {
-		if p.tokens[p.curr].tokenType == token && p.tokens[p.curr].tokenType != EOF {
+	for _, t := range tokens {
+		if p.currTokenType() == t && p.currTokenType() != EOF {
 			p.advance()
+			return true
 		}
 	}
+	return false
 }
 
 func (p *Parser) advance() TokenType {
-	if p.tokens[p.curr].tokenType != EOF {
+	if p.currTokenType() != EOF {
 		p.curr++
 	}
-	return p.tokens[p.curr - 1]
+	return p.prevTokenType()
+}
+
+func (p *Parser) currTokenType() TokenType {
+	return p.tokens[p.curr].tokenType
+}
+
+func (p *Parser) prevTokenType() TokenType {
+	return p.tokens[p.curr-1].tokenType
 }

@@ -18,7 +18,7 @@ func NewScanner(source string) *Scanner {
 	return &Scanner{[]rune(source), make([]*Token, 0), 0, 0, 1}
 }
 
-func (s *Scanner) scanTokens() []*Token {
+func (s *Scanner) ScanTokens() []*Token {
 	for s.curr < len(s.source) {
 		s.start = s.curr
 		err := s.scan()
