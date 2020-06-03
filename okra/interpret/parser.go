@@ -44,14 +44,49 @@ func (p *Parser) addOrSubtract() Expr {
 }
 
 func (p *Parser) multiplyOrDivide() Expr {
-	return nil
+	expr := p.unary()
+
+	for p.match(Slash, Star) {
+		operator := p.tokens[p.curr]
+		right := p.unary()
+		expr = Binary{expr, operator, right}
+	}
+	return expr
 }
 
 func (p *Parser) unary() Expr {
-	return nil
+	expr := p.primary()
+
+	for p.match(Bang, Minus) {
+		operator := p.tokens[p.curr]
+		right := p.primary()
+		expr = Unary{operator, right}
+	}
+	return expr
 }
 
 func (p *Parser) primary() Expr {
+	if p.match(True) {
+		return Literal{true}
+	} else if p.match(False) {
+		return Literal{false}
+	} else if p.match(Null) {
+		return Literal{nil}
+	} else if p.match(Numeric, String) {
+		return Literal{p.tokens[p.curr-1].literal}
+	} else if p.match(LeftParen) {
+		expr := p.evaluate()
+		p.consume(RightParen, "Expect ')' after expression.")
+		return Grouping{expr}
+	} else if p.match(LeftBracket) {
+		expr := p.evaluate()
+		p.consume(RightBracket, "Expect ']' after expression.")
+		return Grouping{expr}
+	} else if p.match(LeftBrace) {
+		expr := p.evaluate()
+		p.consume(RightBrace, "Expect '}' after expression.")
+		return Grouping{expr}
+	}
 	return nil
 }
 
