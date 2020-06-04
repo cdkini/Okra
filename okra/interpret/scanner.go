@@ -175,7 +175,7 @@ func (s *Scanner) ternaryMatch(expectedChar rune, ifTrue TokenType, ifFalse Toke
 }
 
 func (s *Scanner) addStringToken() error {
-	for s.peek(0) != '\\' && s.curr < len(s.source) {
+	for s.peek(0) != '"' && s.curr < len(s.source) {
 		if s.peek(0) == '\n' {
 			s.line++
 		}

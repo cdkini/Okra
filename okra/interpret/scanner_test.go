@@ -155,7 +155,8 @@ func TestScanRemaining(t *testing.T) {
 		output []TokenType
 	}{
 		// String
-		// {"\"abc\"", []TokenType{String, EOF}}, // FIXME: All strings are determine unterminated
+		{"\"abc\"", []TokenType{String, EOF}},
+		{"\"okra's tests\"", []TokenType{String, EOF}},
 
 		// Numeric
 		{"7", []TokenType{Numeric, EOF}},
