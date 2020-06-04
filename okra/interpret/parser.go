@@ -1,11 +1,11 @@
 package interpret
 
 type Parser struct {
-	tokens []Token
+	tokens []*Token
 	curr   int
 }
 
-func NewParser(tokens []Token) *Parser {
+func NewParser(tokens []*Token) *Parser {
 	return &Parser{tokens, 0}
 }
 
