@@ -95,13 +95,13 @@ func (s *Scanner) scan() error {
 			s.addToken(And)
 			break
 		}
-		return errors.New("Invalid character")
+		return errors.New("Invalid character") // TODO: Add specific error class instance here!
 	case '|':
 		if s.match('|') {
 			s.addToken(Or)
 			break
 		}
-		return errors.New("Invalid character")
+		return errors.New("Invalid character") // TODO: Add specific error class instance here!
 
 	// Comments (single and multiline)
 	case '/':
@@ -133,7 +133,7 @@ func (s *Scanner) scan() error {
 		} else if unicode.IsLetter(c) {
 			s.addIdentifierToken()
 		} else {
-			return errors.New("Invalid character")
+			return errors.New("Invalid character") // TODO: Add specific error class instance here!
 		}
 	}
 	return nil
@@ -183,7 +183,7 @@ func (s *Scanner) addStringToken() error {
 	}
 
 	if s.curr >= len(s.source) {
-		return errors.New("Unterminated string")
+		return errors.New("Unterminated string") // TODO: Add specific error class instance here!
 	}
 
 	s.advance()
@@ -207,7 +207,7 @@ func (s *Scanner) addNumericToken() error {
 	}
 
 	num, err := strconv.ParseFloat(string(s.source[s.start:s.curr]), 64)
-	checkErr(-1, err)
+	checkErr(-1, err) // TODO: Add specific error class instance here!
 	s.addToken(Numeric, num)
 
 	return nil

@@ -5,6 +5,10 @@ type Parser struct {
 	curr   int
 }
 
+func NewParser(tokens []Token) *Parser {
+	return &Parser{tokens, 0}
+}
+
 func (p *Parser) evaluate() Expr {
 	return p.equality()
 }
