@@ -17,10 +17,11 @@ func (p *Parser) equality() Expr {
 	expr := p.comparison()
 
 	for p.match(BangEqual, EqualEqual) {
-		operator := p.tokens[p.curr]
+		operator := p.currToken()
 		right := p.comparison()
 		expr = Binary{expr, operator, right}
 	}
+
 	return expr
 }
 
@@ -28,7 +29,7 @@ func (p *Parser) comparison() Expr {
 	expr := p.addOrSubtract()
 
 	for p.match(Greater, GreaterEqual, Less, LessEqual) {
-		operator := p.tokens[p.curr]
+		operator := p.currToken()
 		right := p.addOrSubtract()
 		expr = Binary{expr, operator, right}
 	}
@@ -40,10 +41,11 @@ func (p *Parser) addOrSubtract() Expr {
 	expr := p.multiplyOrDivide()
 
 	for p.match(Plus, Minus) {
-		operator := p.tokens[p.curr]
+		operator := p.currToken()
 		right := p.multiplyOrDivide()
 		expr = Binary{expr, operator, right}
 	}
+
 	return expr
 }
 
@@ -51,10 +53,11 @@ func (p *Parser) multiplyOrDivide() Expr {
 	expr := p.unary()
 
 	for p.match(Slash, Star) {
-		operator := p.tokens[p.curr]
+		operator := p.currToken()
 		right := p.unary()
 		expr = Binary{expr, operator, right}
 	}
+
 	return expr
 }
 
@@ -62,10 +65,11 @@ func (p *Parser) unary() Expr {
 	expr := p.primary()
 
 	for p.match(Bang, Minus) {
-		operator := p.tokens[p.curr]
+		operator := p.currToken()
 		right := p.primary()
 		expr = Unary{operator, right}
 	}
+
 	return expr
 }
 
@@ -111,15 +115,27 @@ func (p *Parser) advance() TokenType {
 	return p.prevTokenType()
 }
 
+func (p *Parser) consume(tokenType TokenType, message string) (Token, error) {
+	if p.currTokenType() == tokenType && p.currTokenType() != EOF {
+
+		p.curr++
+		return p.prevToken(), nil
+	}
+	return EOF, nil
+}
+
+func (p *Parser) currToken() Token {
+	return p.tokens[p.curr-1]
+}
+
 func (p *Parser) currTokenType() TokenType {
 	return p.tokens[p.curr].tokenType
 }
 
-func (p *Parser) prevTokenType() TokenType {
-	return p.tokens[p.curr-1].tokenType
+func (p *Parser) prevToken() Token {
+	return p.tokens[p.curr-1]
 }
 
-func (p *Parser) consume(tokenType TokenType, message string) (Token, error) {
-	if p.currTokenType() == EOF {
-	}
+func (p *Parser) prevTokenType() TokenType {
+	return p.tokens[p.curr-1].tokenType
 }
