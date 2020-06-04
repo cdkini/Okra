@@ -24,7 +24,7 @@ func (s *Scanner) ScanTokens() []*Token {
 		err := s.scan()
 		checkErr(-1, err)
 	}
-	s.tokens = append(s.tokens, &Token{EOF, "", nil, s.line})
+	s.tokens = append(s.tokens, &Token{EOF, "EOF", nil, s.line})
 	return s.tokens
 }
 
