@@ -8,7 +8,7 @@ func TestParsing(t *testing.T) {
 		output Expr
 	}{
 		// TODO: Fill in parser tests!"}
-		{"!x", Unary{Token{}, Expr{Identifier}}},
+		{},
 	}
 
 	for _, test := range table {
@@ -16,7 +16,7 @@ func TestParsing(t *testing.T) {
 			scanner := NewScanner(test.input)
 			scanner.ScanTokens()
 			parser := NewParser(scanner.tokens)
-			expr := parser.evaluate()
+			expr := parser.parse()
 
 			if expr != test.output {
 				t.Errorf("Expected %q, received %q", test.output.String(), expr.String())
