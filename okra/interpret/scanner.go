@@ -218,6 +218,10 @@ func (s *Scanner) addIdentifierToken() {
 		s.advance()
 	}
 	text := string(s.source[s.start:s.curr])
+	s.getKeyword(text)
+}
+
+func (s *Scanner) getKeyword(text string) {
 	i := keywordDict[text]
 	if i == 0 {
 		s.addToken(Identifier)
