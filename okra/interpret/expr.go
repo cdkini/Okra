@@ -4,7 +4,7 @@ import "fmt"
 
 type Expr interface {
 	accept(Visitor) error
-	String() string
+	String() string // FIXME: Update String methods to work with tests
 }
 
 type Visitor interface {

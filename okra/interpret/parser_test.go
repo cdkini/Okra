@@ -19,7 +19,7 @@ func TestParsing(t *testing.T) {
 			expr := parser.parse()
 
 			if expr != test.output {
-				t.Errorf("Expected %q, received %q", test.output.String(), expr.String())
+				t.Errorf("Expected %q, received %q", test.output, expr)
 			}
 		})
 	}
