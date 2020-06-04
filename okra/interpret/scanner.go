@@ -22,7 +22,7 @@ func (s *Scanner) ScanTokens() []*Token {
 	for s.curr < len(s.source) {
 		s.start = s.curr
 		err := s.scan()
-		checkErr(-1, err)
+		CheckErr(-1, err)
 	}
 	s.tokens = append(s.tokens, &Token{EOF, "EOF", nil, s.line})
 	return s.tokens
@@ -125,7 +125,7 @@ func (s *Scanner) scan() error {
 
 	case '"':
 		err := s.addStringToken()
-		checkErr(-1, err)
+		CheckErr(-1, err)
 
 	default:
 		if unicode.IsDigit(c) {
@@ -207,7 +207,7 @@ func (s *Scanner) addNumericToken() error {
 	}
 
 	num, err := strconv.ParseFloat(string(s.source[s.start:s.curr]), 64)
-	checkErr(-1, err) // TODO: Add specific error class instance here!
+	CheckErr(-1, err) // TODO: Add specific error class instance here!
 	s.addToken(Numeric, num)
 
 	return nil

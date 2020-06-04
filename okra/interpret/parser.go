@@ -86,15 +86,8 @@ func (p *Parser) primary() Expr {
 		expr := p.parse()
 		p.consume(RightParen, "Expect ')' after expression.")
 		return Grouping{expr}
-	} else if p.match(LeftBracket) {
-		expr := p.parse()
-		p.consume(RightBracket, "Expect ']' after expression.")
-		return Grouping{expr}
-	} else if p.match(LeftBrace) {
-		expr := p.parse()
-		p.consume(RightBrace, "Expect '}' after expression.")
-		return Grouping{expr}
 	}
+
 	return nil
 }
 
@@ -115,7 +108,6 @@ func (p *Parser) advance() TokenType {
 	return p.prevTokenType()
 }
 
-// FIXME: Need to properly implement! (Current return val is just a placeholder)
 func (p *Parser) consume(tokenType TokenType, message string) (Token, error) {
 	if p.currTokenType() == tokenType && p.currTokenType() != EOF {
 

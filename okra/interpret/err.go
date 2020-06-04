@@ -6,16 +6,17 @@ import (
 )
 
 type OkraError struct {
-	line int
-	col  int
-	msg  string
+	class string
+	line  int
+	col   int
+	msg   string
 }
 
-func reportError(line int, loc string, message string) {
-	fmt.Println("[Line", line, "] Error", loc, ":", message)
+func (e OkraError) Error() string {
+	return fmt.Sprintf("%s [%d:%d]: %s")
 }
 
-func checkErr(code int, err error) {
+func CheckErr(code int, err error) {
 	if err != nil {
 		fmt.Println("Error:", err)
 		os.Exit(code)
