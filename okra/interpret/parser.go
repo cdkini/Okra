@@ -115,6 +115,7 @@ func (p *Parser) prevTokenType() TokenType {
 	return p.tokens[p.curr-1].tokenType
 }
 
-func (p *Parser) consume() Token, error {
-	
+func (p *Parser) consume(tokenType TokenType, message string) (Token, error) {
+	if p.currTokenType() == EOF {
+	}
 }
