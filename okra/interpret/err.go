@@ -5,6 +5,12 @@ import (
 	"os"
 )
 
+/*
+   TODO:
+   SyntaxError
+   RuntimeError
+*/
+
 type OkraError struct {
 	class string
 	line  int
@@ -13,7 +19,7 @@ type OkraError struct {
 }
 
 func (e OkraError) Error() string {
-	return fmt.Sprintf("%s [%d:%d]: %s")
+	return fmt.Sprintf("%s [%d:%d]: %s", e.class, e.line, e.col, e.msg)
 }
 
 func CheckErr(code int, err error) {

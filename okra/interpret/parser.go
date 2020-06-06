@@ -126,9 +126,15 @@ func (p *Parser) currTokenType() TokenType {
 }
 
 func (p *Parser) prevToken() Token {
+	if p.curr == 0 {
+		// TODO: Throw error!
+	}
 	return *p.tokens[p.curr-1]
 }
 
 func (p *Parser) prevTokenType() TokenType {
+	if p.curr == 0 {
+		// TODO: Throw error!
+	}
 	return p.tokens[p.curr-1].tokenType
 }
