@@ -9,6 +9,7 @@ type Token struct {
 	lexeme    string
 	literal   interface{}
 	line      int
+	col       int
 }
 
 func (t Token) String() string {

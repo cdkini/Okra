@@ -24,7 +24,7 @@ func (s *Scanner) ScanTokens() []*Token {
 		err := s.scan()
 		CheckErr(-1, err)
 	}
-	s.tokens = append(s.tokens, &Token{EOF, "EOF", nil, s.line})
+	s.tokens = append(s.tokens, &Token{EOF, "EOF", nil, s.line, s.curr})
 	return s.tokens
 }
 
@@ -146,9 +146,9 @@ func (s *Scanner) advance() rune {
 
 func (s *Scanner) addToken(tokenType TokenType, literal ...interface{}) {
 	if len(literal) == 1 {
-		s.tokens = append(s.tokens, &Token{tokenType, string(s.source[s.start:s.curr]), literal[0], s.line})
+		s.tokens = append(s.tokens, &Token{tokenType, string(s.source[s.start:s.curr]), literal[0], s.line, s.curr})
 	} else {
-		s.tokens = append(s.tokens, &Token{tokenType, string(s.source[s.start:s.curr]), nil, s.line})
+		s.tokens = append(s.tokens, &Token{tokenType, string(s.source[s.start:s.curr]), nil, s.line, s.curr})
 	}
 }
 
