@@ -12,7 +12,7 @@ type Token struct {
 }
 
 func (t Token) String() string {
-	return fmt.Sprintf("%v: %v", keywordSlice[t.tokenType], t.lexeme)
+	return fmt.Sprintf("%v", keywordSlice[t.tokenType])
 }
 
 const (
