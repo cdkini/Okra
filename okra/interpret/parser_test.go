@@ -16,7 +16,7 @@ func TestParsing(t *testing.T) {
 			scanner := NewScanner(test.input)
 			scanner.ScanTokens()
 			parser := NewParser(scanner.tokens)
-			expr := parser.parse()
+			expr := parser.expression()
 
 			if expr != test.output {
 				t.Errorf("Expected %q, received %q", test.output, expr)

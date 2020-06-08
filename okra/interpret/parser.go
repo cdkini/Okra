@@ -9,7 +9,7 @@ func NewParser(tokens []*Token) *Parser {
 	return &Parser{tokens, 0}
 }
 
-func (p *Parser) parse() Expr {
+func (p *Parser) expression() Expr {
 	return p.equality()
 }
 
@@ -83,7 +83,7 @@ func (p *Parser) primary() Expr {
 	} else if p.match(Numeric, String) {
 		return Literal{p.tokens[p.curr-1].literal}
 	} else if p.match(LeftParen) {
-		expr := p.parse()
+		expr := p.expression()
 		p.consume(RightParen, "Expect ')' after expression.")
 		return Grouping{expr}
 	}
@@ -108,7 +108,7 @@ func (p *Parser) advance() TokenType {
 	return p.prevTokenType()
 }
 
-func (p *Parser) consume(tokenType TokenType, message string) (Token, error) {
+func (p *Parser) consume(tokenType TokenType, msg string) (Token, error) {
 	if p.currTokenType() == tokenType && p.currTokenType() != EOF {
 
 		p.curr++
@@ -126,15 +126,9 @@ func (p *Parser) currTokenType() TokenType {
 }
 
 func (p *Parser) prevToken() Token {
-	if p.curr == 0 {
-		// TODO: Throw error!
-	}
 	return *p.tokens[p.curr-1]
 }
 
 func (p *Parser) prevTokenType() TokenType {
-	if p.curr == 0 {
-		// TODO: Throw error!
-	}
 	return p.tokens[p.curr-1].tokenType
 }
