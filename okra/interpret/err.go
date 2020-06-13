@@ -5,12 +5,6 @@ import (
 	"os"
 )
 
-/*
-   TODO:
-   SyntaxError
-   RuntimeError
-*/
-
 type OkraError struct {
 	line int
 	col  int

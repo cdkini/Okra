@@ -93,17 +93,17 @@ func (p *Parser) primary() Expr {
 
 	if p.match(LeftParen) {
 		expr := p.expression()
-		p.consume(RightParen, "Expect ')' after expression.")
+		p.consume(RightParen, "Expected ')' after expression")
 		return Grouping{expr}
 	}
 
-	p.addParseError(NewOkraError(p.getCurrToken().line, p.getCurrToken().col, "No expression found"))
+	p.addParseError("No valid expression found for token")
 
 	return nil
 }
 
-func (p *Parser) addParseError(oe OkraError) {
-	p.errors = append(p.errors, oe)
+func (p *Parser) addParseError(msg string) {
+	p.errors = append(p.errors, NewOkraError(p.getCurrToken().line, p.getCurrToken().col, msg))
 }
 
 func (p *Parser) throwParseErrors() {
@@ -136,7 +136,7 @@ func (p *Parser) consume(tokenType TokenType, msg string) Token {
 	if p.getCurrToken().tokenType == tokenType {
 		return p.advance()
 	}
-	p.addParseError((NewOkraError(p.getCurrToken().line, p.getCurrToken().col, msg)))
+	p.addParseError(msg)
 	return Token{}
 }
 
