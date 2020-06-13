@@ -16,7 +16,7 @@ func NewOkraError(line int, col int, msg string) OkraError {
 }
 
 func (e OkraError) Error() string {
-	return fmt.Sprintf("OkraError [%d:%d]: %s", e.line, e.col, e.msg)
+	return fmt.Sprintf("Error [%d:%d]: %s", e.line, e.col, e.msg)
 }
 
 func CheckErr(code int, err error, oe OkraError) {
