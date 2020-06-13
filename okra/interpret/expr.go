@@ -1,13 +1,10 @@
 package interpret
 
-import "fmt"
-
 type Expr interface {
-	accept(Visitor) error
-	String() string // FIXME: Update String methods to work with tests
+	accept(ExprVisitor) error
 }
 
-type Visitor interface {
+type ExprVisitor interface {
 	visitUnary(Unary) error
 	visitBinary(Binary) error
 	visitGrouping(Grouping) error
@@ -19,12 +16,8 @@ type Unary struct {
 	operand  Expr
 }
 
-func (u Unary) accept(v Visitor) error {
-	return v.visitUnary(u)
-}
-
-func (u Unary) String() string {
-	return fmt.Sprintf("%v%v", u.operator, u.operand)
+func (u Unary) accept(ev ExprVisitor) error {
+	return ev.visitUnary(u)
 }
 
 type Binary struct {
@@ -33,34 +26,22 @@ type Binary struct {
 	rightOperand Expr
 }
 
-func (b Binary) accept(v Visitor) error {
-	return v.visitBinary(b)
-}
-
-func (b Binary) String() string {
-	return fmt.Sprintf("%v %v %v", b.leftOperand, b.operator, b.rightOperand)
+func (b Binary) accept(ev ExprVisitor) error {
+	return ev.visitBinary(b)
 }
 
 type Grouping struct {
 	expression Expr
 }
 
-func (g Grouping) accept(v Visitor) error {
-	return v.visitGrouping(g)
-}
-
-func (g Grouping) String() string {
-	return fmt.Sprintf("%v", g.expression)
+func (g Grouping) accept(ev ExprVisitor) error {
+	return ev.visitGrouping(g)
 }
 
 type Literal struct {
 	val interface{}
 }
 
-func (l Literal) accept(v Visitor) error {
-	return v.visitLiteral(l)
-}
-
-func (l Literal) String() string {
-	return fmt.Sprintf("%v", l.val)
+func (l Literal) accept(ev ExprVisitor) error {
+	return ev.visitLiteral(l)
 }
