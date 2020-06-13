@@ -22,9 +22,13 @@ func (e OkraError) Error() string {
 	return fmt.Sprintf("%s [%d:%d]: %s", e.class, e.line, e.col, e.msg)
 }
 
-func CheckErr(code int, err error) {
+func CheckErr(code int, err error, oe OkraError) {
 	if err != nil {
-		fmt.Println("Error:", err)
-		os.Exit(code)
+		throwErr(code, oe)
 	}
+}
+
+func throwErr(code int, oe OkraError) {
+	fmt.Println(oe.Error())
+	os.Exit(code)
 }
