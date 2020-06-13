@@ -21,5 +21,7 @@ func runFile(path string) {
 	interpret.CheckErr(-1, err, interpret.NewOkraError(0, 0, "Path not found."))
 	scanner := interpret.NewScanner(string(bytes))
 	tokens := scanner.ScanTokens()
+	parser := interpret.NewParser(tokens)
+	parser.Parse()
 	fmt.Println(tokens)
 }

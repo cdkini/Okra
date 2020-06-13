@@ -2,6 +2,7 @@ package interpret
 
 import (
 	"fmt"
+	"os"
 )
 
 type Parser struct {
@@ -12,6 +13,14 @@ type Parser struct {
 
 func NewParser(tokens []*Token) *Parser {
 	return &Parser{tokens, 0, make([]OkraError, 0)}
+}
+
+func (p *Parser) Parse() Expr {
+	res := p.expression()
+	if res == nil {
+		p.reportParseErrors()
+	}
+	return res
 }
 
 func (p *Parser) expression() Expr {
@@ -104,15 +113,31 @@ func (p *Parser) primary() Expr {
 
 func (p *Parser) addParseError(msg string) {
 	p.errors = append(p.errors, NewOkraError(p.getCurrToken().line, p.getCurrToken().col, msg))
+	p.skipToNextValidExpr()
 }
 
-func (p *Parser) throwParseErrors() {
-	if len(p.errors) == 0 {
-		return
-	}
+func (p *Parser) reportParseErrors() {
 	for _, e := range p.errors {
 		fmt.Println(e)
 	}
+	os.Exit(-1)
+}
+
+func (p *Parser) skipToNextValidExpr() {
+	p.advance()
+	for p.getCurrToken().tokenType != EOF {
+		switch p.getCurrToken().tokenType {
+		case Class:
+		case Func:
+		case Variable:
+		case For:
+		case If:
+		case Log:
+		case Return:
+			return
+		}
+	}
+	p.advance()
 }
 
 func (p *Parser) match(tokens ...TokenType) bool {
