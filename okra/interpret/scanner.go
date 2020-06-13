@@ -22,7 +22,7 @@ func (s *Scanner) ScanTokens() []*Token {
 	for s.curr < len(s.source) {
 		s.start = s.curr
 		err := s.scan()
-		CheckErr(-1, err)
+		CheckErr(-1, err, NewOkraError(s.line, s.curr, err.Error()))
 	}
 	s.tokens = append(s.tokens, &Token{EOF, "EOF", nil, s.line, s.curr})
 	return s.tokens
@@ -95,13 +95,13 @@ func (s *Scanner) scan() error {
 			s.addToken(And)
 			break
 		}
-		return errors.New("Invalid character") // TODO: Add specific error class instance here!
+		return errors.New("Invalid character")
 	case '|':
 		if s.match('|') {
 			s.addToken(Or)
 			break
 		}
-		return errors.New("Invalid character") // TODO: Add specific error class instance here!
+		return errors.New("Invalid character")
 
 	// Comments (single and multiline)
 	case '/':
@@ -125,7 +125,7 @@ func (s *Scanner) scan() error {
 
 	case '"':
 		err := s.addStringToken()
-		CheckErr(-1, err)
+		CheckErr(-1, err, NewOkraError(s.line, s.curr, err.Error()))
 
 	default:
 		if unicode.IsDigit(c) {
@@ -133,7 +133,7 @@ func (s *Scanner) scan() error {
 		} else if unicode.IsLetter(c) {
 			s.addIdentifierToken()
 		} else {
-			return errors.New("Invalid character") // TODO: Add specific error class instance here!
+			return errors.New("Invalid character")
 		}
 	}
 	return nil
@@ -183,7 +183,7 @@ func (s *Scanner) addStringToken() error {
 	}
 
 	if s.curr >= len(s.source) {
-		return errors.New("Unterminated string") // TODO: Add specific error class instance here!
+		return errors.New("Unterminated string")
 	}
 
 	s.advance()
@@ -207,7 +207,7 @@ func (s *Scanner) addNumericToken() error {
 	}
 
 	num, err := strconv.ParseFloat(string(s.source[s.start:s.curr]), 64)
-	CheckErr(-1, err) // TODO: Add specific error class instance here!
+	CheckErr(-1, err, NewOkraError(s.line, s.curr, err.Error()))
 	s.addToken(Numeric, num)
 
 	return nil

@@ -1,6 +1,9 @@
 package interpret
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 type Parser struct {
 	tokens []*Token
@@ -96,6 +99,15 @@ func (p *Parser) primary() Expr {
 	}
 
 	return nil
+}
+
+func (p *Parser) throwParseErrors() {
+	if len(p.errors) == 0 {
+		return
+	}
+	for _, e := range p.errors {
+		fmt.Println(e)
+	}
 }
 
 func (p *Parser) match(tokens ...TokenType) bool {

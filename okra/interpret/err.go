@@ -12,14 +12,17 @@ import (
 */
 
 type OkraError struct {
-	class string
-	line  int
-	col   int
-	msg   string
+	line int
+	col  int
+	msg  string
+}
+
+func NewOkraError(line int, col int, msg string) OkraError {
+	return OkraError{line, col, msg}
 }
 
 func (e OkraError) Error() string {
-	return fmt.Sprintf("%s [%d:%d]: %s", e.class, e.line, e.col, e.msg)
+	return fmt.Sprintf("OkraError [%d:%d]: %s", e.line, e.col, e.msg)
 }
 
 func CheckErr(code int, err error, oe OkraError) {
