@@ -13,7 +13,13 @@ func (i *Interpreter) interpretGrouping(g Grouping) interface{} {
 }
 
 func (i *Interpreter) interpretUnary(u Unary) interface{} {
-	return nil // TODO: Implement!
+	operand := i.evaluate(u.operand)
+
+	// FIXME: Fixed type switch to convert to negative float
+	switch t := operand.(type) {
+	case float64:
+		return -float64(operand)
+	}
 }
 
 func (i *Interpreter) interpretBinary(b Binary) interface{} {
