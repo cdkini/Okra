@@ -27,11 +27,11 @@ func (e OkraError) Error() string {
 
 func CheckErr(code int, err error, oe OkraError) {
 	if err != nil {
-		throwErr(code, oe)
+		ThrowErr(code, oe)
 	}
 }
 
-func throwErr(code int, oe OkraError) {
+func ThrowErr(code int, oe OkraError) {
 	fmt.Println(oe.Error())
 	os.Exit(code)
 }
