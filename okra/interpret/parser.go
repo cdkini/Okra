@@ -1,7 +1,6 @@
 package interpret
 
 import (
-	"errors"
 	"fmt"
 )
 
@@ -98,7 +97,13 @@ func (p *Parser) primary() Expr {
 		return Grouping{expr}
 	}
 
+	p.addParseError(NewOkraError(p.getCurrToken().line, p.getCurrToken().col, "No expression found"))
+
 	return nil
+}
+
+func (p *Parser) addParseError(oe OkraError) {
+	p.errors = append(p.errors, oe)
 }
 
 func (p *Parser) throwParseErrors() {
@@ -112,7 +117,7 @@ func (p *Parser) throwParseErrors() {
 
 func (p *Parser) match(tokens ...TokenType) bool {
 	for _, t := range tokens {
-		if p.getCurrTokenType() == t {
+		if p.getCurrToken().tokenType == t {
 			p.advance()
 			return true
 		}
@@ -121,31 +126,24 @@ func (p *Parser) match(tokens ...TokenType) bool {
 }
 
 func (p *Parser) advance() Token {
-	if p.getCurrTokenType() != EOF {
+	if p.getCurrToken().tokenType != EOF {
 		p.curr++
 	}
 	return p.getPrevToken()
 }
 
-func (p *Parser) consume(tokenType TokenType, msg string) (Token, error) {
-	if p.getCurrTokenType() == tokenType {
-		return p.advance(), nil
+func (p *Parser) consume(tokenType TokenType, msg string) Token {
+	if p.getCurrToken().tokenType == tokenType {
+		return p.advance()
 	}
-	return Token{}, errors.New(msg) // TODO: Implement error handling from err.go
+	p.addParseError((NewOkraError(p.getCurrToken().line, p.getCurrToken().col, msg)))
+	return Token{}
 }
 
 func (p *Parser) getCurrToken() Token {
 	return *p.tokens[p.curr]
 }
 
-func (p *Parser) getCurrTokenType() TokenType {
-	return p.tokens[p.curr].tokenType
-}
-
 func (p *Parser) getPrevToken() Token {
 	return *p.tokens[p.curr-1]
-}
-
-func (p *Parser) getPrevTokenType() TokenType {
-	return p.tokens[p.curr-1].tokenType
 }
