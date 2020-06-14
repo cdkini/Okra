@@ -15,17 +15,17 @@ func (i *Interpreter) interpretGrouping(g Grouping) interface{} {
 func (i *Interpreter) interpretUnary(u Unary) interface{} {
 	operand := i.evaluate(u.operand)
 
-	// FIXME: Fixed type switch to convert to negative float
-	switch t := operand.(type) {
-	case float64:
-		return -float64(operand)
+	if operand != nil {
+		ThrowErr(-1, NewOkraError(u.operator.line, u.operator.col, "Could not interpret unary expr"))
 	}
+
+	return nil
 }
 
 func (i *Interpreter) interpretBinary(b Binary) interface{} {
 	return nil // TODO: Implement!
 }
 
-func (i *Interpreter) evaluate(e Expr) interface{} {
-	return e.accept(e)
+func (i *Interpreter) evaluate(e Expr) error {
+	return e.accept(i)
 }
