@@ -62,6 +62,7 @@ const (
 	Variable
 )
 
+// Used for debugging purposes (returns the str representation as opposed to the enum val)
 var keywordSlice = []string{
 	"And",
 	"Bang",
