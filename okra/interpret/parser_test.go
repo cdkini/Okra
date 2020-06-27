@@ -5,10 +5,11 @@ import "testing"
 func TestParsing(t *testing.T) {
 	table := []struct {
 		input  string
-		output Expr
+		output string
 	}{
 		// TODO: Fill in parser tests!"}
-		{"5", Unary{}},
+		{"1 + 2", "(+ 1 2)"},
+		{"1 + 2 * (3 + 4)", ""},
 	}
 
 	for _, test := range table {
@@ -17,8 +18,9 @@ func TestParsing(t *testing.T) {
 			scanner.ScanTokens()
 			parser := NewParser(scanner.tokens)
 			expr := parser.Parse()
+			str := expr.String()
 
-			if expr != test.output {
+			if str != test.output {
 				t.Errorf("Expected %q, received %q", test.output, expr)
 			}
 		})
