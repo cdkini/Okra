@@ -85,7 +85,7 @@ func isTruthy(i interface{}) bool {
 func evaluateNumeric(i interface{}) float64 {
 	t, ok := i.(float64)
 	if !ok {
-		ThrowErr(-1, NewOkraError(0, 0, "Placeholder"))
+		ReportErr(-1, NewOkraError(0, 0, "Placeholder"))
 	}
 	return t
 }
@@ -93,7 +93,7 @@ func evaluateNumeric(i interface{}) float64 {
 func evaluateString(i interface{}) string {
 	t, ok := i.(string)
 	if !ok {
-		ThrowErr(-1, NewOkraError(0, 0, "Placeholder"))
+		ReportErr(-1, NewOkraError(0, 0, "Placeholder"))
 	}
 	return t
 }
