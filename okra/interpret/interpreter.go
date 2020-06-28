@@ -9,9 +9,10 @@ func NewInterpreter() *Interpreter {
 	return &Interpreter{}
 }
 
-func (i *Interpreter) Interpret(expr Expr) {
-	val := i.Evaluate(expr)
+func (i *Interpreter) Interpret(expr Expr) string {
+	val := fmt.Sprintf("%v", i.Evaluate(expr))
 	fmt.Println(val) // TODO: Add in stringify method to displayed proper output to console
+	return val
 }
 
 func (i *Interpreter) Evaluate(expr Expr) interface{} {
