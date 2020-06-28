@@ -2,6 +2,7 @@ package interpret
 
 import "fmt"
 
+// An interpreter TODO: Update docstring
 type Interpreter struct{}
 
 // TODO: Update with environment variables and other factors
@@ -9,13 +10,14 @@ func NewInterpreter() *Interpreter {
 	return &Interpreter{}
 }
 
+// Interpret evaluates an expression and returns the result to the user.
 func (i *Interpreter) Interpret(expr Expr) string {
-	val := fmt.Sprintf("%v", i.Evaluate(expr))
+	val := fmt.Sprintf("%v", i.evaluate(expr))
 	fmt.Println(val) // TODO: Add in stringify method to displayed proper output to console
 	return val
 }
 
-func (i *Interpreter) Evaluate(expr Expr) interface{} {
+func (i *Interpreter) evaluate(expr Expr) interface{} {
 	switch t := expr.(type) {
 	case Unary:
 		return i.interpretUnary(t)
@@ -35,11 +37,11 @@ func (i *Interpreter) interpretLiteral(l Literal) interface{} {
 }
 
 func (i *Interpreter) interpretGrouping(g Grouping) interface{} {
-	return i.Evaluate(g.expression)
+	return i.evaluate(g.expression)
 }
 
 func (i *Interpreter) interpretUnary(u Unary) interface{} {
-	operand := i.Evaluate(u.operand)
+	operand := i.evaluate(u.operand)
 
 	switch u.operator.tokenType {
 	case Minus:
@@ -52,8 +54,8 @@ func (i *Interpreter) interpretUnary(u Unary) interface{} {
 }
 
 func (i *Interpreter) interpretBinary(b Binary) interface{} {
-	leftOperand := i.Evaluate(b.leftOperand)
-	rightOperand := i.Evaluate(b.rightOperand)
+	leftOperand := i.evaluate(b.leftOperand)
+	rightOperand := i.evaluate(b.rightOperand)
 
 	switch b.operator.tokenType {
 	case Minus:
