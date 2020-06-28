@@ -1,3 +1,6 @@
+// Package main runs Okra interpreter
+// on user provided path of a .okr file
+
 package main
 
 import (
