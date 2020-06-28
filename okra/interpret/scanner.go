@@ -19,9 +19,9 @@ func NewScanner(source string) *Scanner {
 	return &Scanner{[]rune(source), make([]*Token, 0), 0, 0, 1}
 }
 
-// ScanTokens iterates through the source text and generates tokens based on Okra's defined syntax
-// Args: nil
-// Returns: Slice of token pointers
+// ScanTokens iterates through the source text and generates tokens based on Okra's defined syntax rules
+//   Args: nil
+//   Returns: Slice of token pointers
 func (s *Scanner) ScanTokens() []*Token {
 	for s.curr < len(s.source) {
 		s.start = s.curr
