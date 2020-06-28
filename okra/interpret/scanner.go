@@ -6,10 +6,11 @@ import (
 	"unicode"
 )
 
+// A Scanner takes in some stream of characters and tokenizes them based on Okra's syntax
 type Scanner struct {
 	source []rune
 	tokens []*Token
-	start  int
+	start  int // The beginning of the current token
 	curr   int
 	line   int
 }
@@ -18,6 +19,9 @@ func NewScanner(source string) *Scanner {
 	return &Scanner{[]rune(source), make([]*Token, 0), 0, 0, 1}
 }
 
+// ScanTokens iterates through the source text and generates tokens based on Okra's defined syntax
+// Args: nil
+// Returns: Slice of token pointers
 func (s *Scanner) ScanTokens() []*Token {
 	for s.curr < len(s.source) {
 		s.start = s.curr
