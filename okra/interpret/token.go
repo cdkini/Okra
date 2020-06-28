@@ -2,15 +2,16 @@ package interpret
 
 import "fmt"
 
-type TokenType int
-
+// A Token is a substring of source text given context by the scanner
 type Token struct {
 	tokenType TokenType
-	lexeme    string
+	lexeme    string // Exact substring lexed by scanner
 	literal   interface{}
 	line      int
 	col       int
 }
+
+type TokenType int
 
 func (t Token) String() string {
 	return fmt.Sprintf("%v", keywordSlice[t.tokenType])
