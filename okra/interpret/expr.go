@@ -5,11 +5,13 @@ import (
 	"strings"
 )
 
+// TODO: Add docstring
 type Expr interface {
-	accept(Visitor) error
-	String() string
+	accept(Visitor) error // TODO: Explain Visitor design pattern
+	String() string       // Used to generate AST for parser debugging
 }
 
+// TODO: Explain Visitor design pattern
 type Visitor interface {
 	visitUnary(Unary) error
 	visitBinary(Binary) error
@@ -17,6 +19,7 @@ type Visitor interface {
 	visitLiteral(Literal) error
 }
 
+// TODO: Add docstring
 type Unary struct {
 	operator Token
 	operand  Expr
@@ -24,11 +27,7 @@ type Unary struct {
 
 func (u Unary) String() string {
 	var sb strings.Builder
-	sb.WriteString("(")
-	sb.WriteString(u.operator.lexeme)
-	sb.WriteString(" ")
-	sb.WriteString(u.operand.String())
-	sb.WriteString(")")
+	sb.WriteString("(" + u.operator.lexeme + " " + u.operand.String() + ")")
 	return sb.String()
 }
 
@@ -36,6 +35,7 @@ func (u Unary) accept(v Visitor) error {
 	return v.visitUnary(u)
 }
 
+// TODO: Add docstring
 type Binary struct {
 	leftOperand  Expr
 	operator     Token
@@ -44,13 +44,7 @@ type Binary struct {
 
 func (b Binary) String() string {
 	var sb strings.Builder
-	sb.WriteString("(")
-	sb.WriteString(b.operator.lexeme)
-	sb.WriteString(" ")
-	sb.WriteString(b.leftOperand.String())
-	sb.WriteString(" ")
-	sb.WriteString(b.rightOperand.String())
-	sb.WriteString(")")
+	sb.WriteString("(" + b.operator.lexeme + " " + b.leftOperand.String() + " " + b.rightOperand.String() + ")")
 	return sb.String()
 }
 
@@ -58,15 +52,14 @@ func (b Binary) accept(v Visitor) error {
 	return v.visitBinary(b)
 }
 
+// TODO: Add docstring
 type Grouping struct {
 	expression Expr
 }
 
 func (g Grouping) String() string {
 	var sb strings.Builder
-	sb.WriteString("(")
-	sb.WriteString(g.expression.String())
-	sb.WriteString(")")
+	sb.WriteString("(" + g.expression.String() + ")")
 	return sb.String()
 }
 
@@ -74,6 +67,7 @@ func (g Grouping) accept(v Visitor) error {
 	return v.visitGrouping(g)
 }
 
+// TODO: Add docstring
 type Literal struct {
 	val interface{}
 }
