@@ -5,6 +5,8 @@ import (
 	"os"
 )
 
+// A Parser evaluates a collection of tokens to constructs an abstract syntax tree of expressions.
+// It is also responsible for consolidating parse errors and providing useful feedback to the user.
 type Parser struct {
 	tokens []*Token
 	curr   int
@@ -15,6 +17,10 @@ func NewParser(tokens []*Token) *Parser {
 	return &Parser{tokens, 0, make([]OkraError, 0)}
 }
 
+// Parse evaluates a series of tokens using recursive descent, checking the given values against
+// the grammar rules of the language. Upon reaching a terminal, the function ceases execution.
+//   Args: nil
+//   Returns: An instance of Expr that best fits the token stream
 func (p *Parser) Parse() Expr {
 	res := p.expression()
 	if res == nil {
