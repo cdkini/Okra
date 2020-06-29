@@ -4,17 +4,16 @@
 package main
 
 import (
+	"Okra/okra/interpret"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"strings"
-
-	"github.com/cdkini/Okra/interpret"
 )
 
 func main() {
 	if len(os.Args) != 2 || !strings.HasSuffix(os.Args[1], ".okr") {
-		interpret.ThrowErr(-1, interpret.NewOkraError(0, 0, "Must use \"okra [script]\" to run a .okr file"))
+		interpret.ReportErr(-1, interpret.NewOkraError(0, 0, "Must use \"okra [script]\" to run a .okr file"))
 	}
 	runFile(os.Args[1])
 }
