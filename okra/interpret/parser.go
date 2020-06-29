@@ -30,7 +30,18 @@ func (p *Parser) Parse() []Stmt {
 }
 
 func (p *Parser) statement() Stmt {
-	return nil
+	if p.match(Log) {
+		return p.logStatement()
+	}
+	return p.expressionStatement()
+}
+
+func (p *Parser) logStatement() Stmt {
+	// TODO: Add implementation
+}
+
+func (p *Parser) expressionStatement() Stmt {
+	// TODO: Add implementation
 }
 
 func (p *Parser) expression() Expr {
