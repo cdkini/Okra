@@ -5,7 +5,8 @@ import (
 	"strings"
 )
 
-// An interpreter TODO: Update docstring
+// An Interpreter takes in a given expression and evaluates it into its most basic literal form.
+// Interpreter inherits from the Visitor interface, allowing it interact with all Expr types.
 type Interpreter struct{}
 
 // TODO: Update with environment variables and other factors
