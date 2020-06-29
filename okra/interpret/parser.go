@@ -144,7 +144,7 @@ func (p *Parser) skipToNextValidExpr() {
 		case Variable:
 		case For:
 		case If:
-		case Log:
+		case Print:
 		case Return:
 			return
 		}

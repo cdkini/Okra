@@ -174,7 +174,7 @@ func TestScanMiscellaneous(t *testing.T) {
 		{"func", []TokenType{Func, EOF}},
 		{"if", []TokenType{If, EOF}},
 		{"null", []TokenType{Null, EOF}},
-		{"log", []TokenType{Log, EOF}},
+		{"print", []TokenType{Print, EOF}},
 		{"return", []TokenType{Return, EOF}},
 		{"super", []TokenType{Super, EOF}},
 		{"this", []TokenType{This, EOF}},
