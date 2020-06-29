@@ -19,7 +19,8 @@ type Visitor interface {
 	visitLiteral(Literal) interface{}
 }
 
-// TODO: Add docstring
+// A Unary expression is one that applies a single operator to a single operand.
+// Unary inherits from the Expr interface in order to utilize the Visitor design pattern.
 type Unary struct {
 	operator Token
 	operand  Expr
@@ -35,7 +36,8 @@ func (u Unary) accept(v Visitor) interface{} {
 	return v.visitUnary(u)
 }
 
-// TODO: Add docstring
+// A Binary expression is one that applies a single operator to a multiple operands.
+// Binary inherits from the Expr interface in order to utilize the Visitor design pattern.
 type Binary struct {
 	leftOperand  Expr
 	operator     Token
@@ -52,7 +54,8 @@ func (b Binary) accept(v Visitor) interface{} {
 	return v.visitBinary(b)
 }
 
-// TODO: Add docstring
+// A Grouping sets a higher level of precedence for another expression within its bounds.
+// Grouping inherits from the Expr interface in order to utilize the Visitor design pattern.
 type Grouping struct {
 	expression Expr
 }
@@ -67,7 +70,8 @@ func (g Grouping) accept(v Visitor) interface{} {
 	return v.visitGrouping(g)
 }
 
-// TODO: Add docstring
+// A Literal is the most basic expression type and represents a fully evaluated value.
+// Literal inherits from the Expr interface in order to utilize the Visitor design pattern.
 type Literal struct {
 	val interface{}
 }
