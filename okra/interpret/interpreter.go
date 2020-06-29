@@ -14,13 +14,15 @@ func NewInterpreter() *Interpreter {
 	return &Interpreter{}
 }
 
-// Interpret evaluates an expression and returns the result to the user
-//   Args: expr [Expr] - The expression we wish to break down
-//   Returns: String representation of evaluated expression
-func (i *Interpreter) Interpret(expr Expr) string {
-	val := fmt.Sprintf("%v", expr.accept(i))
-	fmt.Println(val) // TODO: Add in stringify method to displayed proper output to console
-	return val
+// TODO: Update docstring after changes from stmt
+func (i *Interpreter) Interpret(stmts []Stmt) {
+	for _, stmt := range stmts {
+		stmt.accept(i)
+	}
+}
+
+func (i *Interpreter) visitExpressionStmt(stmt Expression) {
+	stmt.expr.accept(i)
 }
 
 func (i *Interpreter) visitLiteral(l Literal) interface{} {
