@@ -53,7 +53,7 @@ func (i *Interpreter) visitBinary(b Binary) interface{} {
 		return evaluateNumeric(leftOperand) - evaluateNumeric(rightOperand)
 	case Plus:
 		if isString(leftOperand) && isString(rightOperand) {
-			return concatenateString(leftOperand, rightOperand)
+			return concatenateString(leftOperand, rightOperand) // FIXME: Currently does not work!
 		}
 		if isNumeric(leftOperand) && isNumeric(rightOperand) {
 			checkNumericValidity("Runtime Error => \"+\" used on non-numeric operands", leftOperand, rightOperand)
