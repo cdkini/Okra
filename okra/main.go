@@ -25,9 +25,9 @@ func runFile(path string) {
 	scanner := interpret.NewScanner(string(bytes))
 	tokens := scanner.ScanTokens()
 	parser := interpret.NewParser(tokens)
-	expr := parser.Parse()
+	stmts := parser.Parse()
 	interpreter := interpret.NewInterpreter()
-	interpreter.Interpret(expr)
+	interpreter.Interpret(stmts)
 
 	fmt.Println(tokens)
 }
