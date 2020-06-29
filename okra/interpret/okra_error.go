@@ -24,10 +24,10 @@ func (e OkraError) Error() string {
 
 // CheckErr is a wrapper around Go's traditional error checking, reporting an error code and
 // an instance of OkraError if an error is found as the result of another function
-// Args: code [int]       - The error code that best fits the situation (as described in okradocs.io/errors) // TODO: Update URL of docs
-//       err  [error]     - The Go error produced by another function. Erroneous if not nil
-//       oe   [OkraError] - Returned to the user with the location and circumstances around the error
-// Returns: nil
+//   Args: code [int]       - The error code that best fits the situation (as described in okradocs.io/errors) // TODO: Update URL of docs
+//         err  [error]     - The Go error produced by another function. Erroneous if not nil
+//         oe   [OkraError] - Returned to the user with the location and circumstances around the error
+//   Returns: nil
 func CheckErr(code int, err error, oe OkraError) {
 	if err != nil {
 		ReportErr(code, oe)
@@ -35,9 +35,9 @@ func CheckErr(code int, err error, oe OkraError) {
 }
 
 // ReportErr reports an error and exits the program with a corresponding error code.
-// Args: code [int]       - The error code that best fits the situation (as described in okradocs.io/errors) // TODO: Update URL of docs
-//       oe   [OkraError] - Returned to the user with the location and circumstances around the error
-// Returns: nil
+//   Args: code [int]       - The error code that best fits the situation (as described in okradocs.io/errors) // TODO: Update URL of docs
+//         oe   [OkraError] - Returned to the user with the location and circumstances around the error
+//   Returns: nil
 func ReportErr(code int, oe OkraError) {
 	fmt.Println(oe.Error())
 	os.Exit(code)
