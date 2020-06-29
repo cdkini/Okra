@@ -21,12 +21,16 @@ func NewParser(tokens []*Token) *Parser {
 // the grammar rules of the language. Upon reaching a terminal, the function ceases execution.
 //   Args: nil
 //   Returns: An instance of Expr that best fits the token stream
-func (p *Parser) Parse() Expr {
-	res := p.expression()
-	if res == nil {
-		p.reportParseErrors()
+func (p *Parser) Parse() []Stmt {
+	var statements []Stmt
+	for p.getCurrToken().tokenType != EOF {
+		statements = append(statements, p.statement())
 	}
-	return res
+	return statements
+}
+
+func (p *Parser) statement() Stmt {
+	return nil
 }
 
 func (p *Parser) expression() Expr {
