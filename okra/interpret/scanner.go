@@ -9,8 +9,8 @@ import (
 // A Scanner takes in some stream of characters and tokenizes them based on Okra's syntax
 type Scanner struct {
 	source []rune
-	tokens []*Token
-	start  int // The beginning of the current token
+	tokens []*Token // Populated as result of ScanTokens()
+	start  int      // The beginning of the current token
 	curr   int
 	line   int
 }
