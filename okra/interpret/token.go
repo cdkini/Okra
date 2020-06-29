@@ -42,12 +42,12 @@ const (
 	LeftParen
 	Less
 	LessEqual
-	Log
 	Minus
 	Null
 	Numeric
 	Or
 	Plus
+	Print
 	Return
 	RightBrace
 	RightBracket
@@ -89,12 +89,12 @@ var keywordSlice = []string{
 	"LeftParen",
 	"Less",
 	"LessEqual",
-	"Log",
 	"Minus",
 	"Null",
 	"Numeric",
 	"Or",
 	"Plus",
+	"Print",
 	"Return",
 	"RightBrace",
 	"RightBracket",
@@ -118,7 +118,7 @@ var keywordDict = map[string]TokenType{
 	"func":   Func,
 	"if":     If,
 	"null":   Null,
-	"log":    Log,
+	"print":  Print,
 	"return": Return,
 	"super":  Super,
 	"this":   This,
