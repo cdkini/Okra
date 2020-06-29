@@ -1,6 +1,9 @@
 package interpret
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // An interpreter TODO: Update docstring
 type Interpreter struct{}
@@ -49,9 +52,14 @@ func (i *Interpreter) visitBinary(b Binary) interface{} {
 		checkNumericValidity("Runtime Error => \"-\" used on non-numeric operands", leftOperand, rightOperand)
 		return evaluateNumeric(leftOperand) - evaluateNumeric(rightOperand)
 	case Plus:
-		// TODO: Add in concatenation of strings and error handling for non-numeric/non-string addition
-		checkNumericValidity("Runtime Error => \"+\" used on non-numeric operands", leftOperand, rightOperand)
-		return evaluateNumeric(leftOperand) + evaluateNumeric(rightOperand)
+		if isString(leftOperand) && isString(rightOperand) {
+			return concatenateString(leftOperand, rightOperand)
+		}
+		if isNumeric(leftOperand) && isNumeric(rightOperand) {
+			checkNumericValidity("Runtime Error => \"+\" used on non-numeric operands", leftOperand, rightOperand)
+			return evaluateNumeric(leftOperand) + evaluateNumeric(rightOperand)
+		}
+		ReportErr(-1, NewOkraError(0, 0, "Runtime Error => \"+\" used on incompatible operands"))
 	case Slash:
 		checkNumericValidity("Runtime Error => \"/\" used on non-numeric operands", leftOperand, rightOperand)
 		return evaluateNumeric(leftOperand) / evaluateNumeric(rightOperand)
@@ -89,6 +97,22 @@ func isTruthy(i interface{}) bool {
 	}
 }
 
+func isNumeric(num interface{}) bool {
+	_, ok := num.(float64)
+	if !ok {
+		return false
+	}
+	return true
+}
+
+func isString(str interface{}) bool {
+	_, ok := str.(string)
+	if !ok {
+		return false
+	}
+	return true
+}
+
 func evaluateNumeric(i interface{}) float64 {
 	t, ok := i.(float64)
 	if !ok {
@@ -114,4 +138,12 @@ func checkNumericValidity(msg string, i ...interface{}) {
 			ReportErr(-1, NewOkraError(0, 0, msg))
 		}
 	}
+}
+
+func concatenateString(strs ...interface{}) string {
+	var sb strings.Builder
+	for _, str := range strs {
+		sb.WriteString(fmt.Sprintf("%v", str))
+	}
+	return sb.String()
 }
