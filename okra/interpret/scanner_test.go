@@ -149,7 +149,7 @@ func TestScanComments(t *testing.T) {
 	}
 }
 
-func TestScanRemaining(t *testing.T) {
+func TestScanMiscellaneous(t *testing.T) {
 	table := []struct {
 		input  string
 		output []TokenType
