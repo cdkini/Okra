@@ -5,10 +5,12 @@ import (
 	"strings"
 )
 
-// TODO: Add docstring
+// An Expr groups together source code that can be reduced to a value. In order to allow different
+// structs that inherit from Expr to interact with one another, the Visitor design pattern is used.
+// TODO: Explain Visitor design pattern better!
 type Expr interface {
 	accept(Visitor) interface{} // TODO: Explain Visitor design pattern
-	String() string             // Used to generate AST for parser debugging
+	String() string             // Used for parser debugging
 }
 
 // TODO: Explain Visitor design pattern
