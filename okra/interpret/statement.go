@@ -1,4 +1,12 @@
 package interpret
 
 // TODO: Add docstring
-type Stmt struct{}
+// TODO: Explain Visitor design pattern better!
+type Stmt interface {
+	accept(StmtVisitor) interface{} // TODO: Explain Visitor design pattern
+}
+
+// TODO: Explain Visitor design pattern
+type StmtVisitor interface {
+	visitExpression(s Stmt)
+}
