@@ -10,7 +10,9 @@ func NewInterpreter() *Interpreter {
 	return &Interpreter{}
 }
 
-// Interpret evaluates an expression and returns the result to the user.
+// Interpret evaluates an expression and returns the result to the user
+// Args: expr [Expr]: The expression we wish to break down
+// Returns: String representation of evaluated expression
 func (i *Interpreter) Interpret(expr Expr) string {
 	val := fmt.Sprintf("%v", i.evaluate(expr))
 	fmt.Println(val) // TODO: Add in stringify method to displayed proper output to console
@@ -18,29 +20,18 @@ func (i *Interpreter) Interpret(expr Expr) string {
 }
 
 func (i *Interpreter) evaluate(expr Expr) interface{} {
-	switch t := expr.(type) {
-	case Unary:
-		return i.interpretUnary(t)
-	case Binary:
-		return i.interpretBinary(t)
-	case Grouping:
-		return i.interpretGrouping(t)
-	case Literal:
-		return i.interpretLiteral(t)
-	default:
-		return nil
-	}
+	return expr.accept(i)
 }
 
-func (i *Interpreter) interpretLiteral(l Literal) interface{} {
+func (i *Interpreter) visitLiteral(l Literal) interface{} {
 	return l.val
 }
 
-func (i *Interpreter) interpretGrouping(g Grouping) interface{} {
+func (i *Interpreter) visitGrouping(g Grouping) interface{} {
 	return i.evaluate(g.expression)
 }
 
-func (i *Interpreter) interpretUnary(u Unary) interface{} {
+func (i *Interpreter) visitUnary(u Unary) interface{} {
 	operand := i.evaluate(u.operand)
 
 	switch u.operator.tokenType {
@@ -53,7 +44,7 @@ func (i *Interpreter) interpretUnary(u Unary) interface{} {
 	return nil
 }
 
-func (i *Interpreter) interpretBinary(b Binary) interface{} {
+func (i *Interpreter) visitBinary(b Binary) interface{} {
 	leftOperand := i.evaluate(b.leftOperand)
 	rightOperand := i.evaluate(b.rightOperand)
 
@@ -63,6 +54,7 @@ func (i *Interpreter) interpretBinary(b Binary) interface{} {
 		return evaluateNumeric(leftOperand) - evaluateNumeric(rightOperand)
 	case Plus:
 		// TODO: Add in concatenation of strings and error handling for non-numeric/non-string addition
+		checkNumericValidity("Runtime Error => \"+\" used on non-numeric operands", leftOperand, rightOperand)
 		return evaluateNumeric(leftOperand) + evaluateNumeric(rightOperand)
 	case Slash:
 		checkNumericValidity("Runtime Error => \"/\" used on non-numeric operands", leftOperand, rightOperand)

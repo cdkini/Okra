@@ -7,16 +7,16 @@ import (
 
 // TODO: Add docstring
 type Expr interface {
-	accept(Visitor) error // TODO: Explain Visitor design pattern
-	String() string       // Used to generate AST for parser debugging
+	accept(Visitor) interface{} // TODO: Explain Visitor design pattern
+	String() string             // Used to generate AST for parser debugging
 }
 
 // TODO: Explain Visitor design pattern
 type Visitor interface {
-	visitUnary(Unary) error
-	visitBinary(Binary) error
-	visitGrouping(Grouping) error
-	visitLiteral(Literal) error
+	visitUnary(Unary) interface{}
+	visitBinary(Binary) interface{}
+	visitGrouping(Grouping) interface{}
+	visitLiteral(Literal) interface{}
 }
 
 // TODO: Add docstring
@@ -31,7 +31,7 @@ func (u Unary) String() string {
 	return sb.String()
 }
 
-func (u Unary) accept(v Visitor) error {
+func (u Unary) accept(v Visitor) interface{} {
 	return v.visitUnary(u)
 }
 
@@ -48,7 +48,7 @@ func (b Binary) String() string {
 	return sb.String()
 }
 
-func (b Binary) accept(v Visitor) error {
+func (b Binary) accept(v Visitor) interface{} {
 	return v.visitBinary(b)
 }
 
@@ -63,7 +63,7 @@ func (g Grouping) String() string {
 	return sb.String()
 }
 
-func (g Grouping) accept(v Visitor) error {
+func (g Grouping) accept(v Visitor) interface{} {
 	return v.visitGrouping(g)
 }
 
@@ -76,6 +76,6 @@ func (l Literal) String() string {
 	return fmt.Sprintf("%v", l.val)
 }
 
-func (l Literal) accept(v Visitor) error {
+func (l Literal) accept(v Visitor) interface{} {
 	return v.visitLiteral(l)
 }
