@@ -30,19 +30,9 @@ func (p *Parser) Parse() []Stmt {
 }
 
 func (p *Parser) statement() Stmt {
-	if p.match(Log) {
-		return p.logStatement()
-	}
-	return p.expressionStatement()
-}
-
-func (p *Parser) logStatement() Stmt {
-	// TODO: Add implementation
-}
-
-func (p *Parser) expressionStatement() Stmt {
-	// TODO: Add implementation
-}
+	expr := expression()
+	p.consume(Semicolon, "Expected \";\" after expression.")
+	return Stmt{} // TODO: Change after updating Stmt definition
 
 func (p *Parser) expression() Expr {
 	return p.equality()
