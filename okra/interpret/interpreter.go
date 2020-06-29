@@ -15,8 +15,8 @@ func NewInterpreter() *Interpreter {
 }
 
 // Interpret evaluates an expression and returns the result to the user
-// Args: expr [Expr]: The expression we wish to break down
-// Returns: String representation of evaluated expression
+//   Args: expr [Expr] - The expression we wish to break down
+//   Returns: String representation of evaluated expression
 func (i *Interpreter) Interpret(expr Expr) string {
 	val := fmt.Sprintf("%v", expr.accept(i))
 	fmt.Println(val) // TODO: Add in stringify method to displayed proper output to console
