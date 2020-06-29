@@ -14,13 +14,9 @@ func NewInterpreter() *Interpreter {
 // Args: expr [Expr]: The expression we wish to break down
 // Returns: String representation of evaluated expression
 func (i *Interpreter) Interpret(expr Expr) string {
-	val := fmt.Sprintf("%v", i.evaluate(expr))
+	val := fmt.Sprintf("%v", expr.accept(i))
 	fmt.Println(val) // TODO: Add in stringify method to displayed proper output to console
 	return val
-}
-
-func (i *Interpreter) evaluate(expr Expr) interface{} {
-	return expr.accept(i)
 }
 
 func (i *Interpreter) visitLiteral(l Literal) interface{} {
@@ -28,11 +24,11 @@ func (i *Interpreter) visitLiteral(l Literal) interface{} {
 }
 
 func (i *Interpreter) visitGrouping(g Grouping) interface{} {
-	return i.evaluate(g.expression)
+	return g.expression.accept(i)
 }
 
 func (i *Interpreter) visitUnary(u Unary) interface{} {
-	operand := i.evaluate(u.operand)
+	operand := u.operand.accept(i)
 
 	switch u.operator.tokenType {
 	case Minus:
@@ -45,8 +41,8 @@ func (i *Interpreter) visitUnary(u Unary) interface{} {
 }
 
 func (i *Interpreter) visitBinary(b Binary) interface{} {
-	leftOperand := i.evaluate(b.leftOperand)
-	rightOperand := i.evaluate(b.rightOperand)
+	leftOperand := b.leftOperand.accept(i)
+	rightOperand := b.rightOperand.accept(i)
 
 	switch b.operator.tokenType {
 	case Minus:
