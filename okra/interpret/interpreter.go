@@ -25,15 +25,15 @@ func (i *Interpreter) visitExpressionStmt(stmt Expression) {
 	stmt.expr.accept(i)
 }
 
-func (i *Interpreter) visitLiteral(l Literal) interface{} {
+func (i *Interpreter) visitLiteralExpr(l Literal) interface{} {
 	return l.val
 }
 
-func (i *Interpreter) visitGrouping(g Grouping) interface{} {
+func (i *Interpreter) visitGroupingExpr(g Grouping) interface{} {
 	return g.expression.accept(i)
 }
 
-func (i *Interpreter) visitUnary(u Unary) interface{} {
+func (i *Interpreter) visitUnaryExpr(u Unary) interface{} {
 	operand := u.operand.accept(i)
 
 	switch u.operator.tokenType {
@@ -46,7 +46,7 @@ func (i *Interpreter) visitUnary(u Unary) interface{} {
 	return nil
 }
 
-func (i *Interpreter) visitBinary(b Binary) interface{} {
+func (i *Interpreter) visitBinaryExpr(b Binary) interface{} {
 	leftOperand := b.leftOperand.accept(i)
 	rightOperand := b.rightOperand.accept(i)
 

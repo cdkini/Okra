@@ -15,10 +15,10 @@ type Expr interface {
 
 // TODO: Explain ExprVisitor design pattern
 type ExprVisitor interface {
-	visitUnary(Unary) interface{}
-	visitBinary(Binary) interface{}
-	visitGrouping(Grouping) interface{}
-	visitLiteral(Literal) interface{}
+	visitUnaryExpr(Unary) interface{}
+	visitBinaryExpr(Binary) interface{}
+	visitGroupingExpr(Grouping) interface{}
+	visitLiteralExpr(Literal) interface{}
 }
 
 // A Unary expression is one that applies a single operator to a single operand.
@@ -35,7 +35,7 @@ func (u Unary) String() string {
 }
 
 func (u Unary) accept(v ExprVisitor) interface{} {
-	return v.visitUnary(u)
+	return v.visitUnaryExpr(u)
 }
 
 // A Binary expression is one that applies a single operator to a multiple operands.
@@ -53,7 +53,7 @@ func (b Binary) String() string {
 }
 
 func (b Binary) accept(v ExprVisitor) interface{} {
-	return v.visitBinary(b)
+	return v.visitBinaryExpr(b)
 }
 
 // A Grouping sets a higher level of precedence for another expression within its bounds.
@@ -69,7 +69,7 @@ func (g Grouping) String() string {
 }
 
 func (g Grouping) accept(v ExprVisitor) interface{} {
-	return v.visitGrouping(g)
+	return v.visitGroupingExpr(g)
 }
 
 // A Literal is the most basic expression type and represents a fully evaluated value.
@@ -83,5 +83,5 @@ func (l Literal) String() string {
 }
 
 func (l Literal) accept(v ExprVisitor) interface{} {
-	return v.visitLiteral(l)
+	return v.visitLiteralExpr(l)
 }
