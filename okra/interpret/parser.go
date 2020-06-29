@@ -30,9 +30,10 @@ func (p *Parser) Parse() []Stmt {
 }
 
 func (p *Parser) statement() Stmt {
-	expr := expression()
+	expr := p.expression()
 	p.consume(Semicolon, "Expected \";\" after expression.")
-	return Stmt{} // TODO: Change after updating Stmt definition
+	return &Expression{expr}
+}
 
 func (p *Parser) expression() Expr {
 	return p.equality()
