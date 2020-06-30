@@ -8,7 +8,7 @@ func TestInterpreting(t *testing.T) {
 		output string
 	}{
 		// TODO: Fill in interpreter tests!"}
-		{"1+1", ""},
+		{"-1", ""},
 	}
 
 	for _, test := range table {

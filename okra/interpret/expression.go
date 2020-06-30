@@ -15,73 +15,73 @@ type Expr interface {
 
 // TODO: Explain ExprVisitor design pattern
 type ExprVisitor interface {
-	visitUnaryExpr(Unary) interface{}
-	visitBinaryExpr(Binary) interface{}
-	visitGroupingExpr(Grouping) interface{}
-	visitLiteralExpr(Literal) interface{}
+	visitUnaryExpr(UnaryExpr) interface{}
+	visitBinaryExpr(BinaryExpr) interface{}
+	visitGroupingExpr(GroupingExpr) interface{}
+	visitLiteralExpr(LiteralExpr) interface{}
 }
 
-// A Unary expression is one that applies a single operator to a single operand.
-// Unary inherits from the Expr interface in order to utilize the ExprVisitor design pattern.
-type Unary struct {
+// A UnaryExpr expression is one that applies a single operator to a single operand.
+// UnaryExpr inherits from the Expr interface in order to utilize the ExprVisitor design pattern.
+type UnaryExpr struct {
 	operator Token
 	operand  Expr
 }
 
-func (u Unary) String() string {
+func (u UnaryExpr) String() string {
 	var sb strings.Builder
 	sb.WriteString("(" + u.operator.lexeme + " " + u.operand.String() + ")")
 	return sb.String()
 }
 
-func (u Unary) accept(v ExprVisitor) interface{} {
+func (u UnaryExpr) accept(v ExprVisitor) interface{} {
 	return v.visitUnaryExpr(u)
 }
 
-// A Binary expression is one that applies a single operator to a multiple operands.
-// Binary inherits from the Expr interface in order to utilize the ExprVisitor design pattern.
-type Binary struct {
+// A BinaryExpr expression is one that applies a single operator to a multiple operands.
+// BinaryExpr inherits from the Expr interface in order to utilize the ExprVisitor design pattern.
+type BinaryExpr struct {
 	leftOperand  Expr
 	operator     Token
 	rightOperand Expr
 }
 
-func (b Binary) String() string {
+func (b BinaryExpr) String() string {
 	var sb strings.Builder
 	sb.WriteString("(" + b.operator.lexeme + " " + b.leftOperand.String() + " " + b.rightOperand.String() + ")")
 	return sb.String()
 }
 
-func (b Binary) accept(v ExprVisitor) interface{} {
+func (b BinaryExpr) accept(v ExprVisitor) interface{} {
 	return v.visitBinaryExpr(b)
 }
 
-// A Grouping sets a higher level of precedence for another expression within its bounds.
-// Grouping inherits from the Expr interface in order to utilize the ExprVisitor design pattern.
-type Grouping struct {
+// A GroupingExpr sets a higher level of precedence for another expression within its bounds.
+// GroupingExpr inherits from the Expr interface in order to utilize the ExprVisitor design pattern.
+type GroupingExpr struct {
 	expression Expr
 }
 
-func (g Grouping) String() string {
+func (g GroupingExpr) String() string {
 	var sb strings.Builder
 	sb.WriteString("(" + g.expression.String() + ")")
 	return sb.String()
 }
 
-func (g Grouping) accept(v ExprVisitor) interface{} {
+func (g GroupingExpr) accept(v ExprVisitor) interface{} {
 	return v.visitGroupingExpr(g)
 }
 
-// A Literal is the most basic expression type and represents a fully evaluated value.
-// Literal inherits from the Expr interface in order to utilize the ExprVisitor design pattern.
-type Literal struct {
+// A LiteralExpr is the most basic expression type and represents a fully evaluated value.
+// LiteralExpr inherits from the Expr interface in order to utilize the ExprVisitor design pattern.
+type LiteralExpr struct {
 	val interface{}
 }
 
-func (l Literal) String() string {
+func (l LiteralExpr) String() string {
 	return fmt.Sprintf("%v", l.val)
 }
 
-func (l Literal) accept(v ExprVisitor) interface{} {
+func (l LiteralExpr) accept(v ExprVisitor) interface{} {
 	return v.visitLiteralExpr(l)
 }

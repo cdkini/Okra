@@ -8,13 +8,22 @@ type Stmt interface {
 
 // TODO: Explain Visitor design pattern
 type StmtVisitor interface {
-	visitExpressionStmt(Expression)
+	visitExpressionStmt(ExpressionStmt)
+	visitPrintStmt(PrintStmt)
 }
 
-type Expression struct {
+type ExpressionStmt struct {
 	expr Expr
 }
 
-func (e Expression) accept(v StmtVisitor) {
+func (e ExpressionStmt) accept(v StmtVisitor) {
 	v.visitExpressionStmt(e)
+}
+
+type PrintStmt struct {
+	expr Expr
+}
+
+func (p PrintStmt) accept(v StmtVisitor) {
+	v.visitPrintStmt(p)
 }

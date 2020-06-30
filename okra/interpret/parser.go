@@ -32,7 +32,7 @@ func (p *Parser) Parse() []Stmt {
 func (p *Parser) statement() Stmt {
 	expr := p.expression()
 	p.consume(Semicolon, "Expected \";\" after expression.")
-	return &Expression{expr}
+	return &ExpressionStmt{expr}
 }
 
 func (p *Parser) expression() Expr {
@@ -45,7 +45,7 @@ func (p *Parser) equality() Expr {
 	for p.match(BangEqual, EqualEqual) {
 		operator := p.getPrevToken()
 		right := p.comparison()
-		expr = Binary{expr, operator, right}
+		expr = BinaryExpr{expr, operator, right}
 	}
 
 	return expr
@@ -57,7 +57,7 @@ func (p *Parser) comparison() Expr {
 	for p.match(Greater, GreaterEqual, Less, LessEqual) {
 		operator := p.getPrevToken()
 		right := p.addOrSubtract()
-		expr = Binary{expr, operator, right}
+		expr = BinaryExpr{expr, operator, right}
 	}
 
 	return expr
@@ -69,7 +69,7 @@ func (p *Parser) addOrSubtract() Expr {
 	for p.match(Plus, Minus) {
 		operator := p.getPrevToken()
 		right := p.multiplyOrDivide()
-		expr = Binary{expr, operator, right}
+		expr = BinaryExpr{expr, operator, right}
 	}
 
 	return expr
@@ -81,7 +81,7 @@ func (p *Parser) multiplyOrDivide() Expr {
 	for p.match(Slash, Star) {
 		operator := p.getPrevToken()
 		right := p.unary()
-		expr = Binary{expr, operator, right}
+		expr = BinaryExpr{expr, operator, right}
 	}
 
 	return expr
@@ -93,7 +93,7 @@ func (p *Parser) unary() Expr {
 	for p.match(Bang, Minus) {
 		operator := p.getPrevToken()
 		right := p.primary()
-		expr = Unary{operator, right}
+		expr = UnaryExpr{operator, right}
 	}
 
 	return expr
@@ -101,21 +101,21 @@ func (p *Parser) unary() Expr {
 
 func (p *Parser) primary() Expr {
 	if p.match(True) {
-		return Literal{true}
+		return LiteralExpr{true}
 	} else if p.match(False) {
-		return Literal{false}
+		return LiteralExpr{false}
 	} else if p.match(Null) {
-		return Literal{nil}
+		return LiteralExpr{nil}
 	}
 
 	if p.match(Numeric, String) {
-		return Literal{p.getPrevToken().literal}
+		return LiteralExpr{p.getPrevToken().literal}
 	}
 
 	if p.match(LeftParen) {
 		expr := p.expression()
 		p.consume(RightParen, "Expected ')' after expression")
-		return Grouping{expr}
+		return GroupingExpr{expr}
 	}
 
 	p.addParseError("No valid expression found for token")
