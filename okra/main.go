@@ -5,7 +5,6 @@ package main
 
 import (
 	"Okra/okra/interpret"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -27,6 +26,4 @@ func runFile(path string) {
 	stmts := parser.Parse()
 	interpreter := interpret.NewInterpreter()
 	interpreter.Interpret(stmts)
-
-	fmt.Println(tokens)
 }
