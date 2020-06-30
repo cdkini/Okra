@@ -28,14 +28,14 @@ type UnaryExpr struct {
 	operand  Expr
 }
 
-func (u UnaryExpr) String() string {
+func (ue UnaryExpr) String() string {
 	var sb strings.Builder
-	sb.WriteString("(" + u.operator.lexeme + " " + u.operand.String() + ")")
+	sb.WriteString("(" + ue.operator.lexeme + " " + ue.operand.String() + ")")
 	return sb.String()
 }
 
-func (u UnaryExpr) accept(v ExprVisitor) interface{} {
-	return v.visitUnaryExpr(u)
+func (ue UnaryExpr) accept(ev ExprVisitor) interface{} {
+	return ev.visitUnaryExpr(ue)
 }
 
 // A BinaryExpr expression is one that applies a single operator to a multiple operands.
@@ -46,14 +46,14 @@ type BinaryExpr struct {
 	rightOperand Expr
 }
 
-func (b BinaryExpr) String() string {
+func (be BinaryExpr) String() string {
 	var sb strings.Builder
-	sb.WriteString("(" + b.operator.lexeme + " " + b.leftOperand.String() + " " + b.rightOperand.String() + ")")
+	sb.WriteString("(" + be.operator.lexeme + " " + be.leftOperand.String() + " " + be.rightOperand.String() + ")")
 	return sb.String()
 }
 
-func (b BinaryExpr) accept(v ExprVisitor) interface{} {
-	return v.visitBinaryExpr(b)
+func (be BinaryExpr) accept(ve ExprVisitor) interface{} {
+	return ve.visitBinaryExpr(be)
 }
 
 // A GroupingExpr sets a higher level of precedence for another expression within its bounds.
@@ -62,14 +62,14 @@ type GroupingExpr struct {
 	expression Expr
 }
 
-func (g GroupingExpr) String() string {
+func (ge GroupingExpr) String() string {
 	var sb strings.Builder
-	sb.WriteString("(" + g.expression.String() + ")")
+	sb.WriteString("(" + ge.expression.String() + ")")
 	return sb.String()
 }
 
-func (g GroupingExpr) accept(v ExprVisitor) interface{} {
-	return v.visitGroupingExpr(g)
+func (ge GroupingExpr) accept(ve ExprVisitor) interface{} {
+	return ve.visitGroupingExpr(ge)
 }
 
 // A LiteralExpr is the most basic expression type and represents a fully evaluated value.
@@ -78,10 +78,22 @@ type LiteralExpr struct {
 	val interface{}
 }
 
-func (l LiteralExpr) String() string {
-	return fmt.Sprintf("%v", l.val)
+func (le LiteralExpr) String() string {
+	return fmt.Sprintf("%v", le.val)
 }
 
-func (l LiteralExpr) accept(v ExprVisitor) interface{} {
-	return v.visitLiteralExpr(l)
+func (le LiteralExpr) accept(ev ExprVisitor) interface{} {
+	return ev.visitLiteralExpr(le)
+}
+
+type VariableExpr struct {
+	identifier Token
+}
+
+func (ve VariableExpr) String() string {
+	return ve.identifier.lexeme
+}
+
+func (ve VariableExpr) accept(ev ExprVisitor) interface{} {
+
 }
