@@ -4,10 +4,11 @@
 package main
 
 import (
-	"Okra/okra/interpret"
 	"io/ioutil"
 	"os"
 	"strings"
+
+	"Okra/okra/interpret"
 )
 
 func main() {
