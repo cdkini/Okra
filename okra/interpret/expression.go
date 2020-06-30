@@ -19,6 +19,7 @@ type ExprVisitor interface {
 	visitBinaryExpr(BinaryExpr) interface{}
 	visitGroupingExpr(GroupingExpr) interface{}
 	visitLiteralExpr(LiteralExpr) interface{}
+	visitVariableExpr(VariableExpr) interface{}
 }
 
 // A UnaryExpr expression is one that applies a single operator to a single operand.
@@ -95,5 +96,5 @@ func (ve VariableExpr) String() string {
 }
 
 func (ve VariableExpr) accept(ev ExprVisitor) interface{} {
-
+	return ev.visitVariableExpr(ve)
 }
