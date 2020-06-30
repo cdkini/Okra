@@ -30,11 +30,21 @@ func (p *Parser) Parse() []Stmt {
 }
 
 func (p *Parser) statement() Stmt {
-	expr := p.expression()
-	p.consume(Semicolon, "Expected \";\" after expression.")
 	if p.match(Print) {
-		return &PrintStmt{expr}
+		return p.printStatement()
 	}
+	return p.expressionStatement()
+}
+
+func (p *Parser) printStatement() Stmt {
+	expr := p.expression()
+	p.consume(Semicolon, "Expected ';' at end of line.")
+	return &PrintStmt{expr}
+}
+
+func (p *Parser) expressionStatement() Stmt {
+	expr := p.expression()
+	p.consume(Semicolon, "Expected ';' at end of line.")
 	return &ExpressionStmt{expr}
 }
 
