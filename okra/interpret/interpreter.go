@@ -1,10 +1,5 @@
 package interpret
 
-import (
-	"fmt"
-	"strings"
-)
-
 // An Interpreter takes in a given expression and evaluates it into its most basic literal form.
 // Interpreter inherits from the Visitor interface, allowing it interact with all Expr types.
 type Interpreter struct{}
@@ -55,14 +50,8 @@ func (i *Interpreter) visitBinaryExpr(b Binary) interface{} {
 		checkNumericValidity("Runtime Error => \"-\" used on non-numeric operands", leftOperand, rightOperand)
 		return evaluateNumeric(leftOperand) - evaluateNumeric(rightOperand)
 	case Plus:
-		if isString(leftOperand) && isString(rightOperand) {
-			return concatenateString(leftOperand, rightOperand) // FIXME: Currently does not work!
-		}
-		if isNumeric(leftOperand) && isNumeric(rightOperand) {
-			checkNumericValidity("Runtime Error => \"+\" used on non-numeric operands", leftOperand, rightOperand)
-			return evaluateNumeric(leftOperand) + evaluateNumeric(rightOperand)
-		}
-		ReportErr(-1, NewOkraError(0, 0, "Runtime Error => \"+\" used on incompatible operands"))
+		checkNumericValidity("Runtime Error => \"+\" used on non-numeric operands", leftOperand, rightOperand)
+		return evaluateNumeric(leftOperand) + evaluateNumeric(rightOperand)
 	case Slash:
 		checkNumericValidity("Runtime Error => \"/\" used on non-numeric operands", leftOperand, rightOperand)
 		return evaluateNumeric(leftOperand) / evaluateNumeric(rightOperand)
@@ -100,22 +89,6 @@ func isTruthy(i interface{}) bool {
 	}
 }
 
-func isNumeric(num interface{}) bool {
-	_, ok := num.(float64)
-	if !ok {
-		return false
-	}
-	return true
-}
-
-func isString(str interface{}) bool {
-	_, ok := str.(string)
-	if !ok {
-		return false
-	}
-	return true
-}
-
 func evaluateNumeric(i interface{}) float64 {
 	t, ok := i.(float64)
 	if !ok {
@@ -141,12 +114,4 @@ func checkNumericValidity(msg string, i ...interface{}) {
 			ReportErr(-1, NewOkraError(0, 0, msg))
 		}
 	}
-}
-
-func concatenateString(strs ...interface{}) string {
-	var sb strings.Builder
-	for _, str := range strs {
-		sb.WriteString(fmt.Sprintf("%v", str))
-	}
-	return sb.String()
 }
