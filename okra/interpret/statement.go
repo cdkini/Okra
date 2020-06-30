@@ -16,14 +16,14 @@ type ExpressionStmt struct {
 	expr Expr
 }
 
-func (e ExpressionStmt) accept(v StmtVisitor) {
-	v.visitExpressionStmt(e)
+func (e ExpressionStmt) accept(vst StmtVisitor) {
+	vst.visitExpressionStmt(e)
 }
 
 type PrintStmt struct {
 	expr Expr
 }
 
-func (p PrintStmt) accept(v StmtVisitor) {
-	v.visitPrintStmt(p)
+func (p PrintStmt) accept(vst StmtVisitor) {
+	vst.visitPrintStmt(p)
 }
