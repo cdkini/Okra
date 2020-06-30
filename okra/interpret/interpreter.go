@@ -27,6 +27,10 @@ func (i *Interpreter) visitPrintStmt(stmt PrintStmt) {
 	fmt.Println(value)
 }
 
+func (i *Interpreter) visitVariableExpr(v VariableExpr) interface{} {
+	// TODO: Open to implement
+}
+
 func (i *Interpreter) visitLiteralExpr(l LiteralExpr) interface{} {
 	return l.val
 }
