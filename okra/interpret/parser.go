@@ -32,6 +32,9 @@ func (p *Parser) Parse() []Stmt {
 func (p *Parser) statement() Stmt {
 	expr := p.expression()
 	p.consume(Semicolon, "Expected \";\" after expression.")
+	if p.match(Print) {
+		return &PrintStmt{expr}
+	}
 	return &ExpressionStmt{expr}
 }
 

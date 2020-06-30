@@ -1,5 +1,7 @@
 package interpret
 
+import "fmt"
+
 // An Interpreter takes in a given expression and evaluates it into its most basic literal form.
 // Interpreter inherits from the Visitor interface, allowing it interact with all Expr types.
 type Interpreter struct{}
@@ -18,6 +20,11 @@ func (i *Interpreter) Interpret(stmts []Stmt) {
 
 func (i *Interpreter) visitExpressionStmt(stmt ExpressionStmt) {
 	stmt.expr.accept(i)
+}
+
+func (i *Interpreter) visitPrintStmt(stmt PrintStmt) {
+	value := stmt.expr.accept(i)
+	fmt.Println(value)
 }
 
 func (i *Interpreter) visitLiteralExpr(l LiteralExpr) interface{} {
