@@ -35,8 +35,8 @@ func (u UnaryExpr) String() string {
 	return sb.String()
 }
 
-func (u UnaryExpr) accept(visitor ExprVisitor) interface{} {
-	return visitor.visitUnaryExpr(u)
+func (u UnaryExpr) accept(vst ExprVisitor) interface{} {
+	return vst.visitUnaryExpr(u)
 }
 
 // A BinaryExpr expression is one that applies a single operator to a multiple operands.
@@ -53,8 +53,8 @@ func (b BinaryExpr) String() string {
 	return sb.String()
 }
 
-func (b BinaryExpr) accept(visitor ExprVisitor) interface{} {
-	return visitor.visitBinaryExpr(b)
+func (b BinaryExpr) accept(vst ExprVisitor) interface{} {
+	return vst.visitBinaryExpr(b)
 }
 
 // A GroupingExpr sets a higher level of precedence for another expression within its bounds.
@@ -69,8 +69,8 @@ func (g GroupingExpr) String() string {
 	return sb.String()
 }
 
-func (g GroupingExpr) accept(visitor ExprVisitor) interface{} {
-	return visitor.visitGroupingExpr(g)
+func (g GroupingExpr) accept(vst ExprVisitor) interface{} {
+	return vst.visitGroupingExpr(g)
 }
 
 // A LiteralExpr is the most basic expression type and represents a fully evaluated value.
@@ -83,8 +83,8 @@ func (l LiteralExpr) String() string {
 	return fmt.Sprintf("%v", l.val)
 }
 
-func (l LiteralExpr) accept(visitor ExprVisitor) interface{} {
-	return visitor.visitLiteralExpr(l)
+func (l LiteralExpr) accept(vst ExprVisitor) interface{} {
+	return vst.visitLiteralExpr(l)
 }
 
 type VariableExpr struct {
@@ -95,6 +95,6 @@ func (v VariableExpr) String() string {
 	return v.identifier.lexeme
 }
 
-func (v VariableExpr) accept(visitor ExprVisitor) interface{} {
-	return visitor.visitVariableExpr(v)
+func (v VariableExpr) accept(vst ExprVisitor) interface{} {
+	return vst.visitVariableExpr(v)
 }
