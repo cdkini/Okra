@@ -8,7 +8,6 @@ type Interpreter struct {
 	env Environment
 }
 
-// TODO: Update with environment variables and other factors
 func NewInterpreter() *Interpreter {
 	return &Interpreter{*NewEnvironment()}
 }

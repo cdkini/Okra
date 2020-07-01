@@ -1,5 +1,6 @@
 package interpret
 
+// TODO: Add docstring
 type Environment struct {
 	varMap map[string]interface{}
 }

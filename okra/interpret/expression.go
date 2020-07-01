@@ -88,6 +88,7 @@ func (l LiteralExpr) accept(vst ExprVisitor) interface{} {
 	return vst.visitLiteralExpr(l)
 }
 
+// TODO: Add docstring
 type VariableExpr struct {
 	identifier Token
 }
@@ -100,6 +101,7 @@ func (v VariableExpr) accept(vst ExprVisitor) interface{} {
 	return vst.visitVariableExpr(v)
 }
 
+// TODO: Add docstring
 type AssignmentExpr struct {
 	identifier Token
 	val        Expr
