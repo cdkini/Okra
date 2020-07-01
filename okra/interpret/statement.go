@@ -10,6 +10,7 @@ type Stmt interface {
 type StmtVisitor interface {
 	visitExpressionStmt(ExpressionStmt)
 	visitPrintStmt(PrintStmt)
+	visitVariableStmt(VariableStmt)
 }
 
 type ExpressionStmt struct {
@@ -26,4 +27,13 @@ type PrintStmt struct {
 
 func (p PrintStmt) accept(vst StmtVisitor) {
 	vst.visitPrintStmt(p)
+}
+
+type VariableStmt struct {
+	identifier Token
+	expr       Expr
+}
+
+func (v VariableStmt) accept(vst StmtVisitor) {
+	vst.visitVariableStmt(v)
 }
