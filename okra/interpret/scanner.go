@@ -107,21 +107,12 @@ func (s *Scanner) scan() error {
 		}
 		return errors.New("Invalid character") // TODO: Add specific error class instance here!
 
-	// Comments (single and multiline)
+	// Comments
 	case '/':
 		if s.match('/') {
 			for s.peek(0) != '\n' && s.curr < len(s.source) {
 				s.advance()
 			}
-		} else if s.match('*') {
-			for s.curr < len(s.source)-2 || (s.peek(0) != '*' && s.peek(1) != '/') {
-				if s.peek(0) == '\n' {
-					s.line++
-				}
-				s.advance()
-			}
-			s.advance()
-			s.advance()
 		} else {
 			s.addToken(Slash)
 		}
