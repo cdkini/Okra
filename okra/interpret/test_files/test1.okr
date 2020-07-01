@@ -1,0 +1,5 @@
+// Basic Okra program
+
+func helloWorld() {
+    print "Hello, World!";
+}
