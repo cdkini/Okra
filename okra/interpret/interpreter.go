@@ -36,6 +36,11 @@ func (i *Interpreter) visitPrintStmt(stmt PrintStmt) {
 	fmt.Println(value)
 }
 
+func (i *Interpreter) visitAssignmentExpr(a AssignmentExpr) interface{} {
+	// TODO: Add implementation
+	return nil
+}
+
 func (i *Interpreter) visitVariableExpr(v VariableExpr) interface{} {
 	return i.env.getVar(v.identifier)
 }
