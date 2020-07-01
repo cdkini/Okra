@@ -10,7 +10,7 @@ type Interpreter struct {
 
 // TODO: Update with environment variables and other factors
 func NewInterpreter() *Interpreter {
-	return &Interpreter{Environment{}}
+	return &Interpreter{*NewEnvironment()}
 }
 
 // TODO: Update docstring after changes from stmt

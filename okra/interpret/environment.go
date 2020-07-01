@@ -4,6 +4,10 @@ type Environment struct {
 	varMap map[string]interface{}
 }
 
+func NewEnvironment() *Environment {
+	return &Environment{make(map[string]interface{})}
+}
+
 func (e *Environment) putVar(k string, v interface{}) {
 	e.varMap[k] = v
 }
