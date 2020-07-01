@@ -8,8 +8,8 @@ func (e *Environment) putVar(k string, v interface{}) {
 	e.varMap[k] = v
 }
 
-func (e *Environment) getVar(k string) interface{} {
-	val, ok := e.varMap[k]
+func (e *Environment) getVar(k Token) interface{} {
+	val, ok := e.varMap[k.lexeme]
 	if !ok {
 		ReportErr(-1, NewOkraError(0, 0, "Placeholder"))
 	}
