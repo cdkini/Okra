@@ -4,11 +4,13 @@ import "fmt"
 
 // An Interpreter takes in a given expression and evaluates it into its most basic literal form.
 // Interpreter inherits from the Visitor interface, allowing it interact with all Expr types.
-type Interpreter struct{}
+type Interpreter struct {
+	env Environment
+}
 
 // TODO: Update with environment variables and other factors
 func NewInterpreter() *Interpreter {
-	return &Interpreter{}
+	return &Interpreter{Environment{}}
 }
 
 // TODO: Update docstring after changes from stmt
@@ -16,6 +18,14 @@ func (i *Interpreter) Interpret(stmts []Stmt) {
 	for _, stmt := range stmts {
 		stmt.accept(i)
 	}
+}
+
+func (i *Interpreter) visitVariableStmt(stmt VariableStmt) {
+	var val interface{}
+	if stmt.expr != nil {
+		val = stmt.expr.accept(i)
+	}
+	i.env.putVar(stmt.identifier.lexeme, val)
 }
 
 func (i *Interpreter) visitExpressionStmt(stmt ExpressionStmt) {
@@ -28,7 +38,7 @@ func (i *Interpreter) visitPrintStmt(stmt PrintStmt) {
 }
 
 func (i *Interpreter) visitVariableExpr(v VariableExpr) interface{} {
-	// TODO: Open to implement
+	return i.env.getVar(v.identifier)
 }
 
 func (i *Interpreter) visitLiteralExpr(l LiteralExpr) interface{} {
