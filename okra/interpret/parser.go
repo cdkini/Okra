@@ -29,7 +29,21 @@ func (p *Parser) Parse() []Stmt {
 	return statements
 }
 
+func (p *Parser) varDeclaration() Stmt {
+	identifier := p.consume(Identifier, "Expected variable name.")
+
+	var expr Expr
+	if p.match(Equal) {
+		expr = p.expression()
+	}
+	p.consume(Semicolon, "Expected ';' at end of line.")
+	return VariableStmt{identifier, expr}
+}
+
 func (p *Parser) statement() Stmt {
+	if p.match(Variable) {
+		return p.varDeclaration()
+	}
 	if p.match(Print) {
 		return p.printStatement()
 	}
@@ -123,6 +137,10 @@ func (p *Parser) primary() Expr {
 
 	if p.match(Numeric, String) {
 		return LiteralExpr{p.getPrevToken().literal}
+	}
+
+	if p.match(Identifier) {
+		return VariableExpr{p.getPrevToken()}
 	}
 
 	if p.match(LeftParen) {
