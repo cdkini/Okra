@@ -2,7 +2,7 @@ package interpret
 
 import "fmt"
 
-// A Token is a substring of source text given context by the scanner
+// A Token is a substring of source text given context or meaning by the scanner
 type Token struct {
 	tokenType TokenType
 	lexeme    string // Exact substring lexed by scanner

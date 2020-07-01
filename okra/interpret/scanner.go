@@ -10,13 +10,14 @@ import (
 type Scanner struct {
 	source []rune
 	tokens []*Token // Populated as result of ScanTokens()
-	start  int      // The beginning of the current token
-	curr   int
-	line   int
+	start  int      // Where the current token begins
+	curr   int      // Where the scanner is within the source
+	col    int      // Passed to resulting tokens for error reporting
+	line   int      // Passed to resulting tokens for error reporting
 }
 
 func NewScanner(source string) *Scanner {
-	return &Scanner{[]rune(source), make([]*Token, 0), 0, 0, 1}
+	return &Scanner{[]rune(source), make([]*Token, 0), 0, 0, 1, 1}
 }
 
 // ScanTokens iterates through the source text and generates tokens based on Okra's defined syntax rules
@@ -28,7 +29,7 @@ func (s *Scanner) ScanTokens() []*Token {
 		err := s.scan()
 		CheckErr(-1, err, NewOkraError(0, 0, "Placeholder"))
 	}
-	s.tokens = append(s.tokens, &Token{EOF, "EOF", nil, s.line, s.curr})
+	s.tokens = append(s.tokens, &Token{EOF, "EOF", nil, s.line, s.col})
 	return s.tokens
 }
 
@@ -40,7 +41,7 @@ func (s *Scanner) scan() error {
 	case '\t', '\v', '\f', '\r', ' ':
 		break
 	case '\n':
-		s.line++
+		s.lineBreak()
 		break
 
 	// Single character tokens
@@ -136,14 +137,15 @@ func (s *Scanner) scan() error {
 
 func (s *Scanner) advance() rune {
 	s.curr++
+	s.col++
 	return s.source[s.curr-1]
 }
 
 func (s *Scanner) addToken(tokenType TokenType, literal ...interface{}) {
 	if len(literal) == 1 {
-		s.tokens = append(s.tokens, &Token{tokenType, string(s.source[s.start:s.curr]), literal[0], s.line, s.curr})
+		s.tokens = append(s.tokens, &Token{tokenType, string(s.source[s.start:s.curr]), literal[0], s.line, s.col})
 	} else {
-		s.tokens = append(s.tokens, &Token{tokenType, string(s.source[s.start:s.curr]), nil, s.line, s.curr})
+		s.tokens = append(s.tokens, &Token{tokenType, string(s.source[s.start:s.curr]), nil, s.line, s.col})
 	}
 }
 
@@ -153,6 +155,7 @@ func (s *Scanner) match(expectedChar rune) bool {
 	}
 	if s.source[s.curr] == expectedChar {
 		s.curr++
+		s.col++
 		return true
 	}
 	return false
@@ -164,6 +167,7 @@ func (s *Scanner) ternaryMatch(expectedChar rune, ifTrue TokenType, ifFalse Toke
 	}
 	if s.source[s.curr] == expectedChar {
 		s.curr++
+		s.col++
 		return ifTrue
 	}
 	return ifFalse
@@ -172,7 +176,7 @@ func (s *Scanner) ternaryMatch(expectedChar rune, ifTrue TokenType, ifFalse Toke
 func (s *Scanner) addStringToken() error {
 	for s.peek(0) != '"' && s.curr < len(s.source) {
 		if s.peek(0) == '\n' {
-			s.line++
+			s.lineBreak()
 		}
 		s.advance()
 	}
@@ -230,4 +234,9 @@ func (s *Scanner) peek(n int) rune {
 		return '\u0000' // Null terminator
 	}
 	return s.source[s.curr]
+}
+
+func (s *Scanner) lineBreak() {
+	s.line++
+	s.col = 0
 }

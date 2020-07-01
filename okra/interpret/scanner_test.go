@@ -1,6 +1,7 @@
 package interpret
 
 import (
+	"io/ioutil"
 	"testing"
 )
 
@@ -123,8 +124,6 @@ func TestScanComments(t *testing.T) {
 		{"// This is a comment", []TokenType{EOF}, 1},
 		{"// Random text: +-=&&!forclassfunc", []TokenType{EOF}, 1},
 		{"// Line break ends comment \n", []TokenType{EOF}, 2},
-		{"/* This is yet another comment */", []TokenType{EOF}, 1},
-		{"/* \n * A \n * proper \n * multiline * \n comment */", []TokenType{EOF}, 5},
 	}
 
 	for _, test := range table {
@@ -200,3 +199,29 @@ func TestScanMiscellaneous(t *testing.T) {
 		})
 	}
 }
+
+func TestScanFiles(t *testing.T) {
+	table := []struct {
+		path   string
+		output []*Token
+	}{
+		// String
+		{"test_files/test1.okr", []*Token{}},
+	}
+
+	for _, test := range table {
+		t.Run(test.path, func(t *testing.T) {
+			bytes, _ := ioutil.ReadFile(test.path)
+			scanner := NewScanner(string(bytes))
+			tokens := scanner.ScanTokens()
+
+			if len(tokens) != len(test.output) {
+				t.Errorf("Expected %d tokens, received %d", len(test.output), len(tokens))
+			}
+		})
+	}
+}
+
+/*
+
+ */
