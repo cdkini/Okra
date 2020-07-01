@@ -20,6 +20,7 @@ type ExprVisitor interface {
 	visitGroupingExpr(GroupingExpr) interface{}
 	visitLiteralExpr(LiteralExpr) interface{}
 	visitVariableExpr(VariableExpr) interface{}
+	visitAssignmentExpr(AssignmentExpr) interface{}
 }
 
 // A UnaryExpr expression is one that applies a single operator to a single operand.
@@ -97,4 +98,19 @@ func (v VariableExpr) String() string {
 
 func (v VariableExpr) accept(vst ExprVisitor) interface{} {
 	return vst.visitVariableExpr(v)
+}
+
+type AssignmentExpr struct {
+	identifier Token
+	val        Expr
+}
+
+func (a AssignmentExpr) String() string {
+	var sb strings.Builder
+	sb.WriteString(a.identifier.lexeme + " = " + a.val.String())
+	return sb.String()
+}
+
+func (a AssignmentExpr) accept(vst ExprVisitor) interface{} {
+	return vst.visitAssignmentExpr(a)
 }
