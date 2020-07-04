@@ -39,8 +39,10 @@ func (i *Interpreter) visitPrintStmt(stmt PrintStmt) {
 }
 
 func (i *Interpreter) visitAssignmentExpr(a AssignmentExpr) interface{} {
-	// TODO: Add implementation
-	return nil
+	value := a.val.accept(i)
+
+	i.env.putVar(a.identifier.lexeme, value)
+	return value
 }
 
 func (i *Interpreter) visitVariableExpr(v VariableExpr) interface{} {

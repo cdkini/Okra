@@ -20,3 +20,11 @@ func (e *Environment) getVar(k Token) interface{} {
 	}
 	return val
 }
+
+func (e *Environment) assignExistingVar(k Token, v interface{}) {
+	if _, ok := e.varMap[k.lexeme]; ok {
+		e.varMap[k.lexeme] = v
+	} else {
+		ReportErr(-1, NewOkraError(0, 0, "Placeholder"))
+	}
+}
