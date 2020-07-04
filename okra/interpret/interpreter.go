@@ -1,6 +1,8 @@
 package interpret
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // An Interpreter takes in a given expression and evaluates it into its most basic literal form.
 // Interpreter inherits from the Visitor interface, allowing it interact with all Expr types.
@@ -139,4 +141,15 @@ func checkNumericValidity(msg string, i ...interface{}) {
 			ReportErr(-1, NewOkraError(0, 0, msg))
 		}
 	}
+}
+
+func cleanPrintOutput(input interface{}) string {
+	var output string
+	switch val := input.(type) {
+	case []int32:
+		output = string(val) // FIXME: Printing int32 vals rather than Unicode characters
+	case float64:
+		output = fmt.Sprintf("%v", val)
+	}
+	return output
 }
