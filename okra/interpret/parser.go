@@ -24,9 +24,16 @@ func NewParser(tokens []*Token) *Parser {
 func (p *Parser) Parse() []Stmt {
 	var statements []Stmt
 	for p.getCurrToken().tokenType != EOF {
-		statements = append(statements, p.statement())
+		statements = append(statements, p.declaration())
 	}
 	return statements
+}
+
+func (p *Parser) declaration() Stmt {
+	if p.match(Variable) {
+		return p.varDeclaration()
+	}
+	return p.statement()
 }
 
 func (p *Parser) varDeclaration() Stmt {
@@ -63,7 +70,24 @@ func (p *Parser) expressionStatement() Stmt {
 }
 
 func (p *Parser) expression() Expr {
-	return p.equality()
+	return p.assignment()
+}
+
+func (p *Parser) assignment() Expr {
+	expr := p.equality()
+
+	for p.match(Equal) {
+		val := p.assignment()
+
+		t, ok := expr.(VariableExpr)
+		if ok {
+			return AssignmentExpr{t.identifier, val}
+		}
+	}
+
+	p.addParseError("Invalid assignment expression")
+
+	return expr
 }
 
 func (p *Parser) equality() Expr {
