@@ -203,10 +203,10 @@ func TestScanMiscellaneous(t *testing.T) {
 func TestScanFiles(t *testing.T) {
 	table := []struct {
 		path   string
-		output []*Token
+		output []Token
 	}{
-		// String
-		{"test_files/test1.okr", []*Token{}},
+		// TODO: Add file tests
+		// {"test_files/test1.okr", []Token{}},
 	}
 
 	for _, test := range table {
@@ -221,7 +221,3 @@ func TestScanFiles(t *testing.T) {
 		})
 	}
 }
-
-/*
-
- */
