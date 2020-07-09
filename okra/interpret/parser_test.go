@@ -6,6 +6,6 @@ import (
 
 func TestParsing(t *testing.T) {
 	// TODO: Add tests
-	// Input: tokens []*Token
+	// Input: tokens []Token
 	// Output: string ???
 }
