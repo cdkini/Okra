@@ -7,16 +7,18 @@ import (
 // An Interpreter takes in a given expression and evaluates it into its most basic literal form.
 // Interpreter inherits from the Visitor interface, allowing it interact with all Expr types.
 type Interpreter struct {
-	env Environment
+	stmts       []Stmt
+	globalScope Environment
+	localScope  Environment
 }
 
-func NewInterpreter() *Interpreter {
-	return &Interpreter{*NewEnvironment()}
+func NewInterpreter(stmts []Stmt) *Interpreter {
+	return &Interpreter{stmts, *NewEnvironment(), *NewEnvironment()}
 }
 
 // TODO: Update docstring after changes from stmt
-func (i *Interpreter) Interpret(stmts []Stmt) {
-	for _, stmt := range stmts {
+func (i *Interpreter) Interpret() {
+	for _, stmt := range i.stmts {
 		stmt.accept(i)
 	}
 }
@@ -26,7 +28,7 @@ func (i *Interpreter) visitVariableStmt(stmt VariableStmt) {
 	if stmt.expr != nil {
 		val = stmt.expr.accept(i)
 	}
-	i.env.putVar(stmt.identifier.lexeme, val)
+	i.globalScope.putVar(stmt.identifier.lexeme, val)
 }
 
 func (i *Interpreter) visitExpressionStmt(stmt ExpressionStmt) {
@@ -41,12 +43,12 @@ func (i *Interpreter) visitPrintStmt(stmt PrintStmt) {
 func (i *Interpreter) visitAssignmentExpr(a AssignmentExpr) interface{} {
 	value := a.val.accept(i)
 
-	i.env.putVar(a.identifier.lexeme, value)
+	i.globalScope.putVar(a.identifier.lexeme, value)
 	return value
 }
 
 func (i *Interpreter) visitVariableExpr(v VariableExpr) interface{} {
-	return i.env.getVar(v.identifier)
+	return i.globalScope.getVar(v.identifier)
 }
 
 func (i *Interpreter) visitLiteralExpr(l LiteralExpr) interface{} {
