@@ -9,27 +9,27 @@ import (
 // A Scanner takes in some stream of characters and tokenizes them based on Okra's syntax
 type Scanner struct {
 	source []rune
-	tokens []*Token // Populated as result of ScanTokens()
-	start  int      // Where the current token begins
-	curr   int      // Where the scanner is within the source
-	col    int      // Passed to resulting tokens for error reporting
-	line   int      // Passed to resulting tokens for error reporting
+	tokens []Token // Populated as result of ScanTokens()
+	start  int     // Where the current token begins
+	curr   int     // Where the scanner is within the source
+	col    int     // Passed to resulting tokens for error reporting
+	line   int     // Passed to resulting tokens for error reporting
 }
 
 func NewScanner(source string) *Scanner {
-	return &Scanner{[]rune(source), make([]*Token, 0), 0, 0, 1, 1}
+	return &Scanner{[]rune(source), make([]Token, 0), 0, 0, 1, 1}
 }
 
 // ScanTokens iterates through the source text and generates tokens based on Okra's defined syntax rules
 //   Args: nil
 //   Returns: Slice of token pointers
-func (s *Scanner) ScanTokens() []*Token {
+func (s *Scanner) ScanTokens() []Token {
 	for s.curr < len(s.source) {
 		s.start = s.curr
 		err := s.scan()
 		CheckErr(-1, err, NewOkraError(0, 0, "Placeholder"))
 	}
-	s.tokens = append(s.tokens, &Token{EOF, "EOF", nil, s.line, s.col})
+	s.tokens = append(s.tokens, Token{EOF, "EOF", nil, s.line, s.col})
 	return s.tokens
 }
 
@@ -143,9 +143,9 @@ func (s *Scanner) advance() rune {
 
 func (s *Scanner) addToken(tokenType TokenType, literal ...interface{}) {
 	if len(literal) == 1 {
-		s.tokens = append(s.tokens, &Token{tokenType, string(s.source[s.start:s.curr]), literal[0], s.line, s.col})
+		s.tokens = append(s.tokens, Token{tokenType, string(s.source[s.start:s.curr]), literal[0], s.line, s.col})
 	} else {
-		s.tokens = append(s.tokens, &Token{tokenType, string(s.source[s.start:s.curr]), nil, s.line, s.col})
+		s.tokens = append(s.tokens, Token{tokenType, string(s.source[s.start:s.curr]), nil, s.line, s.col})
 	}
 }
 

@@ -8,12 +8,12 @@ import (
 // A Parser evaluates a collection of tokens to constructs an abstract syntax tree of expressions.
 // It is also responsible for consolidating parse errors and providing useful feedback to the user.
 type Parser struct {
-	tokens []*Token
+	tokens []Token
 	curr   int
 	errors []OkraError
 }
 
-func NewParser(tokens []*Token) *Parser {
+func NewParser(tokens []Token) *Parser {
 	return &Parser{tokens, 0, make([]OkraError, 0)}
 }
 
@@ -233,9 +233,9 @@ func (p *Parser) consume(tokenType TokenType, msg string) Token {
 }
 
 func (p *Parser) getCurrToken() Token {
-	return *p.tokens[p.curr]
+	return p.tokens[p.curr]
 }
 
 func (p *Parser) getPrevToken() Token {
-	return *p.tokens[p.curr-1]
+	return p.tokens[p.curr-1]
 }
