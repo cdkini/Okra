@@ -2,6 +2,7 @@ package interpret
 
 import (
 	"fmt"
+	"reflect"
 	"strings"
 )
 
@@ -11,6 +12,7 @@ import (
 type Expr interface {
 	accept(ExprVisitor) interface{} // TODO: Explain ExprVisitor design pattern
 	String() string                 // Used for parser debugging
+	getType() string                // TODO: Implement type for Expr and Stmts
 }
 
 // TODO: Explain ExprVisitor design pattern
@@ -30,14 +32,18 @@ type UnaryExpr struct {
 	operand  Expr
 }
 
+func (u UnaryExpr) accept(vst ExprVisitor) interface{} {
+	return vst.visitUnaryExpr(u)
+}
+
 func (u UnaryExpr) String() string {
 	var sb strings.Builder
 	sb.WriteString("(" + u.operator.lexeme + " " + u.operand.String() + ")")
 	return sb.String()
 }
 
-func (u UnaryExpr) accept(vst ExprVisitor) interface{} {
-	return vst.visitUnaryExpr(u)
+func (u UnaryExpr) getType() string {
+	return reflect.TypeOf(u).String()
 }
 
 // A BinaryExpr expression is one that applies a single operator to a multiple operands.
@@ -48,14 +54,18 @@ type BinaryExpr struct {
 	rightOperand Expr
 }
 
+func (b BinaryExpr) accept(vst ExprVisitor) interface{} {
+	return vst.visitBinaryExpr(b)
+}
+
 func (b BinaryExpr) String() string {
 	var sb strings.Builder
 	sb.WriteString("(" + b.operator.lexeme + " " + b.leftOperand.String() + " " + b.rightOperand.String() + ")")
 	return sb.String()
 }
 
-func (b BinaryExpr) accept(vst ExprVisitor) interface{} {
-	return vst.visitBinaryExpr(b)
+func (b BinaryExpr) getType() string {
+	return reflect.TypeOf(b).String()
 }
 
 // A GroupingExpr sets a higher level of precedence for another expression within its bounds.
@@ -64,14 +74,18 @@ type GroupingExpr struct {
 	expression Expr
 }
 
+func (g GroupingExpr) accept(vst ExprVisitor) interface{} {
+	return vst.visitGroupingExpr(g)
+}
+
 func (g GroupingExpr) String() string {
 	var sb strings.Builder
 	sb.WriteString("(" + g.expression.String() + ")")
 	return sb.String()
 }
 
-func (g GroupingExpr) accept(vst ExprVisitor) interface{} {
-	return vst.visitGroupingExpr(g)
+func (g GroupingExpr) getType() string {
+	return reflect.TypeOf(g).String()
 }
 
 // A LiteralExpr is the most basic expression type and represents a fully evaluated value.
@@ -80,12 +94,16 @@ type LiteralExpr struct {
 	val interface{}
 }
 
+func (l LiteralExpr) accept(vst ExprVisitor) interface{} {
+	return vst.visitLiteralExpr(l)
+}
+
 func (l LiteralExpr) String() string {
 	return fmt.Sprintf("%v", l.val)
 }
 
-func (l LiteralExpr) accept(vst ExprVisitor) interface{} {
-	return vst.visitLiteralExpr(l)
+func (l LiteralExpr) getType() string {
+	return reflect.TypeOf(l).String()
 }
 
 // TODO: Add docstring
@@ -93,12 +111,16 @@ type VariableExpr struct {
 	identifier Token
 }
 
+func (v VariableExpr) accept(vst ExprVisitor) interface{} {
+	return vst.visitVariableExpr(v)
+}
+
 func (v VariableExpr) String() string {
 	return v.identifier.lexeme
 }
 
-func (v VariableExpr) accept(vst ExprVisitor) interface{} {
-	return vst.visitVariableExpr(v)
+func (v VariableExpr) getType() string {
+	return reflect.TypeOf(v).String()
 }
 
 // TODO: Add docstring
@@ -107,12 +129,16 @@ type AssignmentExpr struct {
 	val        Expr
 }
 
+func (a AssignmentExpr) accept(vst ExprVisitor) interface{} {
+	return vst.visitAssignmentExpr(a)
+}
+
 func (a AssignmentExpr) String() string {
 	var sb strings.Builder
 	sb.WriteString(a.identifier.lexeme + " = " + a.val.String())
 	return sb.String()
 }
 
-func (a AssignmentExpr) accept(vst ExprVisitor) interface{} {
-	return vst.visitAssignmentExpr(a)
+func (a AssignmentExpr) getType() string {
+	return reflect.TypeOf(a).String()
 }
