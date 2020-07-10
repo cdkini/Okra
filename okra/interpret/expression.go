@@ -3,7 +3,6 @@ package interpret
 import (
 	"fmt"
 	"reflect"
-	"strings"
 )
 
 // An Expr groups together source code that can be reduced to a value. In order to allow different
@@ -37,9 +36,7 @@ func (u UnaryExpr) accept(vst ExprVisitor) interface{} {
 }
 
 func (u UnaryExpr) String() string {
-	var sb strings.Builder
-	sb.WriteString("(" + u.operator.lexeme + " " + u.operand.String() + ")")
-	return sb.String()
+	return u.getType() + ": (" + u.operator.lexeme + " " + u.operand.String() + ")"
 }
 
 func (u UnaryExpr) getType() string {
@@ -59,9 +56,7 @@ func (b BinaryExpr) accept(vst ExprVisitor) interface{} {
 }
 
 func (b BinaryExpr) String() string {
-	var sb strings.Builder
-	sb.WriteString("(" + b.operator.lexeme + " " + b.leftOperand.String() + " " + b.rightOperand.String() + ")")
-	return sb.String()
+	return b.getType() + ": (" + b.operator.lexeme + " " + b.leftOperand.String() + " " + b.rightOperand.String() + ")"
 }
 
 func (b BinaryExpr) getType() string {
@@ -79,9 +74,7 @@ func (g GroupingExpr) accept(vst ExprVisitor) interface{} {
 }
 
 func (g GroupingExpr) String() string {
-	var sb strings.Builder
-	sb.WriteString("(" + g.expression.String() + ")")
-	return sb.String()
+	return g.getType() + ": (" + g.expression.String() + ")"
 }
 
 func (g GroupingExpr) getType() string {
@@ -99,7 +92,7 @@ func (l LiteralExpr) accept(vst ExprVisitor) interface{} {
 }
 
 func (l LiteralExpr) String() string {
-	return fmt.Sprintf("%v", l.val)
+	return fmt.Sprintf(l.getType()+": %v", l.val)
 }
 
 func (l LiteralExpr) getType() string {
@@ -116,7 +109,7 @@ func (v VariableExpr) accept(vst ExprVisitor) interface{} {
 }
 
 func (v VariableExpr) String() string {
-	return v.identifier.lexeme
+	return v.getType() + ": " + v.identifier.lexeme
 }
 
 func (v VariableExpr) getType() string {
@@ -134,9 +127,7 @@ func (a AssignmentExpr) accept(vst ExprVisitor) interface{} {
 }
 
 func (a AssignmentExpr) String() string {
-	var sb strings.Builder
-	sb.WriteString(a.identifier.lexeme + " = " + a.val.String())
-	return sb.String()
+	return a.identifier.lexeme + " = " + a.val.String()
 }
 
 func (a AssignmentExpr) getType() string {
