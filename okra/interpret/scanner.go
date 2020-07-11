@@ -44,64 +44,64 @@ func (s *Scanner) scan() {
 
 	// Single character tokens
 	case '(':
-		s.addToken(LeftParen)
+		s.addToken(LeftParen, nil)
 		break
 	case ')':
-		s.addToken(RightParen)
+		s.addToken(RightParen, nil)
 		break
 	case '{':
-		s.addToken(LeftBracket)
+		s.addToken(LeftBracket, nil)
 		break
 	case '}':
-		s.addToken(RightBracket)
+		s.addToken(RightBracket, nil)
 		break
 	case '[':
-		s.addToken(LeftBrace)
+		s.addToken(LeftBrace, nil)
 		break
 	case ']':
-		s.addToken(RightBrace)
+		s.addToken(RightBrace, nil)
 		break
 	case ',':
-		s.addToken(Comma)
+		s.addToken(Comma, nil)
 		break
 	case '.':
-		s.addToken(Dot)
+		s.addToken(Dot, nil)
 		break
 	case '-':
-		s.addToken(Minus)
+		s.addToken(Minus, nil)
 		break
 	case '+':
-		s.addToken(Plus)
+		s.addToken(Plus, nil)
 		break
 	case ';':
-		s.addToken(Semicolon)
+		s.addToken(Semicolon, nil)
 		break
 	case '*':
-		s.addToken(Star)
+		s.addToken(Star, nil)
 		break
 
 	// Single or double character tokens
 	case '!':
-		s.addToken(s.ternaryMatch('=', BangEqual, Bang))
+		s.addToken(s.ternaryMatch('=', BangEqual, Bang), nil)
 		break
 	case '=':
-		s.addToken(s.ternaryMatch('=', EqualEqual, Equal))
+		s.addToken(s.ternaryMatch('=', EqualEqual, Equal), nil)
 		break
 	case '<':
-		s.addToken(s.ternaryMatch('=', LessEqual, Less))
+		s.addToken(s.ternaryMatch('=', LessEqual, Less), nil)
 		break
 	case '>':
-		s.addToken(s.ternaryMatch('=', GreaterEqual, Greater))
+		s.addToken(s.ternaryMatch('=', GreaterEqual, Greater), nil)
 		break
 	case '&':
 		if s.match('&') {
-			s.addToken(And)
+			s.addToken(And, nil)
 			break
 		}
 		ReportErr(-1, NewOkraError(s.line, s.col, "Invalid character"))
 	case '|':
 		if s.match('|') {
-			s.addToken(Or)
+			s.addToken(Or, nil)
 			break
 		}
 		ReportErr(-1, NewOkraError(s.line, s.col, "Invalid character"))
@@ -113,7 +113,7 @@ func (s *Scanner) scan() {
 				s.advance()
 			}
 		} else {
-			s.addToken(Slash)
+			s.addToken(Slash, nil)
 		}
 		break
 
@@ -137,11 +137,7 @@ func (s *Scanner) advance() rune {
 	return s.source[s.curr-1]
 }
 
-func (s *Scanner) addToken(tokenType TokenType) {
-	s.tokens = append(s.tokens, Token{tokenType, string(s.source[s.start:s.curr]), nil, s.line, s.col})
-}
-
-func (s *Scanner) addStringOrNumericToken(tokenType TokenType, literal interface{}) {
+func (s *Scanner) addToken(tokenType TokenType, literal interface{}) {
 	s.tokens = append(s.tokens, Token{tokenType, string(s.source[s.start:s.curr]), literal, s.line, s.col})
 }
 
@@ -183,7 +179,7 @@ func (s *Scanner) addStringToken() {
 
 	s.advance()
 	str := s.source[s.start+1 : s.curr-1]
-	s.addStringOrNumericToken(String, str)
+	s.addToken(String, str)
 }
 
 func (s *Scanner) addNumericToken() {
@@ -201,7 +197,7 @@ func (s *Scanner) addNumericToken() {
 
 	num, err := strconv.ParseFloat(string(s.source[s.start:s.curr]), 64)
 	CheckErr(-1, err, NewOkraError(s.line, s.col, "Could not scan numeric"))
-	s.addStringOrNumericToken(Numeric, num)
+	s.addToken(Numeric, num)
 }
 
 func (s *Scanner) addIdentifierToken() {
@@ -215,9 +211,9 @@ func (s *Scanner) addIdentifierToken() {
 func (s *Scanner) getKeyword(text string) {
 	i := keywordDict[text]
 	if i == 0 {
-		s.addToken(Identifier)
+		s.addToken(Identifier, nil)
 	} else {
-		s.addToken(i)
+		s.addToken(i, nil)
 	}
 }
 
