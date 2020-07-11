@@ -22,11 +22,11 @@ func NewParser(tokens []Token) *Parser {
 //   Args: nil
 //   Returns: An instance of Expr that best fits the token stream
 func (p *Parser) Parse() []Stmt {
-	var statements []Stmt
+	var stmts []Stmt
 	for p.getCurrToken().tokenType != EOF {
-		statements = append(statements, p.declaration())
+		stmts = append(stmts, p.declaration())
 	}
-	return statements
+	return stmts
 }
 
 func (p *Parser) declaration() Stmt {
