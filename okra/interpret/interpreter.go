@@ -28,7 +28,7 @@ func (i *Interpreter) visitVariableStmt(stmt VariableStmt) {
 	if stmt.expr != nil {
 		val = stmt.expr.accept(i)
 	}
-	i.env.putVar(stmt.identifier, val, i.inLocalScope)
+	i.env.putVar(stmt.identifier.lexeme, val, i.inLocalScope)
 }
 
 func (i *Interpreter) visitExpressionStmt(stmt ExpressionStmt) {
@@ -42,7 +42,7 @@ func (i *Interpreter) visitPrintStmt(stmt PrintStmt) {
 
 func (i *Interpreter) visitAssignmentExpr(a AssignmentExpr) interface{} {
 	value := a.val.accept(i)
-	i.env.putVar(a.identifier, value, i.inLocalScope)
+	i.env.putVar(a.identifier.lexeme, value, i.inLocalScope)
 	return value
 }
 
