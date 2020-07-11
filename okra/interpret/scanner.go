@@ -137,12 +137,12 @@ func (s *Scanner) advance() rune {
 	return s.source[s.curr-1]
 }
 
-func (s *Scanner) addToken(tokenType TokenType, literal ...interface{}) {
-	if len(literal) == 1 {
-		s.tokens = append(s.tokens, Token{tokenType, string(s.source[s.start:s.curr]), literal[0], s.line, s.col})
-	} else {
-		s.tokens = append(s.tokens, Token{tokenType, string(s.source[s.start:s.curr]), nil, s.line, s.col})
-	}
+func (s *Scanner) addToken(tokenType TokenType) {
+	s.tokens = append(s.tokens, Token{tokenType, string(s.source[s.start:s.curr]), nil, s.line, s.col})
+}
+
+func (s *Scanner) addStringOrNumericToken(tokenType TokenType, literal interface{}) {
+	s.tokens = append(s.tokens, Token{tokenType, string(s.source[s.start:s.curr]), literal, s.line, s.col})
 }
 
 func (s *Scanner) match(expectedChar rune) bool {
@@ -183,7 +183,7 @@ func (s *Scanner) addStringToken() {
 
 	s.advance()
 	str := s.source[s.start+1 : s.curr-1]
-	s.addToken(String, str)
+	s.addStringOrNumericToken(String, str)
 }
 
 func (s *Scanner) addNumericToken() {
@@ -201,7 +201,7 @@ func (s *Scanner) addNumericToken() {
 
 	num, err := strconv.ParseFloat(string(s.source[s.start:s.curr]), 64)
 	CheckErr(-1, err, NewOkraError(s.line, s.col, "Could not scan numeric"))
-	s.addToken(Numeric, num)
+	s.addStringOrNumericToken(Numeric, num)
 }
 
 func (s *Scanner) addIdentifierToken() {
