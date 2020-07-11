@@ -11,6 +11,10 @@ type Token struct {
 	col       int
 }
 
+func (t *Token) TokenType() TokenType {
+	return t.tokenType
+}
+
 type TokenType int
 
 func (t Token) String() string {

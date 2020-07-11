@@ -11,12 +11,24 @@ type Scanner struct {
 	tokens []Token // Populated as result of ScanTokens()
 	start  int     // Where the current token begins
 	curr   int     // Where the scanner is within the source
-	col    int
 	line   int
+	col    int
 }
 
 func NewScanner(source string) *Scanner {
 	return &Scanner{[]rune(source), make([]Token, 0), 0, 0, 1, 1}
+}
+
+func (s *Scanner) Tokens() []Token {
+	return s.tokens
+}
+
+func (s *Scanner) Line() int {
+	return s.line
+}
+
+func (s *Scanner) Col() int {
+	return s.col
 }
 
 // ScanTokens iterates through the source text and generates tokens based on Okra's defined syntax rules
