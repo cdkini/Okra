@@ -209,8 +209,7 @@ func (s *Scanner) addIdentifierToken() {
 }
 
 func (s *Scanner) getKeyword(text string) {
-	i := keywordDict[text]
-	if i == 0 {
+	if i, ok := keywordDict[text]; !ok {
 		s.addToken(Identifier, nil)
 	} else {
 		s.addToken(i, nil)
