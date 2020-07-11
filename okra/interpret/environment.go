@@ -2,29 +2,35 @@ package interpret
 
 // TODO: Add docstring
 type Environment struct {
-	varMap map[string]interface{}
+	varMap map[Token]interface{}
 }
 
 func NewEnvironment() *Environment {
-	return &Environment{make(map[string]interface{})}
+	return &Environment{make(map[Token]interface{})}
 }
 
-func (e *Environment) putVar(k string, v interface{}) {
-	e.varMap[k] = v
+func (e *Environment) putVar(token Token, value interface{}) {
+	e.varMap[token] = value
 }
 
-func (e *Environment) getVar(k Token) interface{} {
-	val, ok := e.varMap[k.lexeme]
+func (e *Environment) getVar(token Token) interface{} {
+	val, ok := e.varMap[token]
 	if !ok {
 		ReportErr(-1, NewOkraError(0, 0, "Placeholder"))
 	}
 	return val
 }
 
-func (e *Environment) assignExistingVar(k Token, v interface{}) {
-	if _, ok := e.varMap[k.lexeme]; ok {
-		e.varMap[k.lexeme] = v
+func (e *Environment) assignExistingVar(token Token, value interface{}) {
+	if _, ok := e.varMap[token]; ok {
+		e.varMap[token] = value
 	} else {
 		ReportErr(-1, NewOkraError(0, 0, "Placeholder"))
+	}
+}
+
+func (e *Environment) clear() {
+	for k := range e.varMap {
+		delete(e.varMap, k)
 	}
 }

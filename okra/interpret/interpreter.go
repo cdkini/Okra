@@ -28,7 +28,7 @@ func (i *Interpreter) visitVariableStmt(stmt VariableStmt) {
 	if stmt.expr != nil {
 		val = stmt.expr.accept(i)
 	}
-	i.globalScope.putVar(stmt.identifier.lexeme, val)
+	i.globalScope.putVar(stmt.identifier, val)
 }
 
 func (i *Interpreter) visitExpressionStmt(stmt ExpressionStmt) {
@@ -43,7 +43,7 @@ func (i *Interpreter) visitPrintStmt(stmt PrintStmt) {
 func (i *Interpreter) visitAssignmentExpr(a AssignmentExpr) interface{} {
 	value := a.val.accept(i)
 
-	i.globalScope.putVar(a.identifier.lexeme, value)
+	i.globalScope.putVar(a.identifier, value)
 	return value
 }
 
