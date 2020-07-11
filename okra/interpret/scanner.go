@@ -1,7 +1,6 @@
 package interpret
 
 import (
-	"errors"
 	"strconv"
 	"unicode"
 )
@@ -12,8 +11,8 @@ type Scanner struct {
 	tokens []Token // Populated as result of ScanTokens()
 	start  int     // Where the current token begins
 	curr   int     // Where the scanner is within the source
-	col    int     // Passed to resulting tokens for error reporting
-	line   int     // Passed to resulting tokens for error reporting
+	col    int
+	line   int
 }
 
 func NewScanner(source string) *Scanner {
@@ -26,14 +25,13 @@ func NewScanner(source string) *Scanner {
 func (s *Scanner) ScanTokens() []Token {
 	for s.curr < len(s.source) {
 		s.start = s.curr
-		err := s.scan()
-		CheckErr(-1, err, NewOkraError(0, 0, "Placeholder"))
+		s.scan()
 	}
 	s.tokens = append(s.tokens, Token{EOF, "EOF", nil, s.line, s.col})
 	return s.tokens
 }
 
-func (s *Scanner) scan() error {
+func (s *Scanner) scan() {
 	c := s.advance()
 	switch c {
 
@@ -100,13 +98,13 @@ func (s *Scanner) scan() error {
 			s.addToken(And)
 			break
 		}
-		return errors.New("Invalid character") // TODO: Add specific error class instance here!
+		ReportErr(-1, NewOkraError(s.line, s.col, "Invalid character"))
 	case '|':
 		if s.match('|') {
 			s.addToken(Or)
 			break
 		}
-		return errors.New("Invalid character") // TODO: Add specific error class instance here!
+		ReportErr(-1, NewOkraError(s.line, s.col, "Invalid character"))
 
 	// Comments
 	case '/':
@@ -120,8 +118,7 @@ func (s *Scanner) scan() error {
 		break
 
 	case '"':
-		err := s.addStringToken()
-		CheckErr(-1, err, NewOkraError(0, 0, "Placeholder"))
+		s.addStringToken()
 
 	default:
 		if unicode.IsDigit(c) {
@@ -129,10 +126,9 @@ func (s *Scanner) scan() error {
 		} else if unicode.IsLetter(c) {
 			s.addIdentifierToken()
 		} else {
-			return errors.New("Invalid character") // TODO: Add specific error class instance here!
+			ReportErr(-1, NewOkraError(s.line, s.col, "Invalid character"))
 		}
 	}
-	return nil
 }
 
 func (s *Scanner) advance() rune {
@@ -173,7 +169,7 @@ func (s *Scanner) ternaryMatch(expectedChar rune, ifTrue TokenType, ifFalse Toke
 	return ifFalse
 }
 
-func (s *Scanner) addStringToken() error {
+func (s *Scanner) addStringToken() {
 	for s.peek(0) != '"' && s.curr < len(s.source) {
 		if s.peek(0) == '\n' {
 			s.lineBreak()
@@ -182,17 +178,15 @@ func (s *Scanner) addStringToken() error {
 	}
 
 	if s.curr >= len(s.source) {
-		return errors.New("Unterminated string") // TODO: Add specific error class instance here!
+		ReportErr(-1, NewOkraError(s.line, s.col, "Unterminated character"))
 	}
 
 	s.advance()
 	str := s.source[s.start+1 : s.curr-1]
 	s.addToken(String, str)
-
-	return nil
 }
 
-func (s *Scanner) addNumericToken() error {
+func (s *Scanner) addNumericToken() {
 	for unicode.IsDigit(s.peek(0)) {
 		s.advance()
 	}
@@ -206,10 +200,8 @@ func (s *Scanner) addNumericToken() error {
 	}
 
 	num, err := strconv.ParseFloat(string(s.source[s.start:s.curr]), 64)
-	CheckErr(-1, err, NewOkraError(0, 0, "Placeholder")) // TODO: Add specific error class instance here!
+	CheckErr(-1, err, NewOkraError(s.line, s.col, "Could not scan numeric"))
 	s.addToken(Numeric, num)
-
-	return nil
 }
 
 func (s *Scanner) addIdentifierToken() {
