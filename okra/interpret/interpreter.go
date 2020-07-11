@@ -24,11 +24,10 @@ func (i *Interpreter) Interpret() {
 }
 
 func (i *Interpreter) visitVariableStmt(stmt VariableStmt) {
-	var val interface{}
-	if stmt.expr != nil {
-		val = stmt.expr.accept(i)
+	if stmt.expr == nil {
+		i.env.putVar(stmt.identifier.lexeme, nil, i.inLocalScope)
 	}
-	i.env.putVar(stmt.identifier.lexeme, val, i.inLocalScope)
+	i.env.putVar(stmt.identifier.lexeme, stmt.expr.accept(i), i.inLocalScope)
 }
 
 func (i *Interpreter) visitExpressionStmt(stmt ExpressionStmt) {
@@ -51,7 +50,12 @@ func (i *Interpreter) visitVariableExpr(v VariableExpr) interface{} {
 }
 
 func (i *Interpreter) visitLiteralExpr(l LiteralExpr) interface{} {
-	return l.val
+	if str, ok := l.val.(string); ok {
+		return str
+	} else if num, ok := l.val.(float64); ok {
+		return num
+	}
+	return nil
 }
 
 func (i *Interpreter) visitGroupingExpr(g GroupingExpr) interface{} {
