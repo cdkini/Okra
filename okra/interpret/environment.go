@@ -19,15 +19,15 @@ func (e *Environment) putVar(identifier string, value interface{}, isLocal bool)
 }
 
 func (e *Environment) getVar(token Token) interface{} {
-	val1, ok1 := e.localScope[token.lexeme]
-	if !ok1 {
-		val2, ok2 := e.globalScope[token.lexeme]
-		if !ok2 {
-			ReportErr(-1, NewOkraError(token.col, token.line, "Undefined variable '"+token.lexeme+"'"))
+	if l, ok := e.localScope[token.lexeme]; !ok {
+		if g, ok := e.globalScope[token.lexeme]; !ok {
+			ReportErr(-1, NewOkraError(token.line, token.col, "Undefined variable '"+token.lexeme+"'"))
+		} else {
+			return g
 		}
-		return val2
+		return l
 	}
-	return val1
+	return nil
 }
 
 func (e *Environment) assignVar(token Token, value interface{}) {
@@ -35,7 +35,7 @@ func (e *Environment) assignVar(token Token, value interface{}) {
 		e.localScope[token.lexeme] = value
 		return
 	}
-	if _, ok2 := e.globalScope[token.lexeme]; ok2 {
+	if _, ok := e.globalScope[token.lexeme]; ok {
 		e.globalScope[token.lexeme] = value
 		return
 	}
