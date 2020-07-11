@@ -23,7 +23,7 @@ func (e *Environment) getVar(token Token) interface{} {
 	if !ok1 {
 		val2, ok2 := e.globalScope[token.lexeme]
 		if !ok2 {
-			ReportErr(-1, NewOkraError(token.col, token.line, "Variable not declared prior to usage"))
+			ReportErr(-1, NewOkraError(token.col, token.line, "Undefined variable '"+token.lexeme+"'"))
 		}
 		return val2
 	}
