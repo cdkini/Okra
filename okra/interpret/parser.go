@@ -20,7 +20,7 @@ func NewParser(tokens []Token) *Parser {
 // Parse evaluates a series of tokens using recursive descent, checking the given values against
 // the grammar rules of the language. Upon reaching a terminal, the function ceases execution.
 //   Args: nil
-//   Returns: An instance of Expr that best fits the token stream
+//   Returns: A slice of statements containing the logic of the source program
 func (p *Parser) Parse() []Stmt {
 	var stmts []Stmt
 	for p.getCurrToken().tokenType != EOF {
