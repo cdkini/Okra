@@ -1,0 +1,5 @@
+// Basic func declaration
+
+func squareNum(n) {
+    return n * n;
+}

@@ -204,10 +204,59 @@ func TestScanMiscellaneous(t *testing.T) {
 func TestScanFiles(t *testing.T) {
 	table := []struct {
 		path   string
-		output []Token
+		output []TokenType
 	}{
-		// TODO: Add file tests
-		// {"test_files/test1.okr", []Token{}},
+		{"test_files/test1.okr", []TokenType{
+			Print,
+			String,
+			Semicolon,
+			EOF,
+		}},
+		{"test_files/test2.okr", []TokenType{
+			Variable,
+			Identifier,
+			Equal,
+			Numeric,
+			Semicolon,
+			Variable,
+			Identifier,
+			Equal,
+			Numeric,
+			Semicolon,
+			Print,
+			Variable,
+			Plus,
+			Variable,
+			Semicolon,
+			EOF,
+		}},
+		{"test_files/test3.okr", []TokenType{
+			Func,
+			Identifier,
+			LeftParen,
+			Identifier,
+			RightParen,
+			LeftBrace,
+			Return,
+			Identifier,
+			Star,
+			Identifier,
+			RightBrace,
+			Semicolon,
+			EOF,
+		}},
+		{"test_files/test4.okr", []TokenType{
+			Struct,
+			Identifier,
+			LeftBrace,
+			Identifier,
+			LeftParen,
+			RightParen,
+			LeftBrace,
+			RightBrace,
+			RightBrace,
+			EOF,
+		}},
 	}
 
 	for _, test := range table {
