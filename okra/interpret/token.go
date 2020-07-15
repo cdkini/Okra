@@ -11,6 +11,11 @@ type Token struct {
 	col       int
 }
 
+// Only used for testing purposes within interpret_test package
+func NewToken(tokenType TokenType, literal interface{}) *Token {
+	return &Token{tokenType: tokenType, literal: literal}
+}
+
 func (t *Token) TokenType() TokenType {
 	return t.tokenType
 }
