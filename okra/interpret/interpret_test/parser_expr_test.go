@@ -5,14 +5,135 @@ import (
 	"testing"
 )
 
-func TestParseUnaryExpr(t *testing.T) {}
+func TestParseUnaryExpr(t *testing.T) {
+	table := []struct {
+		input  string
+		output string
+	}{
+		{"-1", "interpret.UnaryExpr"},
+		{"!true", "interpret.UnaryExpr"},
+	}
 
-func TestParseBinaryExpr(t *testing.T) {}
+	for _, test := range table {
+		t.Run(test.input, func(t *testing.T) {
+			scanner := NewScanner(test.input)
+			scanner.ScanTokens()
+			parser := NewParser(scanner.Tokens())
+			expr := parser.Expression()
 
-func TestParseGroupingExpr(t *testing.T) {}
+			if expr.GetType() != test.output {
+				t.Errorf("Expected *%v, received %T", test.output, expr)
+			}
+		})
+	}
+}
 
-func TestParseLiteralExpr(t *testing.T) {}
+func TestParseBinaryExpr(t *testing.T) {
+	table := []struct {
+		input  string
+		output string
+	}{
+		{}, // TODO: Fill out tests!
+	}
 
-func TestParseVariableExpr(t *testing.T) {}
+	for _, test := range table {
+		t.Run(test.input, func(t *testing.T) {
+			scanner := NewScanner(test.input)
+			scanner.ScanTokens()
+			parser := NewParser(scanner.Tokens())
+			expr := parser.Expression()
 
-func TestParseAssignmentExpr(t *testing.T) {}
+			if expr.GetType() != test.output {
+				t.Errorf("Expected *%v, received %T", test.output, expr)
+			}
+		})
+	}
+}
+
+func TestParseGroupingExpr(t *testing.T) {
+	table := []struct {
+		input  string
+		output string
+	}{
+		{}, // TODO: Fill out tests!
+	}
+
+	for _, test := range table {
+		t.Run(test.input, func(t *testing.T) {
+			scanner := NewScanner(test.input)
+			scanner.ScanTokens()
+			parser := NewParser(scanner.Tokens())
+			expr := parser.Expression()
+
+			if expr.GetType() != test.output {
+				t.Errorf("Expected *%v, received %T", test.output, expr)
+			}
+		})
+	}
+}
+
+func TestParseLiteralExpr(t *testing.T) {
+	table := []struct {
+		input  string
+		output string
+	}{
+		{}, // TODO: Fill out tests!
+	}
+
+	for _, test := range table {
+		t.Run(test.input, func(t *testing.T) {
+			scanner := NewScanner(test.input)
+			scanner.ScanTokens()
+			parser := NewParser(scanner.Tokens())
+			expr := parser.Expression()
+
+			if expr.GetType() != test.output {
+				t.Errorf("Expected *%v, received %T", test.output, expr)
+			}
+		})
+	}
+}
+
+func TestParseVariableExpr(t *testing.T) {
+	table := []struct {
+		input  string
+		output string
+	}{
+		{}, // TODO: Fill out tests!
+	}
+
+	for _, test := range table {
+		t.Run(test.input, func(t *testing.T) {
+			scanner := NewScanner(test.input)
+			scanner.ScanTokens()
+			parser := NewParser(scanner.Tokens())
+			expr := parser.Expression()
+
+			if expr.GetType() != test.output {
+				t.Errorf("Expected *%v, received %T", test.output, expr)
+			}
+		})
+	}
+}
+
+func TestParseAssignmentExpr(t *testing.T) {
+	table := []struct {
+		input  string
+		output string
+	}{
+		{}, // TODO: Fill out tests!
+	}
+
+	for _, test := range table {
+		t.Run(test.input, func(t *testing.T) {
+			scanner := NewScanner(test.input)
+			scanner.ScanTokens()
+			parser := NewParser(scanner.Tokens())
+			expr := parser.Expression()
+
+			if expr.GetType() != test.output {
+				t.Errorf("Expected *%v, received %T", test.output, expr)
+			}
+		})
+	}
+}

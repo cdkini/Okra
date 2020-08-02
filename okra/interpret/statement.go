@@ -1,14 +1,13 @@
 package interpret
 
 import (
-	"reflect"
+	"fmt"
 )
 
 // TODO: Explain Visitor design pattern better!
 type Stmt interface {
 	accept(StmtVisitor) // TODO: Explain Visitor design pattern
-	String() string
-	getType() string
+	GetType() string
 }
 
 // TODO: Explain Visitor design pattern
@@ -27,12 +26,8 @@ func (e ExpressionStmt) accept(vst StmtVisitor) {
 	vst.visitExpressionStmt(e)
 }
 
-func (e ExpressionStmt) String() string {
-	return e.getType() + ": " + e.expr.String()
-}
-
-func (e ExpressionStmt) getType() string {
-	return reflect.TypeOf(e).String()
+func (e ExpressionStmt) GetType() string {
+	return fmt.Sprintf("%T", e)
 }
 
 // TODO: Add docstring
@@ -44,12 +39,8 @@ func (p PrintStmt) accept(vst StmtVisitor) {
 	vst.visitPrintStmt(p)
 }
 
-func (p PrintStmt) String() string {
-	return p.getType() + p.getType() + ": " + p.expr.String()
-}
-
-func (p PrintStmt) getType() string {
-	return reflect.TypeOf(p).String()
+func (p PrintStmt) GetType() string {
+	return fmt.Sprintf("%T", p)
 }
 
 // TODO: Add docstring
@@ -62,10 +53,6 @@ func (v VariableStmt) accept(vst StmtVisitor) {
 	vst.visitVariableStmt(v)
 }
 
-func (v VariableStmt) String() string {
-	return v.getType() + v.getType() + ": " + v.identifier.String() + " = " + v.expr.String()
-}
-
-func (v VariableStmt) getType() string {
-	return reflect.TypeOf(v).String()
+func (v VariableStmt) GetType() string {
+	return fmt.Sprintf("%T", v)
 }

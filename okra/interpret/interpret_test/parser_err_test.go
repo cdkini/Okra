@@ -1,7 +1,7 @@
 package interpret_test
 
 import (
-	. "Okra/okra/interpret"
+	// . "Okra/okra/interpret"
 	"testing"
 )
 

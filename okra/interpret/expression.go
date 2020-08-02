@@ -2,7 +2,6 @@ package interpret
 
 import (
 	"fmt"
-	"reflect"
 )
 
 // An Expr groups together source code that can be reduced to a value. In order to allow different
@@ -10,8 +9,7 @@ import (
 // TODO: Explain ExprVisitor design pattern better!
 type Expr interface {
 	accept(ExprVisitor) interface{} // TODO: Explain ExprVisitor design pattern
-	String() string                 // Used for parser debugging
-	getType() string                // TODO: Implement type for Expr and Stmts
+	GetType() string                // TODO: Implement type for Expr and Stmts
 }
 
 // TODO: Explain ExprVisitor design pattern
@@ -35,12 +33,8 @@ func (u UnaryExpr) accept(vst ExprVisitor) interface{} {
 	return vst.visitUnaryExpr(u)
 }
 
-func (u UnaryExpr) String() string {
-	return u.getType() + ": (" + u.operator.lexeme + " " + u.operand.String() + ")"
-}
-
-func (u UnaryExpr) getType() string {
-	return reflect.TypeOf(u).String()
+func (u UnaryExpr) GetType() string {
+	return fmt.Sprintf("%T", u)
 }
 
 // A BinaryExpr expression is one that applies a single operator to a multiple operands.
@@ -55,12 +49,8 @@ func (b BinaryExpr) accept(vst ExprVisitor) interface{} {
 	return vst.visitBinaryExpr(b)
 }
 
-func (b BinaryExpr) String() string {
-	return b.getType() + ": (" + b.operator.lexeme + " " + b.leftOperand.String() + " " + b.rightOperand.String() + ")"
-}
-
-func (b BinaryExpr) getType() string {
-	return reflect.TypeOf(b).String()
+func (b BinaryExpr) GetType() string {
+	return fmt.Sprintf("%T", b)
 }
 
 // A GroupingExpr sets a higher level of precedence for another expression within its bounds.
@@ -73,12 +63,8 @@ func (g GroupingExpr) accept(vst ExprVisitor) interface{} {
 	return vst.visitGroupingExpr(g)
 }
 
-func (g GroupingExpr) String() string {
-	return g.getType() + ": (" + g.expression.String() + ")"
-}
-
-func (g GroupingExpr) getType() string {
-	return reflect.TypeOf(g).String()
+func (g GroupingExpr) GetType() string {
+	return fmt.Sprintf("%T", g)
 }
 
 // A LiteralExpr is the most basic expression type and represents a fully evaluated value.
@@ -91,12 +77,8 @@ func (l LiteralExpr) accept(vst ExprVisitor) interface{} {
 	return vst.visitLiteralExpr(l)
 }
 
-func (l LiteralExpr) String() string {
-	return fmt.Sprintf(l.getType()+": %v", l.val)
-}
-
-func (l LiteralExpr) getType() string {
-	return reflect.TypeOf(l).String()
+func (l LiteralExpr) GetType() string {
+	return fmt.Sprintf("%T", l)
 }
 
 // TODO: Add docstring
@@ -108,12 +90,8 @@ func (v VariableExpr) accept(vst ExprVisitor) interface{} {
 	return vst.visitVariableExpr(v)
 }
 
-func (v VariableExpr) String() string {
-	return v.getType() + ": " + v.identifier.lexeme
-}
-
-func (v VariableExpr) getType() string {
-	return reflect.TypeOf(v).String()
+func (v VariableExpr) GetType() string {
+	return fmt.Sprintf("%T", v)
 }
 
 // TODO: Add docstring
@@ -126,10 +104,6 @@ func (a AssignmentExpr) accept(vst ExprVisitor) interface{} {
 	return vst.visitAssignmentExpr(a)
 }
 
-func (a AssignmentExpr) String() string {
-	return a.identifier.lexeme + " = " + a.val.String()
-}
-
-func (a AssignmentExpr) getType() string {
-	return reflect.TypeOf(a).String()
+func (a AssignmentExpr) GetType() string {
+	return fmt.Sprintf("%T", a)
 }
