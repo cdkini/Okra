@@ -70,6 +70,7 @@ const (
 	This
 	True
 	Variable
+	While
 )
 
 // Used for debugging purposes (returns the str representation as opposed to the enum val)
@@ -117,6 +118,7 @@ var keywordSlice = []string{
 	"This",
 	"True",
 	"Variable",
+	"While",
 }
 
 var keywordDict = map[string]TokenType{
@@ -133,4 +135,5 @@ var keywordDict = map[string]TokenType{
 	"this":   This,
 	"true":   True,
 	"var":    Variable,
+	"while":  While,
 }

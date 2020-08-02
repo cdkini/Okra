@@ -24,7 +24,10 @@ func runFile(path string) {
 	scanner := interpret.NewScanner(string(bytes))
 	tokens := scanner.ScanTokens()
 	parser := interpret.NewParser(tokens)
-	stmts := parser.Parse()
+	stmts, parseErrors := parser.Parse()
+	if parseErrors {
+		// FIXME: Add support for reporting parse errors
+	}
 	interpreter := interpret.NewInterpreter(stmts)
 	interpreter.Interpret()
 }
