@@ -2,7 +2,7 @@ package interpret
 
 import "fmt"
 
-func (p *Parser) expression() Expr {
+func (p *Parser) Expression() Expr {
 	return p.assignment()
 }
 
@@ -100,14 +100,17 @@ func (p *Parser) primary() Expr {
 	case p.match(Null):
 		return &LiteralExpr{nil}
 
-	case p.match(Numeric, String):
+	case p.match(Numeric):
 		return &LiteralExpr{p.previous().literal}
+
+	case p.match(String):
+		return &LiteralExpr{p.previous().lexeme}
 
 	case p.match(Identifier):
 		return &VariableExpr{p.previous()}
 
 	case p.match(LeftParen):
-		expr := p.expression()
+		expr := p.Expression()
 
 		p.consume(RightParen, "Expect ')' after expression.")
 		return &GroupingExpr{expr}

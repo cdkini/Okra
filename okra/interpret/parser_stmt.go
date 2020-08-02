@@ -28,14 +28,14 @@ func (p *Parser) blockStmt() []Stmt {
 }
 
 func (p *Parser) printStmt() Stmt {
-	expr := p.expression()
+	expr := p.Expression()
 	p.consume(Semicolon, "Expect ';' after value")
 
 	return &PrintStmt{expr}
 }
 
 func (p *Parser) expressionStmt() Stmt {
-	expr := p.expression()
+	expr := p.Expression()
 	p.consume(Semicolon, "Expect ';' after expression")
 
 	return &ExpressionStmt{expr}

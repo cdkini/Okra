@@ -15,7 +15,7 @@ func (p *Parser) varDeclaration() Stmt {
 
 	var initializer Expr
 	if p.match(Equal) {
-		initializer = p.expression()
+		initializer = p.Expression()
 	}
 
 	p.consume(Semicolon, "Expect ';' after variable declaration")
