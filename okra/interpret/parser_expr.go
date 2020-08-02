@@ -40,11 +40,11 @@ func (p *Parser) equality() Expr {
 }
 
 func (p *Parser) comparison() Expr {
-	expr := p.term()
+	expr := p.additionOrSubtraction()
 
 	for p.match(Greater, GreaterEqual, Less, LessEqual) {
 		operator := p.previous()
-		rightOperand := p.term()
+		rightOperand := p.additionOrSubtraction()
 
 		expr = &BinaryExpr{expr, operator, rightOperand}
 	}
@@ -52,12 +52,12 @@ func (p *Parser) comparison() Expr {
 	return expr
 }
 
-func (p *Parser) term() Expr {
-	expr := p.factor()
+func (p *Parser) additionOrSubtraction() Expr {
+	expr := p.multiplicationOrDivision()
 
 	for p.match(Minus, Plus) {
 		operator := p.previous()
-		rightOperand := p.factor()
+		rightOperand := p.multiplicationOrDivision()
 
 		expr = &BinaryExpr{expr, operator, rightOperand}
 	}
@@ -65,7 +65,7 @@ func (p *Parser) term() Expr {
 	return expr
 }
 
-func (p *Parser) factor() Expr {
+func (p *Parser) multiplicationOrDivision() Expr {
 	expr := p.unary()
 
 	for p.match(Slash, Star) {

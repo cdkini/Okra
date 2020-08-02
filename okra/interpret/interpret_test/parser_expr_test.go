@@ -33,7 +33,16 @@ func TestParseBinaryExpr(t *testing.T) {
 		input  string
 		output string
 	}{
-		{}, // TODO: Fill out tests!
+		{"1 + 2", "interpret.BinaryExpr"},
+		{"3 - 4", "interpret.BinaryExpr"},
+		{"5 * 6", "interpret.BinaryExpr"},
+		{"7 / 8", "interpret.BinaryExpr"},
+		{"9 > 10", "interpret.BinaryExpr"},
+		{"11 >= 12", "interpret.BinaryExpr"},
+		{"13 < 14", "interpret.BinaryExpr"},
+		{"14 <= 15", "interpret.BinaryExpr"},
+		{"16 == 17", "interpret.BinaryExpr"},
+		{"18 != 19", "interpret.BinaryExpr"},
 	}
 
 	for _, test := range table {
@@ -55,7 +64,8 @@ func TestParseGroupingExpr(t *testing.T) {
 		input  string
 		output string
 	}{
-		{}, // TODO: Fill out tests!
+		{"(1 + 2)", "interpret.GroupingExpr"},
+		{"(()()())", "interpret.GroupingExpr"},
 	}
 
 	for _, test := range table {
@@ -77,7 +87,11 @@ func TestParseLiteralExpr(t *testing.T) {
 		input  string
 		output string
 	}{
-		{}, // TODO: Fill out tests!
+		{"true", "interpret.LiteralExpr"},
+		{"false", "interpret.LiteralExpr"},
+		{"null", "interpret.LiteralExpr"},
+		{"3.1415", "interpret.LiteralExpr"},
+		{"\"abc\"", "interpret.LiteralExpr"},
 	}
 
 	for _, test := range table {
@@ -99,7 +113,8 @@ func TestParseVariableExpr(t *testing.T) {
 		input  string
 		output string
 	}{
-		{}, // TODO: Fill out tests!
+		{"foo", "interpret.VariableExpr"},
+		{"bar", "interpret.VariableExpr"},
 	}
 
 	for _, test := range table {
@@ -121,7 +136,7 @@ func TestParseAssignmentExpr(t *testing.T) {
 		input  string
 		output string
 	}{
-		{}, // TODO: Fill out tests!
+		// {},  TODO: Fill out tests!
 	}
 
 	for _, test := range table {
