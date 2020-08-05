@@ -68,7 +68,7 @@ func (p *Parser) advance() Token {
 		p.current++
 	}
 
-	return p.previous()
+	return p.previousToken()
 }
 
 func (p *Parser) end() bool {
@@ -79,25 +79,27 @@ func (p *Parser) peek() Token {
 	return p.tokens[p.current]
 }
 
-func (p *Parser) previous() Token {
+func (p *Parser) currentToken() Token {
+	return p.tokens[p.current]
+}
+
+func (p *Parser) previousToken() Token {
 	return p.tokens[p.current-1]
 }
 
 func (p *Parser) consume(t TokenType, msg string) Token {
-	if p.check(t) {
-		return p.advance()
-		// FIXME: Make OkraError instance
-		// } else {
-		// 	panic(&ParseError{p.peek(), msg})
+	if !p.check(t) {
+		curr := p.currentToken()
+		ReportErr(0, NewOkraError(curr.line, curr.col, msg))
 	}
-	return Token{} // TODO: Remove upon fixing method
+	return p.advance()
 }
 
 func (p *Parser) synchronize() {
 	p.advance()
 
 	for !p.end() {
-		if p.previous().tokenType == Semicolon {
+		if p.previousToken().tokenType == Semicolon {
 			return
 		}
 

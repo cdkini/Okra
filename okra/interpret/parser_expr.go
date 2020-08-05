@@ -10,7 +10,7 @@ func (p *Parser) assignment() Expr {
 	expr := p.equality()
 
 	if p.match(Equal) {
-		equals := p.previous()
+		equals := p.previousToken()
 		value := p.assignment()
 
 		exprVar, ok := value.(*VariableExpr)
@@ -30,7 +30,7 @@ func (p *Parser) equality() Expr {
 	expr := p.comparison()
 
 	for p.match(BangEqual, EqualEqual) {
-		operator := p.previous()
+		operator := p.previousToken()
 		rightOperand := p.comparison()
 
 		expr = &BinaryExpr{expr, operator, rightOperand}
@@ -43,7 +43,7 @@ func (p *Parser) comparison() Expr {
 	expr := p.additionOrSubtraction()
 
 	for p.match(Greater, GreaterEqual, Less, LessEqual) {
-		operator := p.previous()
+		operator := p.previousToken()
 		rightOperand := p.additionOrSubtraction()
 
 		expr = &BinaryExpr{expr, operator, rightOperand}
@@ -56,7 +56,7 @@ func (p *Parser) additionOrSubtraction() Expr {
 	expr := p.multiplicationOrDivision()
 
 	for p.match(Minus, Plus) {
-		operator := p.previous()
+		operator := p.previousToken()
 		rightOperand := p.multiplicationOrDivision()
 
 		expr = &BinaryExpr{expr, operator, rightOperand}
@@ -69,7 +69,7 @@ func (p *Parser) multiplicationOrDivision() Expr {
 	expr := p.unary()
 
 	for p.match(Slash, Star) {
-		operator := p.previous()
+		operator := p.previousToken()
 		rightOperand := p.unary()
 
 		expr = &BinaryExpr{expr, operator, rightOperand}
@@ -80,7 +80,7 @@ func (p *Parser) multiplicationOrDivision() Expr {
 
 func (p *Parser) unary() Expr {
 	if p.match(Bang, Minus) {
-		operator := p.previous()
+		operator := p.previousToken()
 		operand := p.unary()
 
 		return &UnaryExpr{operator, operand}
@@ -101,13 +101,13 @@ func (p *Parser) primary() Expr {
 		return &LiteralExpr{nil}
 
 	case p.match(Numeric):
-		return &LiteralExpr{p.previous().literal}
+		return &LiteralExpr{p.previousToken().literal}
 
 	case p.match(String):
-		return &LiteralExpr{p.previous().lexeme}
+		return &LiteralExpr{p.previousToken().lexeme}
 
 	case p.match(Identifier):
-		return &VariableExpr{p.previous()}
+		return &VariableExpr{p.previousToken()}
 
 	case p.match(LeftParen):
 		expr := p.Expression()
