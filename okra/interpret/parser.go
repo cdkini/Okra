@@ -24,7 +24,7 @@ func NewParser(tokens []Token) *Parser {
 func (p *Parser) Parse() ([]Stmt, bool) {
 	stmts := []Stmt{}
 
-	for !p.end() {
+	for !p.isAtEOF() {
 		p.parse(&stmts)
 	}
 
@@ -56,7 +56,7 @@ func (p *Parser) match(types ...TokenType) bool {
 }
 
 func (p *Parser) check(t TokenType) bool {
-	if p.end() {
+	if p.isAtEOF() {
 		return false
 	} else {
 		return p.peek().tokenType == t
@@ -64,14 +64,14 @@ func (p *Parser) check(t TokenType) bool {
 }
 
 func (p *Parser) advance() Token {
-	if !p.end() {
+	if !p.isAtEOF() {
 		p.current++
 	}
 
 	return p.previousToken()
 }
 
-func (p *Parser) end() bool {
+func (p *Parser) isAtEOF() bool {
 	return p.peek().tokenType == EOF
 }
 
@@ -98,7 +98,7 @@ func (p *Parser) consume(t TokenType, msg string) Token {
 func (p *Parser) synchronize() {
 	p.advance()
 
-	for !p.end() {
+	for !p.isAtEOF() {
 		if p.previousToken().tokenType == Semicolon {
 			return
 		}

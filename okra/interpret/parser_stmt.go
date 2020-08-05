@@ -18,7 +18,7 @@ func (p *Parser) statement() Stmt {
 func (p *Parser) blockStmt() []Stmt {
 	stmts := []Stmt{}
 
-	for !p.check(RightBrace) && !p.end() {
+	for !p.check(RightBrace) && !p.isAtEOF() {
 		stmts = append(stmts, p.declaration())
 	}
 

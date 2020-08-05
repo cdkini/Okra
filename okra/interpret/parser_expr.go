@@ -116,8 +116,8 @@ func (p *Parser) primary() Expr {
 		return &GroupingExpr{expr}
 
 	default:
-		// FIXME: Add OkraError instancereturn nil
-		// panic(&ParseError{p.peek(), "Expect expression"})
-		return nil // TODO: Remove upon fixing method
+		curr := p.currentToken()
+		ReportErr(0, NewOkraError(curr.line, curr.col, "Expect expression"))
+		return nil
 	}
 }

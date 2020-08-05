@@ -67,8 +67,8 @@ func (i *Interpreter) visitUnaryExpr(u UnaryExpr) interface{} {
 
 	switch u.operator.tokenType {
 	case Minus:
-		checkNumericValidity("Runtime Error => \"-\" used on non-numeric operand", operand)
-		return -evaluateNumeric(operand)
+		checkNumericValidity("Invalid usage of \"-\" on non-numeric operand", operand)
+		return -evalNumeric(operand)
 	case Bang:
 		return !isTruthy(operand)
 	}
@@ -81,29 +81,29 @@ func (i *Interpreter) visitBinaryExpr(b BinaryExpr) interface{} {
 
 	switch b.operator.tokenType {
 	case Minus:
-		checkNumericValidity("Runtime Error => \"-\" used on non-numeric operands", leftOperand, rightOperand)
-		return evaluateNumeric(leftOperand) - evaluateNumeric(rightOperand)
+		checkNumericValidity("Invalid usage of \"-\" on non-numeric operands", leftOperand, rightOperand)
+		return evalNumeric(leftOperand) - evalNumeric(rightOperand)
 	case Plus:
-		checkNumericValidity("Runtime Error => \"+\" used on non-numeric operands", leftOperand, rightOperand)
-		return evaluateNumeric(leftOperand) + evaluateNumeric(rightOperand)
+		checkNumericValidity("Invalid usage of \"+\" on non-numeric operands", leftOperand, rightOperand)
+		return evalNumeric(leftOperand) + evalNumeric(rightOperand)
 	case Slash:
-		checkNumericValidity("Runtime Error => \"/\" used on non-numeric operands", leftOperand, rightOperand)
-		return evaluateNumeric(leftOperand) / evaluateNumeric(rightOperand)
+		checkNumericValidity("Invalid usage of \"/\" on non-numeric operands", leftOperand, rightOperand)
+		return evalNumeric(leftOperand) / evalNumeric(rightOperand)
 	case Star:
-		checkNumericValidity("Runtime Error => \"*\" used on non-numeric operands", leftOperand, rightOperand)
-		return evaluateNumeric(leftOperand) * evaluateNumeric(rightOperand)
+		checkNumericValidity("Invalid usage of \"*\" on non-numeric operands", leftOperand, rightOperand)
+		return evalNumeric(leftOperand) * evalNumeric(rightOperand)
 	case Greater:
-		checkNumericValidity("Runtime Error => \">\" used on non-numeric operands", leftOperand, rightOperand)
-		return evaluateNumeric(leftOperand) > evaluateNumeric(rightOperand)
+		checkNumericValidity("Invalid usage of \">\" on non-numeric operands", leftOperand, rightOperand)
+		return evalNumeric(leftOperand) > evalNumeric(rightOperand)
 	case Less:
-		checkNumericValidity("Runtime Error => \"<\" used on non-numeric operands", leftOperand, rightOperand)
-		return evaluateNumeric(leftOperand) < evaluateNumeric(rightOperand)
+		checkNumericValidity("Invalid usage of \"<\" on non-numeric operands", leftOperand, rightOperand)
+		return evalNumeric(leftOperand) < evalNumeric(rightOperand)
 	case GreaterEqual:
-		checkNumericValidity("Runtime Error => \">=\" used on non-numeric operands", leftOperand, rightOperand)
-		return evaluateNumeric(leftOperand) >= evaluateNumeric(rightOperand)
+		checkNumericValidity("Invalid usage of \">=\" on non-numeric operands", leftOperand, rightOperand)
+		return evalNumeric(leftOperand) >= evalNumeric(rightOperand)
 	case LessEqual:
-		checkNumericValidity("Runtime Error => \"<=\" used on non-numeric operands", leftOperand, rightOperand)
-		return evaluateNumeric(leftOperand) <= evaluateNumeric(rightOperand)
+		checkNumericValidity("Invalid usage of \"<=\" on non-numeric operands", leftOperand, rightOperand)
+		return evalNumeric(leftOperand) <= evalNumeric(rightOperand)
 	case EqualEqual:
 		return leftOperand == rightOperand
 	case BangEqual:
@@ -123,18 +123,18 @@ func isTruthy(i interface{}) bool {
 	}
 }
 
-func evaluateNumeric(i interface{}) float64 {
+func evalNumeric(i interface{}) float64 {
 	t, ok := i.(float64)
 	if !ok {
-		ReportErr(-1, NewOkraError(0, 0, "Placeholder"))
+		ReportErr(-1, NewOkraError(0, 0, "Expect numeric"))
 	}
 	return t
 }
 
-func evaluateString(i interface{}) string {
+func evalString(i interface{}) string {
 	t, ok := i.(string)
 	if !ok {
-		ReportErr(-1, NewOkraError(0, 0, "Placeholder"))
+		ReportErr(-1, NewOkraError(0, 0, "Expect string"))
 	}
 	return t
 }
@@ -154,7 +154,7 @@ func cleanPrintOutput(input interface{}) string {
 	var output string
 	switch val := input.(type) {
 	case []int32:
-		output = string(val) // FIXME: Printing int32 vals rather than Unicode characters
+		output = string(val)
 	case float64:
 		output = fmt.Sprintf("%v", val)
 	}
