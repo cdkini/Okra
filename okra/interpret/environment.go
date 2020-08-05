@@ -2,48 +2,36 @@ package interpret
 
 // TODO: Add docstring
 type Environment struct {
-	localScope  map[string]interface{}
-	globalScope map[string]interface{}
+	enclosing *Environment
+	values    map[string]interface{}
 }
 
-func NewEnvironment() *Environment {
-	return &Environment{make(map[string]interface{}), make(map[string]interface{})}
+func NewEnvironment(enclosing *Environment) *Environment {
+	return &Environment{enclosing, make(map[string]interface{})}
 }
 
-func (e *Environment) putVar(identifier string, value interface{}, isLocal bool) {
-	if isLocal {
-		e.localScope[identifier] = value
-	} else {
-		e.globalScope[identifier] = value
-	}
-}
-
-func (e *Environment) getVar(token Token) interface{} {
-	if l, ok := e.localScope[token.lexeme]; !ok {
-		if g, ok := e.globalScope[token.lexeme]; !ok {
-			ReportErr(-1, NewOkraError(token.line, token.col, "Undefined variable '"+token.lexeme+"'"))
-		} else {
-			return g
-		}
-		return l
-	}
-	return nil
+func (e *Environment) defineVar(identifier string, value interface{}) {
+	e.values[identifier] = value
 }
 
 func (e *Environment) assignVar(token Token, value interface{}) {
-	if _, ok := e.localScope[token.lexeme]; ok {
-		e.localScope[token.lexeme] = value
+	if e.enclosing != nil {
+		e.enclosing.assignVar(token, value)
 		return
 	}
-	if _, ok := e.globalScope[token.lexeme]; ok {
-		e.globalScope[token.lexeme] = value
-		return
+	if _, ok := e.values[token.lexeme]; !ok {
+		ReportErr(-1, NewOkraError(token.col, token.line, "Variable not declared prior to usage"))
 	}
-	ReportErr(-1, NewOkraError(token.col, token.line, "Variable not declared prior to usage"))
+	e.values[token.lexeme] = value
 }
 
-func (e *Environment) clearLocalScope() {
-	for k := range e.localScope {
-		delete(e.localScope, k)
+func (e *Environment) getVar(token Token) interface{} {
+	if e.enclosing != nil {
+		return e.enclosing.getVar(token)
 	}
+	val, ok := e.values[token.lexeme]
+	if !ok {
+		ReportErr(-1, NewOkraError(token.line, token.col, "Undefined variable '"+token.lexeme+"'"))
+	}
+	return val
 }

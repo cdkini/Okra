@@ -7,13 +7,12 @@ import (
 // An Interpreter takes in a given expression and evaluates it into its most basic literal form.
 // Interpreter inherits from the Visitor interface, allowing it interact with all Expr types.
 type Interpreter struct {
-	stmts        []Stmt
-	env          Environment
-	inLocalScope bool
+	stmts []Stmt
+	env   *Environment
 }
 
 func NewInterpreter(stmts []Stmt) *Interpreter {
-	return &Interpreter{stmts, *NewEnvironment(), false}
+	return &Interpreter{stmts, NewEnvironment(nil)}
 }
 
 // TODO: Update docstring after changes from stmt
@@ -25,9 +24,9 @@ func (i *Interpreter) Interpret() {
 
 func (i *Interpreter) visitVariableStmt(stmt VariableStmt) {
 	if stmt.expr == nil {
-		i.env.putVar(stmt.identifier.lexeme, nil, i.inLocalScope)
+		i.env.defineVar(stmt.identifier.lexeme, nil)
 	}
-	i.env.putVar(stmt.identifier.lexeme, stmt.expr.accept(i), i.inLocalScope)
+	i.env.defineVar(stmt.identifier.lexeme, stmt.expr.accept(i))
 }
 
 func (i *Interpreter) visitExpressionStmt(stmt ExpressionStmt) {
@@ -41,7 +40,7 @@ func (i *Interpreter) visitPrintStmt(stmt PrintStmt) {
 
 func (i *Interpreter) visitAssignmentExpr(a AssignmentExpr) interface{} {
 	value := a.val.accept(i)
-	i.env.putVar(a.identifier.lexeme, value, i.inLocalScope)
+	i.env.defineVar(a.identifier.lexeme, value)
 	return value
 }
 
