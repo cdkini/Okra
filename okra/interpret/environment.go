@@ -20,7 +20,7 @@ func (e *Environment) assignVar(token Token, value interface{}) {
 		return
 	}
 	if _, ok := e.values[token.lexeme]; !ok {
-		ReportErr(NewOkraError(token.col, token.line, "Variable not declared prior to usage"))
+		ReportErr(token.col, token.line, "Variable not declared prior to usage")
 	}
 	e.values[token.lexeme] = value
 }
@@ -31,7 +31,7 @@ func (e *Environment) getVar(token Token) interface{} {
 	}
 	val, ok := e.values[token.lexeme]
 	if !ok {
-		ReportErr(NewOkraError(token.line, token.col, "Undefined variable '"+token.lexeme+"'"))
+		ReportErr(token.line, token.col, "Undefined variable '"+token.lexeme+"'")
 	}
 	return val
 }

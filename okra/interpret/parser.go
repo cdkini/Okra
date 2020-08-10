@@ -90,7 +90,7 @@ func (p *Parser) previousToken() Token {
 func (p *Parser) consume(t TokenType, msg string) Token {
 	if !p.check(t) {
 		curr := p.currentToken()
-		ReportErr(0, NewOkraError(curr.line, curr.col, msg))
+		ReportErr(curr.line, curr.col, msg)
 	}
 	return p.advance()
 }

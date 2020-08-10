@@ -110,13 +110,13 @@ func (s *Scanner) scan() {
 			s.addToken(And, nil)
 			break
 		}
-		ReportErr(NewOkraError(s.line, s.col, "Invalid character"))
+		ReportErr(s.line, s.col, "Invalid character")
 	case '|':
 		if s.match('|') {
 			s.addToken(Or, nil)
 			break
 		}
-		ReportErr(NewOkraError(s.line, s.col, "Invalid character"))
+		ReportErr(s.line, s.col, "Invalid character")
 
 	// Comments
 	case '/':
@@ -138,7 +138,7 @@ func (s *Scanner) scan() {
 		} else if unicode.IsLetter(c) {
 			s.addIdentifierToken()
 		} else {
-			ReportErr(NewOkraError(s.line, s.col, "Invalid character"))
+			ReportErr(s.line, s.col, "Invalid character")
 		}
 	}
 }
@@ -186,7 +186,7 @@ func (s *Scanner) addStringToken() {
 	}
 
 	if s.curr >= len(s.source) {
-		ReportErr(NewOkraError(s.line, s.col, "Unterminated character"))
+		ReportErr(s.line, s.col, "Unterminated character")
 	}
 
 	s.advance()
@@ -208,7 +208,7 @@ func (s *Scanner) addNumericToken() {
 	}
 
 	num, err := strconv.ParseFloat(string(s.source[s.start:s.curr]), 64)
-	CheckErr(err, NewOkraError(s.line, s.col, "Could not scan numeric"))
+	CheckErr(err, s.line, s.col, "Could not scan numeric")
 	s.addToken(Numeric, num)
 }
 

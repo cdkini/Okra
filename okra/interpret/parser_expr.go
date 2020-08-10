@@ -16,7 +16,7 @@ func (p *Parser) assignment() Expr {
 		}
 
 		curr := p.currentToken()
-		ReportErr(NewOkraError(curr.line, curr.col, "Invalid assignment target"))
+		ReportErr(curr.line, curr.col, "Invalid assignment target")
 	}
 
 	return expr
@@ -113,7 +113,7 @@ func (p *Parser) primary() Expr {
 
 	default:
 		curr := p.currentToken()
-		ReportErr(NewOkraError(curr.line, curr.col, "Expect expression"))
+		ReportErr(curr.line, curr.col, "Expect expression")
 		return nil
 	}
 }

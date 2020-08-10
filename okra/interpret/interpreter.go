@@ -128,7 +128,7 @@ func isTruthy(i interface{}) bool {
 func evalNumeric(i interface{}) float64 {
 	t, ok := i.(float64)
 	if !ok {
-		ReportErr(NewOkraError(0, 0, "Expect numeric"))
+		ReportErr(0, 0, "Expect numeric")
 	}
 	return t
 }
@@ -136,7 +136,7 @@ func evalNumeric(i interface{}) float64 {
 func evalString(i interface{}) string {
 	t, ok := i.(string)
 	if !ok {
-		ReportErr(NewOkraError(0, 0, "Expect string"))
+		ReportErr(0, 0, "Expect string")
 	}
 	return t
 }
@@ -147,7 +147,7 @@ func checkNumericValidity(msg string, i ...interface{}) {
 		case float64:
 			continue
 		default:
-			ReportErr(NewOkraError(0, 0, msg))
+			ReportErr(0, 0, msg)
 		}
 	}
 }
