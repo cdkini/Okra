@@ -22,6 +22,9 @@ func (i *Interpreter) Interpret() {
 	}
 }
 
+// TODO: Implement method
+func (i *Interpreter) visitBlockStmt(stmt BlockStmt) {}
+
 func (i *Interpreter) visitVariableStmt(stmt VariableStmt) {
 	if stmt.expr == nil {
 		i.env.defineVar(stmt.identifier.lexeme, nil)
@@ -125,7 +128,7 @@ func isTruthy(i interface{}) bool {
 func evalNumeric(i interface{}) float64 {
 	t, ok := i.(float64)
 	if !ok {
-		ReportErr(-1, NewOkraError(0, 0, "Expect numeric"))
+		ReportErr(NewOkraError(0, 0, "Expect numeric"))
 	}
 	return t
 }
@@ -133,7 +136,7 @@ func evalNumeric(i interface{}) float64 {
 func evalString(i interface{}) string {
 	t, ok := i.(string)
 	if !ok {
-		ReportErr(-1, NewOkraError(0, 0, "Expect string"))
+		ReportErr(NewOkraError(0, 0, "Expect string"))
 	}
 	return t
 }
@@ -144,7 +147,7 @@ func checkNumericValidity(msg string, i ...interface{}) {
 		case float64:
 			continue
 		default:
-			ReportErr(-1, NewOkraError(0, 0, msg))
+			ReportErr(NewOkraError(0, 0, msg))
 		}
 	}
 }

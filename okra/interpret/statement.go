@@ -15,6 +15,7 @@ type StmtVisitor interface {
 	visitExpressionStmt(ExpressionStmt)
 	visitPrintStmt(PrintStmt)
 	visitVariableStmt(VariableStmt)
+	visitBlockStmt(BlockStmt)
 }
 
 // TODO: Add docstring
@@ -55,4 +56,16 @@ func (v VariableStmt) accept(vst StmtVisitor) {
 
 func (v VariableStmt) GetType() string {
 	return fmt.Sprintf("%T", v)
+}
+
+type BlockStmt struct {
+	stmts []Stmt
+}
+
+func (b BlockStmt) accept(vst StmtVisitor) {
+	vst.visitBlockStmt(b)
+}
+
+func (b BlockStmt) GetType() string {
+	return fmt.Sprintf("%T", b)
 }

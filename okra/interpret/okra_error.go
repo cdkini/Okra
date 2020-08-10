@@ -28,9 +28,9 @@ func (e OkraError) Error() string {
 //         err  [error]     - The Go error produced by another function. Erroneous if not nil
 //         oe   [OkraError] - Returned to the user with the location and circumstances around the error
 //   Returns: nil
-func CheckErr(code int, err error, oe OkraError) {
+func CheckErr(err error, oe OkraError) {
 	if err != nil {
-		ReportErr(code, oe)
+		ReportErr(oe)
 	}
 }
 
@@ -38,7 +38,7 @@ func CheckErr(code int, err error, oe OkraError) {
 //   Args: code [int]       - The error code that best fits the situation (as described in okradocs.io/errors) // TODO: Update URL of docs
 //         oe   [OkraError] - Returned to the user with the location and circumstances around the error
 //   Returns: nil
-func ReportErr(code int, oe OkraError) {
+func ReportErr(oe OkraError) {
 	fmt.Println(oe.Error())
-	os.Exit(code)
+	os.Exit(-1)
 }

@@ -20,7 +20,7 @@ func main() {
 
 func runFile(path string) {
 	bytes, err := ioutil.ReadFile(path)
-	interpret.CheckErr(-1, err, interpret.NewOkraError(0, 0, "Path not found"))
+	interpret.CheckErr(err, interpret.NewOkraError(0, 0, "Path not found"))
 	scanner := interpret.NewScanner(string(bytes))
 	tokens := scanner.ScanTokens()
 	parser := interpret.NewParser(tokens)

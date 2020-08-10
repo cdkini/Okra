@@ -1,7 +1,5 @@
 package interpret
 
-import "fmt"
-
 func (p *Parser) Expression() Expr {
 	return p.assignment()
 }
@@ -10,7 +8,6 @@ func (p *Parser) assignment() Expr {
 	expr := p.equality()
 
 	if p.match(Equal) {
-		equals := p.previousToken()
 		value := p.assignment()
 
 		exprVar, ok := value.(*VariableExpr)
@@ -18,9 +15,8 @@ func (p *Parser) assignment() Expr {
 			return &AssignmentExpr{exprVar.identifier, value}
 		}
 
-		// FIXME: Add OkraError instance
-		// panic(&ParseError{equals, "Invalid assignment target"})
-		fmt.Print(equals) // TODO: Remove upon fixing method
+		curr := p.currentToken()
+		ReportErr(NewOkraError(curr.line, curr.col, "Invalid assignment target"))
 	}
 
 	return expr
@@ -117,7 +113,7 @@ func (p *Parser) primary() Expr {
 
 	default:
 		curr := p.currentToken()
-		ReportErr(0, NewOkraError(curr.line, curr.col, "Expect expression"))
+		ReportErr(NewOkraError(curr.line, curr.col, "Expect expression"))
 		return nil
 	}
 }

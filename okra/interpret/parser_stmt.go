@@ -3,9 +3,9 @@ package interpret
 // FIXME: Add block statement
 func (p *Parser) statement() Stmt {
 	switch {
-	// TODO: Add block statement support
-	// case p.match(LeftBrace):
-	// 	return &StmtBlock{p.blockStmt()}
+	case p.match(LeftBrace):
+		stmts := p.blockStmt()
+		return &BlockStmt{stmts}
 
 	case p.match(Print):
 		return p.printStmt()
