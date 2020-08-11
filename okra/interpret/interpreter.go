@@ -18,50 +18,82 @@ func NewInterpreter(stmts []Stmt) *Interpreter {
 // TODO: Update docstring after changes from stmt
 func (i *Interpreter) Interpret() {
 	for _, stmt := range i.stmts {
-		stmt.accept(i)
+		i.evalStmt(stmt)
 	}
 }
 
-func (i *Interpreter) visitBlockStmt(stmt BlockStmt) {
+func (i *Interpreter) evalStmt(stmt Stmt) {
+	switch t := stmt.(type) {
+	case *ExpressionStmt:
+		i.interpretExpressionStmt(t)
+	case *BlockStmt:
+		i.interpretBlockStmt(t)
+	case *PrintStmt:
+		i.interpretPrintStmt(t)
+	case *VariableStmt:
+		i.interpretVariableStmt(t)
+	}
+}
+
+func (i *Interpreter) evalExpr(expr Expr) interface{} {
+	switch t := expr.(type) {
+	case *AssignmentExpr:
+		return i.interpretAssignmentExpr(t)
+	case *BinaryExpr:
+		return i.interpretBinaryExpr(t)
+	case *GroupingExpr:
+		return i.interpretGroupingExpr(t)
+	case *LiteralExpr:
+		return i.interpretLiteralExpr(t)
+	case *UnaryExpr:
+		return i.interpretUnaryExpr(t)
+	case *VariableExpr:
+		return i.interpretVariableExpr(t)
+	default:
+		return nil
+	}
+}
+
+func (i *Interpreter) interpretBlockStmt(stmt *BlockStmt) {
 	prevEnv := i.env
 
 	i.env = NewEnvironment(prevEnv)
 	defer func() { i.env = prevEnv }()
 
 	for _, s := range stmt.stmts {
-		s.accept(i)
+		i.evalStmt(s)
 	}
 }
 
-func (i *Interpreter) visitVariableStmt(stmt VariableStmt) {
+func (i *Interpreter) interpretVariableStmt(stmt *VariableStmt) {
 	var val interface{}
 	if stmt.expr != nil {
-		val = stmt.expr.accept(i)
+		val = i.evalExpr(stmt.expr)
 	}
 
 	i.env.define(stmt.identifier.lexeme, val)
 }
 
-func (i *Interpreter) visitExpressionStmt(stmt ExpressionStmt) {
-	stmt.expr.accept(i)
+func (i *Interpreter) interpretExpressionStmt(stmt *ExpressionStmt) {
+	i.evalExpr(stmt.expr)
 }
 
-func (i *Interpreter) visitPrintStmt(stmt PrintStmt) {
-	value := stmt.expr.accept(i)
+func (i *Interpreter) interpretPrintStmt(stmt *PrintStmt) {
+	value := i.evalExpr(stmt.expr)
 	fmt.Println(value)
 }
 
-func (i *Interpreter) visitAssignmentExpr(a AssignmentExpr) interface{} {
-	value := a.val.accept(i)
+func (i *Interpreter) interpretAssignmentExpr(a *AssignmentExpr) interface{} {
+	value := i.evalExpr(a.val)
 	i.env.assign(a.identifier, value)
 	return value
 }
 
-func (i *Interpreter) visitVariableExpr(v VariableExpr) interface{} {
+func (i *Interpreter) interpretVariableExpr(v *VariableExpr) interface{} {
 	return i.env.get(v.identifier)
 }
 
-func (i *Interpreter) visitLiteralExpr(l LiteralExpr) interface{} {
+func (i *Interpreter) interpretLiteralExpr(l *LiteralExpr) interface{} {
 	if str, ok := l.val.(string); ok {
 		return str
 	} else if num, ok := l.val.(float64); ok {
@@ -70,12 +102,12 @@ func (i *Interpreter) visitLiteralExpr(l LiteralExpr) interface{} {
 	return nil
 }
 
-func (i *Interpreter) visitGroupingExpr(g GroupingExpr) interface{} {
-	return g.expression.accept(i)
+func (i *Interpreter) interpretGroupingExpr(g *GroupingExpr) interface{} {
+	return i.evalExpr(g.expression)
 }
 
-func (i *Interpreter) visitUnaryExpr(u UnaryExpr) interface{} {
-	operand := u.operand.accept(i)
+func (i *Interpreter) interpretUnaryExpr(u *UnaryExpr) interface{} {
+	operand := i.evalExpr(u.operand)
 
 	switch u.operator.tokenType {
 	case Minus:
@@ -87,9 +119,9 @@ func (i *Interpreter) visitUnaryExpr(u UnaryExpr) interface{} {
 	return nil
 }
 
-func (i *Interpreter) visitBinaryExpr(b BinaryExpr) interface{} {
-	leftOperand := b.leftOperand.accept(i)
-	rightOperand := b.rightOperand.accept(i)
+func (i *Interpreter) interpretBinaryExpr(b *BinaryExpr) interface{} {
+	leftOperand := i.evalExpr(b.leftOperand)
+	rightOperand := i.evalExpr(b.rightOperand)
 
 	switch b.operator.tokenType {
 	case Minus:

@@ -8,18 +8,7 @@ import (
 // structs that inherit from Expr to interact with one another, the ExprVisitor design pattern is used.
 // TODO: Explain ExprVisitor design pattern better!
 type Expr interface {
-	accept(ExprVisitor) interface{} // TODO: Explain ExprVisitor design pattern
-	GetType() string                // TODO: Implement type for Expr and Stmts
-}
-
-// TODO: Explain ExprVisitor design pattern
-type ExprVisitor interface {
-	visitUnaryExpr(UnaryExpr) interface{}
-	visitBinaryExpr(BinaryExpr) interface{}
-	visitGroupingExpr(GroupingExpr) interface{}
-	visitLiteralExpr(LiteralExpr) interface{}
-	visitVariableExpr(VariableExpr) interface{}
-	visitAssignmentExpr(AssignmentExpr) interface{}
+	GetType() string // TODO: Implement type for Expr and Stmts
 }
 
 // A UnaryExpr expression is one that applies a single operator to a single operand.
@@ -27,10 +16,6 @@ type ExprVisitor interface {
 type UnaryExpr struct {
 	operator Token
 	operand  Expr
-}
-
-func (u UnaryExpr) accept(vst ExprVisitor) interface{} {
-	return vst.visitUnaryExpr(u)
 }
 
 func (u UnaryExpr) GetType() string {
@@ -45,10 +30,6 @@ type BinaryExpr struct {
 	rightOperand Expr
 }
 
-func (b BinaryExpr) accept(vst ExprVisitor) interface{} {
-	return vst.visitBinaryExpr(b)
-}
-
 func (b BinaryExpr) GetType() string {
 	return fmt.Sprintf("%T", b)
 }
@@ -57,10 +38,6 @@ func (b BinaryExpr) GetType() string {
 // GroupingExpr inherits from the Expr interface in order to utilize the ExprVisitor design pattern.
 type GroupingExpr struct {
 	expression Expr
-}
-
-func (g GroupingExpr) accept(vst ExprVisitor) interface{} {
-	return vst.visitGroupingExpr(g)
 }
 
 func (g GroupingExpr) GetType() string {
@@ -73,10 +50,6 @@ type LiteralExpr struct {
 	val interface{}
 }
 
-func (l LiteralExpr) accept(vst ExprVisitor) interface{} {
-	return vst.visitLiteralExpr(l)
-}
-
 func (l LiteralExpr) GetType() string {
 	return fmt.Sprintf("%T", l)
 }
@@ -84,10 +57,6 @@ func (l LiteralExpr) GetType() string {
 // TODO: Add docstring
 type VariableExpr struct {
 	identifier Token
-}
-
-func (v VariableExpr) accept(vst ExprVisitor) interface{} {
-	return vst.visitVariableExpr(v)
 }
 
 func (v VariableExpr) GetType() string {
@@ -98,10 +67,6 @@ func (v VariableExpr) GetType() string {
 type AssignmentExpr struct {
 	identifier Token
 	val        Expr
-}
-
-func (a AssignmentExpr) accept(vst ExprVisitor) interface{} {
-	return vst.visitAssignmentExpr(a)
 }
 
 func (a AssignmentExpr) GetType() string {
