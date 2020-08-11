@@ -39,7 +39,7 @@ func (i *Interpreter) visitVariableStmt(stmt VariableStmt) {
 		val = stmt.expr.accept(i)
 	}
 
-	i.env.defineVar(stmt.identifier.lexeme, val)
+	i.env.define(stmt.identifier.lexeme, val)
 }
 
 func (i *Interpreter) visitExpressionStmt(stmt ExpressionStmt) {
@@ -53,12 +53,12 @@ func (i *Interpreter) visitPrintStmt(stmt PrintStmt) {
 
 func (i *Interpreter) visitAssignmentExpr(a AssignmentExpr) interface{} {
 	value := a.val.accept(i)
-	i.env.assignVar(a.identifier, value)
+	i.env.assign(a.identifier, value)
 	return value
 }
 
 func (i *Interpreter) visitVariableExpr(v VariableExpr) interface{} {
-	return i.env.getVar(v.identifier)
+	return i.env.get(v.identifier)
 }
 
 func (i *Interpreter) visitLiteralExpr(l LiteralExpr) interface{} {

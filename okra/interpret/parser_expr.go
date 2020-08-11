@@ -8,6 +8,7 @@ func (p *Parser) assignment() Expr {
 	expr := p.equality()
 
 	if p.match(Equal) {
+		prev := p.prevToken()
 		value := p.assignment()
 
 		switch t := expr.(type) {
@@ -15,7 +16,7 @@ func (p *Parser) assignment() Expr {
 			return &AssignmentExpr{t.identifier, value}
 		default:
 			curr := p.currToken()
-			ReportErr(curr.line, curr.col, "Invalid assignment target")
+			ReportErr(curr.line, curr.col, "Invalid assignment target: '"+prev.lexeme+"'")
 		}
 
 	}
