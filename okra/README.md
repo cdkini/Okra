@@ -1,4 +1,4 @@
 TO-DO:
-- Write parser err tests
-- Fix parser error reporting
+FIXME:
+- FIX BLOCK STATEMENTS AND SCOPING!
 - Fix line and column tracking from scanner

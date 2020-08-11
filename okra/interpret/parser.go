@@ -68,7 +68,7 @@ func (p *Parser) advance() Token {
 		p.current++
 	}
 
-	return p.previousToken()
+	return p.prevToken()
 }
 
 func (p *Parser) isAtEOF() bool {
@@ -79,17 +79,17 @@ func (p *Parser) peek() Token {
 	return p.tokens[p.current]
 }
 
-func (p *Parser) currentToken() Token {
+func (p *Parser) currToken() Token {
 	return p.tokens[p.current]
 }
 
-func (p *Parser) previousToken() Token {
+func (p *Parser) prevToken() Token {
 	return p.tokens[p.current-1]
 }
 
 func (p *Parser) consume(t TokenType, msg string) Token {
 	if !p.check(t) {
-		curr := p.currentToken()
+		curr := p.currToken()
 		ReportErr(curr.line, curr.col, msg)
 	}
 	return p.advance()
@@ -99,7 +99,7 @@ func (p *Parser) synchronize() {
 	p.advance()
 
 	for !p.isAtEOF() {
-		if p.previousToken().tokenType == Semicolon {
+		if p.prevToken().tokenType == Semicolon {
 			return
 		}
 

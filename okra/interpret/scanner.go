@@ -62,16 +62,16 @@ func (s *Scanner) scan() {
 		s.addToken(RightParen, nil)
 		break
 	case '{':
-		s.addToken(LeftBracket, nil)
-		break
-	case '}':
-		s.addToken(RightBracket, nil)
-		break
-	case '[':
 		s.addToken(LeftBrace, nil)
 		break
-	case ']':
+	case '}':
 		s.addToken(RightBrace, nil)
+		break
+	case '[':
+		s.addToken(LeftBracket, nil)
+		break
+	case ']':
+		s.addToken(RightBracket, nil)
 		break
 	case ',':
 		s.addToken(Comma, nil)

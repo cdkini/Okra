@@ -22,14 +22,24 @@ func (i *Interpreter) Interpret() {
 	}
 }
 
-// TODO: Implement method
-func (i *Interpreter) visitBlockStmt(stmt BlockStmt) {}
+func (i *Interpreter) visitBlockStmt(stmt BlockStmt) {
+	prevEnv := i.env
+
+	i.env = NewEnvironment(prevEnv)
+	defer func() { i.env = prevEnv }()
+
+	for _, s := range stmt.stmts {
+		s.accept(i)
+	}
+}
 
 func (i *Interpreter) visitVariableStmt(stmt VariableStmt) {
-	if stmt.expr == nil {
-		i.env.defineVar(stmt.identifier.lexeme, nil)
+	var val interface{}
+	if stmt.expr != nil {
+		val = stmt.expr.accept(i)
 	}
-	i.env.defineVar(stmt.identifier.lexeme, stmt.expr.accept(i))
+
+	i.env.defineVar(stmt.identifier.lexeme, val)
 }
 
 func (i *Interpreter) visitExpressionStmt(stmt ExpressionStmt) {
@@ -43,7 +53,7 @@ func (i *Interpreter) visitPrintStmt(stmt PrintStmt) {
 
 func (i *Interpreter) visitAssignmentExpr(a AssignmentExpr) interface{} {
 	value := a.val.accept(i)
-	i.env.defineVar(a.identifier.lexeme, value)
+	i.env.assignVar(a.identifier, value)
 	return value
 }
 

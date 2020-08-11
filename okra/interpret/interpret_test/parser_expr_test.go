@@ -65,7 +65,7 @@ func TestParseGroupingExpr(t *testing.T) {
 		output string
 	}{
 		{"(1 + 2)", "interpret.GroupingExpr"},
-		{"(()()())", "interpret.GroupingExpr"},
+		{"((1 + 2) * (3 / 4))", "interpret.GroupingExpr"},
 	}
 
 	for _, test := range table {

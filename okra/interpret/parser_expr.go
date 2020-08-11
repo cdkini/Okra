@@ -10,13 +10,14 @@ func (p *Parser) assignment() Expr {
 	if p.match(Equal) {
 		value := p.assignment()
 
-		exprVar, ok := value.(*VariableExpr)
-		if ok {
-			return &AssignmentExpr{exprVar.identifier, value}
+		switch t := expr.(type) {
+		case *VariableExpr:
+			return &AssignmentExpr{t.identifier, value}
+		default:
+			curr := p.currToken()
+			ReportErr(curr.line, curr.col, "Invalid assignment target")
 		}
 
-		curr := p.currentToken()
-		ReportErr(curr.line, curr.col, "Invalid assignment target")
 	}
 
 	return expr
@@ -26,7 +27,7 @@ func (p *Parser) equality() Expr {
 	expr := p.comparison()
 
 	for p.match(BangEqual, EqualEqual) {
-		operator := p.previousToken()
+		operator := p.prevToken()
 		rightOperand := p.comparison()
 
 		expr = &BinaryExpr{expr, operator, rightOperand}
@@ -39,7 +40,7 @@ func (p *Parser) comparison() Expr {
 	expr := p.additionOrSubtraction()
 
 	for p.match(Greater, GreaterEqual, Less, LessEqual) {
-		operator := p.previousToken()
+		operator := p.prevToken()
 		rightOperand := p.additionOrSubtraction()
 
 		expr = &BinaryExpr{expr, operator, rightOperand}
@@ -52,7 +53,7 @@ func (p *Parser) additionOrSubtraction() Expr {
 	expr := p.multiplicationOrDivision()
 
 	for p.match(Minus, Plus) {
-		operator := p.previousToken()
+		operator := p.prevToken()
 		rightOperand := p.multiplicationOrDivision()
 
 		expr = &BinaryExpr{expr, operator, rightOperand}
@@ -65,7 +66,7 @@ func (p *Parser) multiplicationOrDivision() Expr {
 	expr := p.unary()
 
 	for p.match(Slash, Star) {
-		operator := p.previousToken()
+		operator := p.prevToken()
 		rightOperand := p.unary()
 
 		expr = &BinaryExpr{expr, operator, rightOperand}
@@ -76,7 +77,7 @@ func (p *Parser) multiplicationOrDivision() Expr {
 
 func (p *Parser) unary() Expr {
 	if p.match(Bang, Minus) {
-		operator := p.previousToken()
+		operator := p.prevToken()
 		operand := p.unary()
 
 		return &UnaryExpr{operator, operand}
@@ -97,13 +98,13 @@ func (p *Parser) primary() Expr {
 		return &LiteralExpr{nil}
 
 	case p.match(Numeric):
-		return &LiteralExpr{p.previousToken().literal}
+		return &LiteralExpr{p.prevToken().literal}
 
 	case p.match(String):
-		return &LiteralExpr{p.previousToken().lexeme}
+		return &LiteralExpr{p.prevToken().lexeme}
 
 	case p.match(Identifier):
-		return &VariableExpr{p.previousToken()}
+		return &VariableExpr{p.prevToken()}
 
 	case p.match(LeftParen):
 		expr := p.Expression()
@@ -112,7 +113,7 @@ func (p *Parser) primary() Expr {
 		return &GroupingExpr{expr}
 
 	default:
-		curr := p.currentToken()
+		curr := p.currToken()
 		ReportErr(curr.line, curr.col, "Expect expression")
 		return nil
 	}

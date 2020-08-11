@@ -48,11 +48,11 @@ func TestScanSingleCharTokens(t *testing.T) {
 		output []TokenType
 	}{
 		{"(", []TokenType{LeftParen, EOF}},
-		{"{", []TokenType{LeftBracket, EOF}},
-		{"[", []TokenType{LeftBrace, EOF}},
+		{"{", []TokenType{LeftBrace, EOF}},
+		{"[", []TokenType{LeftBracket, EOF}},
 		{")", []TokenType{RightParen, EOF}},
-		{"}", []TokenType{RightBracket, EOF}},
-		{"]", []TokenType{RightBrace, EOF}},
+		{"}", []TokenType{RightBrace, EOF}},
+		{"]", []TokenType{RightBracket, EOF}},
 		{",", []TokenType{Comma, EOF}},
 		{".", []TokenType{Dot, EOF}},
 		{"-", []TokenType{Minus, EOF}},

@@ -10,10 +10,10 @@ func TestParseError(t *testing.T) {
 		input  string
 		output bool
 	}{
-		{"1 + 1 == 2", false},
-		{"print \"Hello, World!\"", false},
-		{"print a", false},
-		{"print a", true}, // FIXME: Both true and false return the same answer here
+		{"1 + 1 == 2;", false},
+		{"print \"Hello, World!\";", false},
+		{"print a;", false},
+		// {"print a;", true},
 	}
 
 	for _, test := range table {
