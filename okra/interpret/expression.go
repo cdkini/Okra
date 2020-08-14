@@ -72,3 +72,13 @@ type AssignmentExpr struct {
 func (a AssignmentExpr) GetType() string {
 	return fmt.Sprintf("%T", a)
 }
+
+type LogicalExpr struct {
+	leftOperand  Expr
+	operator     Token
+	rightOperand Expr
+}
+
+func (l LogicalExpr) GetType() string {
+	return fmt.Sprintf("%T", l)
+}

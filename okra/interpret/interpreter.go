@@ -32,6 +32,10 @@ func (i *Interpreter) evalStmt(stmt Stmt) {
 		i.interpretPrintStmt(t)
 	case *VariableStmt:
 		i.interpretVariableStmt(t)
+	case *IfStmt:
+		i.interpretIfStmt(t)
+	default:
+		fmt.Println(t.GetType())
 	}
 }
 
@@ -49,8 +53,18 @@ func (i *Interpreter) evalExpr(expr Expr) interface{} {
 		return i.interpretUnaryExpr(t)
 	case *VariableExpr:
 		return i.interpretVariableExpr(t)
+	case *LogicalExpr:
+		return i.interpretLogicalExpr(t)
 	default:
 		return nil
+	}
+}
+
+func (i *Interpreter) interpretIfStmt(stmt *IfStmt) {
+	if isTruthy(i.evalExpr(stmt.condition)) {
+		i.evalStmt(stmt.thenBranch)
+	} else if stmt.elseBranch != nil {
+		i.evalStmt(stmt.elseBranch)
 	}
 }
 
@@ -81,6 +95,22 @@ func (i *Interpreter) interpretExpressionStmt(stmt *ExpressionStmt) {
 func (i *Interpreter) interpretPrintStmt(stmt *PrintStmt) {
 	value := i.evalExpr(stmt.expr)
 	fmt.Println(value)
+}
+
+func (i *Interpreter) interpretLogicalExpr(l *LogicalExpr) interface{} {
+	left := i.evalExpr(l.leftOperand)
+
+	switch l.operator.tokenType {
+	case Or:
+		if isTruthy(left) {
+			return left
+		}
+	case And:
+		if !isTruthy(left) {
+			return left
+		}
+	}
+	return i.evalExpr(l.rightOperand)
 }
 
 func (i *Interpreter) interpretAssignmentExpr(a *AssignmentExpr) interface{} {

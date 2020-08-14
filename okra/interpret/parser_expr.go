@@ -5,7 +5,7 @@ func (p *Parser) Expression() Expr {
 }
 
 func (p *Parser) assignment() Expr {
-	expr := p.equality()
+	expr := p.or()
 
 	if p.match(Equal) {
 		prev := p.prevToken()
@@ -21,6 +21,27 @@ func (p *Parser) assignment() Expr {
 
 	}
 
+	return expr
+}
+
+func (p *Parser) or() Expr {
+	expr := p.and()
+	for p.match(Or) {
+		operator := p.prevToken()
+		rightOperand := p.and()
+		expr = &LogicalExpr{expr, operator, rightOperand}
+	}
+	return expr
+}
+
+func (p *Parser) and() Expr {
+	expr := p.equality()
+
+	for p.match(And) {
+		operator := p.prevToken()
+		rightOperand := p.equality()
+		expr = &LogicalExpr{expr, operator, rightOperand}
+	}
 	return expr
 }
 

@@ -44,3 +44,13 @@ type BlockStmt struct {
 func (b BlockStmt) GetType() string {
 	return fmt.Sprintf("%T", b)
 }
+
+type IfStmt struct {
+	condition  Expr
+	thenBranch Stmt
+	elseBranch Stmt
+}
+
+func (i IfStmt) GetType() string {
+	return fmt.Sprintf("%T", i)
+}

@@ -1,8 +1,10 @@
 package interpret
 
-// FIXME: Add block statement
 func (p *Parser) statement() Stmt {
 	switch {
+
+	case p.match(If):
+		return p.ifStmt()
 	case p.match(LeftBrace):
 		stmts := p.blockStmt()
 		return &BlockStmt{stmts}
@@ -13,6 +15,20 @@ func (p *Parser) statement() Stmt {
 	default:
 		return p.expressionStmt()
 	}
+}
+
+func (p *Parser) ifStmt() Stmt {
+	p.consume(LeftParen, "Expect '(' after 'if'.")
+	condition := p.Expression()
+	p.consume(RightParen, "Expect ')' after condition.")
+
+	thenBranch := p.statement()
+	var elseBranch Stmt
+	if p.match(Else) {
+		elseBranch = p.statement()
+	}
+
+	return &IfStmt{condition, thenBranch, elseBranch}
 }
 
 func (p *Parser) blockStmt() []Stmt {
