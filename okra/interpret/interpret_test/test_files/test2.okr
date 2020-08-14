@@ -1,5 +1,0 @@
-// Variable assignment and mathematical operations
-
-var x = 1;
-var y = 2;
-print x + y;

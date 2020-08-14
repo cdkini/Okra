@@ -1,6 +1,0 @@
-// Basic struct declaration
-
-struct Person {
-    Person() {
-    }
-}
