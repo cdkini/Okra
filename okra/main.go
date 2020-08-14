@@ -12,10 +12,25 @@ import (
 )
 
 func main() {
-	if len(os.Args) != 2 || !strings.HasSuffix(os.Args[1], ".okr") {
-		interpret.ReportErr(0, 0, "Must use \"okra [script]\" to run a .okr file")
+	if len(os.Args) != 3 || !(os.Args[1] == "run" || os.Args[1] == "fmt") {
+		interpret.ReportErr(0, 0, "Must use one of the following:\n"+
+			"  ~ 'okra run [script]' => Runs the Okra interpreter on a .okr file \n"+
+			"  ~ 'okra fmt [script]' => Runs the Okra formatter on a .okr file")
 	}
-	runFile(os.Args[1])
+
+	if os.Args[1] == "run" {
+		if !strings.HasSuffix(os.Args[2], ".okr") {
+			interpret.ReportErr(0, 0, "File type not supported; please pass a .okr file")
+		}
+		runFile(os.Args[2])
+	}
+
+	if os.Args[1] == "fmt" {
+		if !strings.HasSuffix(os.Args[2], ".okr") {
+			interpret.ReportErr(0, 0, "File type not supported; please pass a .okr file")
+		}
+		fmtFile(os.Args[2])
+	}
 }
 
 func runFile(path string) {
@@ -27,4 +42,8 @@ func runFile(path string) {
 	stmts, _ := parser.Parse()
 	interpreter := interpret.NewInterpreter(stmts)
 	interpreter.Interpret()
+}
+
+func fmtFile(path string) {
+	// TODO: Implement formatter!
 }
