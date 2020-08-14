@@ -54,3 +54,12 @@ type IfStmt struct {
 func (i IfStmt) GetType() string {
 	return fmt.Sprintf("%T", i)
 }
+
+type ForStmt struct {
+	condition Expr
+	body      Stmt
+}
+
+func (f ForStmt) GetType() string {
+	return fmt.Sprintf("%T", f)
+}

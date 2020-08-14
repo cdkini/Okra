@@ -109,7 +109,6 @@ func (p *Parser) synchronize() {
 			Variable,
 			For,
 			If,
-			While,
 			Print,
 			Return:
 			return

@@ -1,7 +1,5 @@
 package interpret
 
-import "fmt"
-
 // A Token is a substring of source text given context or meaning by the scanner
 type Token struct {
 	tokenType TokenType
@@ -21,10 +19,6 @@ func (t *Token) TokenType() TokenType {
 }
 
 type TokenType int
-
-func (t Token) String() string {
-	return fmt.Sprintf("%v", keywordSlice[t.tokenType])
-}
 
 const (
 	And TokenType = iota
@@ -70,56 +64,7 @@ const (
 	This
 	True
 	Variable
-	While
 )
-
-// Used for debugging purposes (returns the str representation as opposed to the enum val)
-var keywordSlice = []string{
-	"And",
-	"Bang",
-	"BangEqual",
-	"Class",
-	"Comma",
-	"Construct",
-	"Dot",
-	"Else",
-	"EOF",
-	"Equal",
-	"EqualEqual",
-	"False",
-	"For",
-	"Func",
-	"Greater",
-	"GreaterEqual",
-	"Identifier",
-	"If",
-	"Invalid",
-	"LeftBrace",
-	"LeftBracket",
-	"LeftParen",
-	"Less",
-	"LessEqual",
-	"Minus",
-	"Null",
-	"Numeric",
-	"Or",
-	"Plus",
-	"Print",
-	"Return",
-	"RightBrace",
-	"RightBracket",
-	"RightParen",
-	"Semicolon",
-	"Slash",
-	"Star",
-	"String",
-	"Struct",
-	"Super",
-	"This",
-	"True",
-	"Variable",
-	"While",
-}
 
 var keywordDict = map[string]TokenType{
 	"class":  Class,
@@ -135,5 +80,4 @@ var keywordDict = map[string]TokenType{
 	"this":   This,
 	"true":   True,
 	"var":    Variable,
-	"while":  While,
 }

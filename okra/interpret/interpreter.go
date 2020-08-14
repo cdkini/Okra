@@ -34,6 +34,8 @@ func (i *Interpreter) evalStmt(stmt Stmt) {
 		i.interpretVariableStmt(t)
 	case *IfStmt:
 		i.interpretIfStmt(t)
+	case *ForStmt:
+		i.interpretForStmt(t)
 	default:
 		fmt.Println(t.GetType())
 	}
@@ -65,6 +67,12 @@ func (i *Interpreter) interpretIfStmt(stmt *IfStmt) {
 		i.evalStmt(stmt.thenBranch)
 	} else if stmt.elseBranch != nil {
 		i.evalStmt(stmt.elseBranch)
+	}
+}
+
+func (i *Interpreter) interpretForStmt(stmt *ForStmt) {
+	for isTruthy(i.evalExpr(stmt.condition)) {
+		i.evalStmt(stmt.body)
 	}
 }
 

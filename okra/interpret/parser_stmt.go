@@ -5,6 +5,10 @@ func (p *Parser) statement() Stmt {
 
 	case p.match(If):
 		return p.ifStmt()
+
+	case p.match(For):
+		return p.forStmt()
+
 	case p.match(LeftBrace):
 		stmts := p.blockStmt()
 		return &BlockStmt{stmts}
@@ -29,6 +33,15 @@ func (p *Parser) ifStmt() Stmt {
 	}
 
 	return &IfStmt{condition, thenBranch, elseBranch}
+}
+
+func (p *Parser) forStmt() Stmt {
+	p.consume(LeftParen, "Expect '(' after 'for'.")
+	condition := p.Expression()
+	p.consume(RightParen, "Expect ')' after condition.")
+	body := p.statement()
+
+	return &ForStmt{condition, body}
 }
 
 func (p *Parser) blockStmt() []Stmt {
