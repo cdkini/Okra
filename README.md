@@ -1,4 +1,4 @@
-![Okra logo](https://github.com/cdkini/Okra/tree/master/img/logo.jpg?raw=true)
+![Okra logo](img/logo.jpg)
 
 TO-DO:
 - Fix line and column tracking from scanner
