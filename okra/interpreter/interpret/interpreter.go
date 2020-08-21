@@ -20,6 +20,12 @@ func NewInterpreter(stmts []ast.Stmt) *Interpreter {
 	return &Interpreter{stmts, env.NewEnvironment(nil), env.NewEnvironment(nil)}
 }
 
+func (i *Interpreter) LoadStdlib(stdlib map[string]Callable) {
+	for k, v := range stdlib {
+		i.global.Define(k, v)
+	}
+}
+
 // TODO: Update docstring after changes from stmt
 func (i *Interpreter) Interpret() {
 	for _, stmt := range i.stmts {
@@ -208,10 +214,10 @@ func (i *Interpreter) interpretCallExpr(c *ast.CallExpr) interface{} {
 	}
 
 	if function, ok := callee.(Callable); !ok {
-		if len(args) != function.arity() {
-			okraerr.ReportErr(0, 0, "Expected "+string(function.arity())+" args but got "+string(len(args))+".")
+		if len(args) != function.Arity() {
+			okraerr.ReportErr(0, 0, "Expected "+string(function.Arity())+" args but got "+string(len(args))+".")
 		}
-		return function.call(i, args)
+		return function.Call(i, args)
 	}
 
 	okraerr.ReportErr(0, 0, "Can only call funcs and structs.")

@@ -7,6 +7,7 @@ import (
 	"Okra/okra/interpreter/interpret"
 	"Okra/okra/interpreter/parse"
 	"Okra/okra/interpreter/scan"
+	"Okra/okra/interpreter/stdlib"
 	"Okra/okra/okraerr"
 	"io/ioutil"
 	"os"
@@ -43,6 +44,7 @@ func runFile(path string) {
 	parser := parse.NewParser(tokens)
 	stmts, _ := parser.Parse()
 	interpreter := interpret.NewInterpreter(stmts)
+	interpreter.LoadStdlib(stdlib.BuildStdlib())
 	interpreter.Interpret()
 }
 
