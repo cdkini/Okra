@@ -1,4 +1,4 @@
-package interpret
+package ast
 
 import (
 	"fmt"
@@ -14,8 +14,12 @@ type Expr interface {
 // A UnaryExpr expression is one that applies a single operator to a single operand.
 // UnaryExpr inherits from the Expr interface in order to utilize the ExprVisitor design pattern.
 type UnaryExpr struct {
-	operator Token
-	operand  Expr
+	Operator Token
+	Operand  Expr
+}
+
+func NewUnaryExpr(operator Token, operand Expr) *UnaryExpr {
+	return &UnaryExpr{operator, operand}
 }
 
 func (u UnaryExpr) GetType() string {
@@ -25,9 +29,13 @@ func (u UnaryExpr) GetType() string {
 // A BinaryExpr expression is one that applies a single operator to a multiple operands.
 // BinaryExpr inherits from the Expr interface in order to utilize the ExprVisitor design pattern.
 type BinaryExpr struct {
-	leftOperand  Expr
-	operator     Token
-	rightOperand Expr
+	LeftOperand  Expr
+	Operator     Token
+	RightOperand Expr
+}
+
+func NewBinaryExpr(leftOperand Expr, operator Token, rightOperand Expr) *BinaryExpr {
+	return &BinaryExpr{leftOperand, operator, rightOperand}
 }
 
 func (b BinaryExpr) GetType() string {
@@ -37,7 +45,11 @@ func (b BinaryExpr) GetType() string {
 // A GroupingExpr sets a higher level of precedence for another expression within its bounds.
 // GroupingExpr inherits from the Expr interface in order to utilize the ExprVisitor design pattern.
 type GroupingExpr struct {
-	expression Expr
+	Expression Expr
+}
+
+func NewGroupingExpr(expression Expr) *GroupingExpr {
+	return &GroupingExpr{expression}
 }
 
 func (g GroupingExpr) GetType() string {
@@ -47,7 +59,11 @@ func (g GroupingExpr) GetType() string {
 // A LiteralExpr is the most basic expression type and represents a fully evaluated value.
 // LiteralExpr inherits from the Expr interface in order to utilize the ExprVisitor design pattern.
 type LiteralExpr struct {
-	val interface{}
+	Val interface{}
+}
+
+func NewLiteralExpr(val interface{}) *LiteralExpr {
+	return &LiteralExpr{val}
 }
 
 func (l LiteralExpr) GetType() string {
@@ -56,7 +72,11 @@ func (l LiteralExpr) GetType() string {
 
 // TODO: Add docstring
 type VariableExpr struct {
-	identifier Token
+	Identifier Token
+}
+
+func NewVariableExpr(identifier Token) *VariableExpr {
+	return &VariableExpr{identifier}
 }
 
 func (v VariableExpr) GetType() string {
@@ -65,8 +85,12 @@ func (v VariableExpr) GetType() string {
 
 // TODO: Add docstring
 type AssignmentExpr struct {
-	identifier Token
-	val        Expr
+	Identifier Token
+	Val        Expr
+}
+
+func NewAssignmentExpr(identifier Token, val Expr) *AssignmentExpr {
+	return &AssignmentExpr{identifier, val}
 }
 
 func (a AssignmentExpr) GetType() string {
@@ -74,9 +98,13 @@ func (a AssignmentExpr) GetType() string {
 }
 
 type LogicalExpr struct {
-	leftOperand  Expr
-	operator     Token
-	rightOperand Expr
+	LeftOperand  Expr
+	Operator     Token
+	RightOperand Expr
+}
+
+func NewLogicalExpr(leftOperand Expr, operator Token, rightOperand Expr) *LogicalExpr {
+	return &LogicalExpr{leftOperand, operator, rightOperand}
 }
 
 func (l LogicalExpr) GetType() string {
@@ -84,9 +112,13 @@ func (l LogicalExpr) GetType() string {
 }
 
 type CallExpr struct {
-	callee Expr
-	paren  Token
-	args   []Expr
+	Callee Expr
+	Paren  Token
+	Args   []Expr
+}
+
+func NewCallExpr(callee Expr, paren Token, args []Expr) *CallExpr {
+	return &CallExpr{callee, paren, args}
 }
 
 func (c CallExpr) GetType() string {

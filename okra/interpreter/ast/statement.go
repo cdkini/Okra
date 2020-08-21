@@ -1,4 +1,4 @@
-package interpret
+package ast
 
 import (
 	"fmt"
@@ -11,7 +11,11 @@ type Stmt interface {
 
 // TODO: Add docstring
 type ExpressionStmt struct {
-	expr Expr
+	Expr Expr
+}
+
+func NewExpressionStmt(expr Expr) *ExpressionStmt {
+	return &ExpressionStmt{expr}
 }
 
 func (e ExpressionStmt) GetType() string {
@@ -20,7 +24,11 @@ func (e ExpressionStmt) GetType() string {
 
 // TODO: Add docstring
 type PrintStmt struct {
-	expr Expr
+	Expr Expr
+}
+
+func NewPrintStmt(expr Expr) *PrintStmt {
+	return &PrintStmt{expr}
 }
 
 func (p PrintStmt) GetType() string {
@@ -29,8 +37,12 @@ func (p PrintStmt) GetType() string {
 
 // TODO: Add docstring
 type VariableStmt struct {
-	identifier Token
-	expr       Expr
+	Identifier Token
+	Expr       Expr
+}
+
+func NewVariableStmt(identifier Token, expr Expr) *VariableStmt {
+	return &VariableStmt{identifier, expr}
 }
 
 func (v VariableStmt) GetType() string {
@@ -38,7 +50,11 @@ func (v VariableStmt) GetType() string {
 }
 
 type BlockStmt struct {
-	stmts []Stmt
+	Stmts []Stmt
+}
+
+func NewBlockStmt(stmts []Stmt) *BlockStmt {
+	return &BlockStmt{stmts}
 }
 
 func (b BlockStmt) GetType() string {
@@ -46,9 +62,13 @@ func (b BlockStmt) GetType() string {
 }
 
 type IfStmt struct {
-	condition  Expr
-	thenBranch Stmt
-	elseBranch Stmt
+	Condition  Expr
+	ThenBranch Stmt
+	ElseBranch Stmt
+}
+
+func NewIfStmt(condition Expr, thenBranch Stmt, elseBranch Stmt) *IfStmt {
+	return &IfStmt{condition, thenBranch, elseBranch}
 }
 
 func (i IfStmt) GetType() string {
@@ -56,8 +76,12 @@ func (i IfStmt) GetType() string {
 }
 
 type ForStmt struct {
-	condition Expr
-	body      Stmt
+	Condition Expr
+	Body      Stmt
+}
+
+func NewForStmt(condition Expr, body Stmt) *ForStmt {
+	return &ForStmt{condition, body}
 }
 
 func (f ForStmt) GetType() string {

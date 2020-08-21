@@ -1,7 +1,7 @@
-package interpret_test
+package parse
 
 import (
-	. "Okra/okra/interpret"
+	"Okra/okra/interpreter/scan"
 	"testing"
 )
 
@@ -10,15 +10,15 @@ func TestParseExpressionStmt(t *testing.T) {
 		input  string
 		output []string
 	}{
-		{"1 + 1 == 2;", []string{"interpret.ExpressionStmt"}},
-		{"a + b >= c;", []string{"interpret.ExpressionStmt"}},
-		{"!d;", []string{"interpret.ExpressionStmt"}},
-		{"true != false;", []string{"interpret.ExpressionStmt"}},
+		{"1 + 1 == 2;", []string{"ast.ExpressionStmt"}},
+		{"a + b >= c;", []string{"ast.ExpressionStmt"}},
+		{"!d;", []string{"ast.ExpressionStmt"}},
+		{"true != false;", []string{"ast.ExpressionStmt"}},
 	}
 
 	for _, test := range table {
 		t.Run(test.input, func(t *testing.T) {
-			scanner := NewScanner(test.input)
+			scanner := scan.NewScanner(test.input)
 			scanner.ScanTokens()
 			parser := NewParser(scanner.Tokens())
 			stmts, err := parser.Parse()
@@ -41,14 +41,14 @@ func TestParsePrintStmt(t *testing.T) {
 		input  string
 		output []string
 	}{
-		{"print 1;", []string{"interpret.PrintStmt"}},
-		{"print \"Hello, World!\";", []string{"interpret.PrintStmt"}},
-		{"print abc;", []string{"interpret.PrintStmt"}},
+		{"print 1;", []string{"ast.PrintStmt"}},
+		{"print \"Hello, World!\";", []string{"ast.PrintStmt"}},
+		{"print abc;", []string{"ast.PrintStmt"}},
 	}
 
 	for _, test := range table {
 		t.Run(test.input, func(t *testing.T) {
-			scanner := NewScanner(test.input)
+			scanner := scan.NewScanner(test.input)
 			scanner.ScanTokens()
 			parser := NewParser(scanner.Tokens())
 			stmts, err := parser.Parse()
@@ -71,14 +71,14 @@ func TestParseVariableStmt(t *testing.T) {
 		input  string
 		output []string
 	}{
-		{"var a = 1;", []string{"interpret.VariableStmt"}},
-		{"var name = \"Bob\";", []string{"interpret.VariableStmt"}},
-		{"var abc;", []string{"interpret.VariableStmt"}},
+		{"var a = 1;", []string{"ast.VariableStmt"}},
+		{"var name = \"Bob\";", []string{"ast.VariableStmt"}},
+		{"var abc;", []string{"ast.VariableStmt"}},
 	}
 
 	for _, test := range table {
 		t.Run(test.input, func(t *testing.T) {
-			scanner := NewScanner(test.input)
+			scanner := scan.NewScanner(test.input)
 			scanner.ScanTokens()
 			parser := NewParser(scanner.Tokens())
 			stmts, err := parser.Parse()
@@ -102,14 +102,14 @@ func TestParseBlockStmt(t *testing.T) {
 		input  string
 		output []string
 	}{
-		{"", []string{"interpret.BlockStmt"}},
-		{"", []string{"interpret.BlockStmt"}},
-		{"", []string{"interpret.BlockStmt"}},
+		{"", []string{"ast.BlockStmt"}},
+		{"", []string{"ast.BlockStmt"}},
+		{"", []string{"ast.BlockStmt"}},
 	}
 
 	for _, test := range table {
 		t.Run(test.input, func(t *testing.T) {
-			scanner := NewScanner(test.input)
+			scanner := scan.NewScanner(test.input)
 			scanner.ScanTokens()
 			parser := NewParser(scanner.Tokens())
 			stmts, err := parser.Parse()

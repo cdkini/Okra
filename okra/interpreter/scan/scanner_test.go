@@ -1,8 +1,7 @@
-package interpret_test
+package scan
 
 import (
-	. "Okra/okra/interpret"
-	"io/ioutil"
+	. "Okra/okra/interpreter/ast"
 	"testing"
 )
 
@@ -30,8 +29,8 @@ func TestScanWhitespace(t *testing.T) {
 				t.Errorf("Expected %d tokens, received %d", len(test.output), len(tokens))
 			} else {
 				for i := range tokens {
-					if tokens[i].TokenType() != test.output[i] {
-						t.Errorf("Expected %v, received %v", test.output[i], tokens[i].TokenType())
+					if tokens[i].Type != test.output[i] {
+						t.Errorf("Expected %v, received %v", test.output[i], tokens[i].Type)
 					}
 					if scanner.Line() != test.line {
 						t.Errorf("Expected to be on line %d, actually on %d", test.line, scanner.Line())
@@ -71,8 +70,8 @@ func TestScanSingleCharTokens(t *testing.T) {
 				t.Errorf("Expected %d tokens, received %d", len(test.output), len(tokens))
 			} else {
 				for i := range tokens {
-					if tokens[i].TokenType() != test.output[i] {
-						t.Errorf("Expected %v, received %v", test.output[i], tokens[i].TokenType())
+					if tokens[i].Type != test.output[i] {
+						t.Errorf("Expected %v, received %v", test.output[i], tokens[i].Type)
 					}
 				}
 			}
@@ -107,8 +106,8 @@ func TestScanDoubleCharTokens(t *testing.T) {
 				t.Errorf("Expected %d tokens, received %d", len(test.output), len(tokens))
 			} else {
 				for i := range tokens {
-					if tokens[i].TokenType() != test.output[i] {
-						t.Errorf("Expected %v, received %v", test.output[i], tokens[i].TokenType())
+					if tokens[i].Type != test.output[i] {
+						t.Errorf("Expected %v, received %v", test.output[i], tokens[i].Type)
 					}
 				}
 			}
@@ -137,8 +136,8 @@ func TestScanComments(t *testing.T) {
 				t.Errorf("Expected %d tokens, received %d", len(test.output), len(tokens))
 			} else {
 				for i := range tokens {
-					if tokens[i].TokenType() != test.output[i] {
-						t.Errorf("Expected %v, received %v", test.output[i], tokens[i].TokenType())
+					if tokens[i].Type != test.output[i] {
+						t.Errorf("Expected %v, received %v", test.output[i], tokens[i].Type)
 					}
 					if scanner.Line() != test.line {
 						t.Errorf("Expected to be on line %d, actually on %d", test.line, scanner.Line())
@@ -192,81 +191,10 @@ func TestScanMiscellaneous(t *testing.T) {
 				t.Errorf("Expected %d tokens, received %d", len(test.output), len(tokens))
 			} else {
 				for i := range tokens {
-					if tokens[i].TokenType() != test.output[i] {
-						t.Errorf("Expected %v, received %v", test.output[i], tokens[i].TokenType())
+					if tokens[i].Type != test.output[i] {
+						t.Errorf("Expected %v, received %v", test.output[i], tokens[i].Type)
 					}
 				}
-			}
-		})
-	}
-}
-
-func TestScanFiles(t *testing.T) {
-	table := []struct {
-		path   string
-		output []TokenType
-	}{
-		{"test_files/test1.okr", []TokenType{
-			Print,
-			String,
-			Semicolon,
-			EOF,
-		}},
-		{"test_files/test2.okr", []TokenType{
-			Variable,
-			Identifier,
-			Equal,
-			Numeric,
-			Semicolon,
-			Variable,
-			Identifier,
-			Equal,
-			Numeric,
-			Semicolon,
-			Print,
-			Variable,
-			Plus,
-			Variable,
-			Semicolon,
-			EOF,
-		}},
-		{"test_files/test3.okr", []TokenType{
-			Func,
-			Identifier,
-			LeftParen,
-			Identifier,
-			RightParen,
-			LeftBrace,
-			Return,
-			Identifier,
-			Star,
-			Identifier,
-			RightBrace,
-			Semicolon,
-			EOF,
-		}},
-		{"test_files/test4.okr", []TokenType{
-			Struct,
-			Identifier,
-			LeftBrace,
-			Identifier,
-			LeftParen,
-			RightParen,
-			LeftBrace,
-			RightBrace,
-			RightBrace,
-			EOF,
-		}},
-	}
-
-	for _, test := range table {
-		t.Run(test.path, func(t *testing.T) {
-			bytes, _ := ioutil.ReadFile(test.path)
-			scanner := NewScanner(string(bytes))
-			tokens := scanner.ScanTokens()
-
-			if len(tokens) != len(test.output) {
-				t.Errorf("Expected %d tokens, received %d", len(test.output), len(tokens))
 			}
 		})
 	}

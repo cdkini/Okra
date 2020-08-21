@@ -1,7 +1,7 @@
-package interpret_test
+package parse
 
 import (
-	. "Okra/okra/interpret"
+	"Okra/okra/interpreter/scan"
 	"testing"
 )
 
@@ -10,13 +10,13 @@ func TestParseUnaryExpr(t *testing.T) {
 		input  string
 		output string
 	}{
-		{"-1", "interpret.UnaryExpr"},
-		{"!true", "interpret.UnaryExpr"},
+		{"-1", "ast.UnaryExpr"},
+		{"!true", "ast.UnaryExpr"},
 	}
 
 	for _, test := range table {
 		t.Run(test.input, func(t *testing.T) {
-			scanner := NewScanner(test.input)
+			scanner := scan.NewScanner(test.input)
 			scanner.ScanTokens()
 			parser := NewParser(scanner.Tokens())
 			expr := parser.Expression()
@@ -33,21 +33,21 @@ func TestParseBinaryExpr(t *testing.T) {
 		input  string
 		output string
 	}{
-		{"1 + 2", "interpret.BinaryExpr"},
-		{"3 - 4", "interpret.BinaryExpr"},
-		{"5 * 6", "interpret.BinaryExpr"},
-		{"7 / 8", "interpret.BinaryExpr"},
-		{"9 > 10", "interpret.BinaryExpr"},
-		{"11 >= 12", "interpret.BinaryExpr"},
-		{"13 < 14", "interpret.BinaryExpr"},
-		{"14 <= 15", "interpret.BinaryExpr"},
-		{"16 == 17", "interpret.BinaryExpr"},
-		{"18 != 19", "interpret.BinaryExpr"},
+		{"1 + 2", "ast.BinaryExpr"},
+		{"3 - 4", "ast.BinaryExpr"},
+		{"5 * 6", "ast.BinaryExpr"},
+		{"7 / 8", "ast.BinaryExpr"},
+		{"9 > 10", "ast.BinaryExpr"},
+		{"11 >= 12", "ast.BinaryExpr"},
+		{"13 < 14", "ast.BinaryExpr"},
+		{"14 <= 15", "ast.BinaryExpr"},
+		{"16 == 17", "ast.BinaryExpr"},
+		{"18 != 19", "ast.BinaryExpr"},
 	}
 
 	for _, test := range table {
 		t.Run(test.input, func(t *testing.T) {
-			scanner := NewScanner(test.input)
+			scanner := scan.NewScanner(test.input)
 			scanner.ScanTokens()
 			parser := NewParser(scanner.Tokens())
 			expr := parser.Expression()
@@ -64,13 +64,13 @@ func TestParseGroupingExpr(t *testing.T) {
 		input  string
 		output string
 	}{
-		{"(1 + 2)", "interpret.GroupingExpr"},
-		{"((1 + 2) * (3 / 4))", "interpret.GroupingExpr"},
+		{"(1 + 2)", "ast.GroupingExpr"},
+		{"((1 + 2) * (3 / 4))", "ast.GroupingExpr"},
 	}
 
 	for _, test := range table {
 		t.Run(test.input, func(t *testing.T) {
-			scanner := NewScanner(test.input)
+			scanner := scan.NewScanner(test.input)
 			scanner.ScanTokens()
 			parser := NewParser(scanner.Tokens())
 			expr := parser.Expression()
@@ -87,16 +87,16 @@ func TestParseLiteralExpr(t *testing.T) {
 		input  string
 		output string
 	}{
-		{"true", "interpret.LiteralExpr"},
-		{"false", "interpret.LiteralExpr"},
-		{"null", "interpret.LiteralExpr"},
-		{"3.1415", "interpret.LiteralExpr"},
-		{"\"abc\"", "interpret.LiteralExpr"},
+		{"true", "ast.LiteralExpr"},
+		{"false", "ast.LiteralExpr"},
+		{"null", "ast.LiteralExpr"},
+		{"3.1415", "ast.LiteralExpr"},
+		{"\"abc\"", "ast.LiteralExpr"},
 	}
 
 	for _, test := range table {
 		t.Run(test.input, func(t *testing.T) {
-			scanner := NewScanner(test.input)
+			scanner := scan.NewScanner(test.input)
 			scanner.ScanTokens()
 			parser := NewParser(scanner.Tokens())
 			expr := parser.Expression()
@@ -113,13 +113,13 @@ func TestParseVariableExpr(t *testing.T) {
 		input  string
 		output string
 	}{
-		{"foo", "interpret.VariableExpr"},
-		{"bar", "interpret.VariableExpr"},
+		{"foo", "ast.VariableExpr"},
+		{"bar", "ast.VariableExpr"},
 	}
 
 	for _, test := range table {
 		t.Run(test.input, func(t *testing.T) {
-			scanner := NewScanner(test.input)
+			scanner := scan.NewScanner(test.input)
 			scanner.ScanTokens()
 			parser := NewParser(scanner.Tokens())
 			expr := parser.Expression()
@@ -142,7 +142,7 @@ func TestParseAssignmentExpr(t *testing.T) {
 
 	for _, test := range table {
 		t.Run(test.input, func(t *testing.T) {
-			scanner := NewScanner(test.input)
+			scanner := scan.NewScanner(test.input)
 			scanner.ScanTokens()
 			parser := NewParser(scanner.Tokens())
 			expr := parser.Expression()

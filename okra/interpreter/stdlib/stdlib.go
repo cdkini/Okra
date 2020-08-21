@@ -1,0 +1,3 @@
+package stdlib
+
+func buildStdlib()

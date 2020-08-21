@@ -1,20 +1,23 @@
 package interpret
 
 import (
+	"Okra/okra/interpreter/ast"
+	"Okra/okra/interpreter/env"
+	"Okra/okra/okraerr"
 	"fmt"
 )
 
 // An Interpreter takes in a given expression and evaluates it into its most basic literal form.
 // Interpreter inherits from the Visitor interface, allowing it interact with all Expr types.
 type Interpreter struct {
-	stmts  []Stmt
-	global *Environment
-	env    *Environment
+	stmts  []ast.Stmt
+	global *env.Environment
+	env    *env.Environment
 }
 
-func NewInterpreter(stmts []Stmt) *Interpreter {
+func NewInterpreter(stmts []ast.Stmt) *Interpreter {
 	// TODO: Open to add standard library methods as part of global
-	return &Interpreter{stmts, NewEnvironment(nil), NewEnvironment(nil)}
+	return &Interpreter{stmts, env.NewEnvironment(nil), env.NewEnvironment(nil)}
 }
 
 // TODO: Update docstring after changes from stmt
@@ -24,194 +27,194 @@ func (i *Interpreter) Interpret() {
 	}
 }
 
-func (i *Interpreter) evalStmt(stmt Stmt) {
+func (i *Interpreter) evalStmt(stmt ast.Stmt) {
 	switch t := stmt.(type) {
-	case *ExpressionStmt:
+	case *ast.ExpressionStmt:
 		i.interpretExpressionStmt(t)
-	case *BlockStmt:
+	case *ast.BlockStmt:
 		i.interpretBlockStmt(t)
-	case *PrintStmt:
+	case *ast.PrintStmt:
 		i.interpretPrintStmt(t)
-	case *VariableStmt:
+	case *ast.VariableStmt:
 		i.interpretVariableStmt(t)
-	case *IfStmt:
+	case *ast.IfStmt:
 		i.interpretIfStmt(t)
-	case *ForStmt:
+	case *ast.ForStmt:
 		i.interpretForStmt(t)
 	default:
 		fmt.Println(t.GetType())
 	}
 }
 
-func (i *Interpreter) evalExpr(expr Expr) interface{} {
+func (i *Interpreter) evalExpr(expr ast.Expr) interface{} {
 	switch t := expr.(type) {
-	case *AssignmentExpr:
+	case *ast.AssignmentExpr:
 		return i.interpretAssignmentExpr(t)
-	case *BinaryExpr:
+	case *ast.BinaryExpr:
 		return i.interpretBinaryExpr(t)
-	case *GroupingExpr:
+	case *ast.GroupingExpr:
 		return i.interpretGroupingExpr(t)
-	case *LiteralExpr:
+	case *ast.LiteralExpr:
 		return i.interpretLiteralExpr(t)
-	case *UnaryExpr:
+	case *ast.UnaryExpr:
 		return i.interpretUnaryExpr(t)
-	case *VariableExpr:
+	case *ast.VariableExpr:
 		return i.interpretVariableExpr(t)
-	case *LogicalExpr:
+	case *ast.LogicalExpr:
 		return i.interpretLogicalExpr(t)
 	default:
 		return nil
 	}
 }
 
-func (i *Interpreter) interpretIfStmt(stmt *IfStmt) {
-	if isTruthy(i.evalExpr(stmt.condition)) {
-		i.evalStmt(stmt.thenBranch)
-	} else if stmt.elseBranch != nil {
-		i.evalStmt(stmt.elseBranch)
+func (i *Interpreter) interpretIfStmt(stmt *ast.IfStmt) {
+	if isTruthy(i.evalExpr(stmt.Condition)) {
+		i.evalStmt(stmt.ThenBranch)
+	} else if stmt.ElseBranch != nil {
+		i.evalStmt(stmt.ElseBranch)
 	}
 }
 
-func (i *Interpreter) interpretForStmt(stmt *ForStmt) {
-	for isTruthy(i.evalExpr(stmt.condition)) {
-		i.evalStmt(stmt.body)
+func (i *Interpreter) interpretForStmt(stmt *ast.ForStmt) {
+	for isTruthy(i.evalExpr(stmt.Condition)) {
+		i.evalStmt(stmt.Body)
 	}
 }
 
-func (i *Interpreter) interpretBlockStmt(stmt *BlockStmt) {
+func (i *Interpreter) interpretBlockStmt(stmt *ast.BlockStmt) {
 	prevEnv := i.env
 
-	i.env = NewEnvironment(prevEnv)
+	i.env = env.NewEnvironment(prevEnv)
 	defer func() { i.env = prevEnv }()
 
-	for _, s := range stmt.stmts {
+	for _, s := range stmt.Stmts {
 		i.evalStmt(s)
 	}
 }
 
-func (i *Interpreter) interpretVariableStmt(stmt *VariableStmt) {
+func (i *Interpreter) interpretVariableStmt(stmt *ast.VariableStmt) {
 	var val interface{}
-	if stmt.expr != nil {
-		val = i.evalExpr(stmt.expr)
+	if stmt.Expr != nil {
+		val = i.evalExpr(stmt.Expr)
 	}
 
-	i.env.define(stmt.identifier.lexeme, val)
+	i.env.Define(stmt.Identifier.Lexeme, val)
 }
 
-func (i *Interpreter) interpretExpressionStmt(stmt *ExpressionStmt) {
-	i.evalExpr(stmt.expr)
+func (i *Interpreter) interpretExpressionStmt(stmt *ast.ExpressionStmt) {
+	i.evalExpr(stmt.Expr)
 }
 
-func (i *Interpreter) interpretPrintStmt(stmt *PrintStmt) {
-	value := i.evalExpr(stmt.expr)
+func (i *Interpreter) interpretPrintStmt(stmt *ast.PrintStmt) {
+	value := i.evalExpr(stmt.Expr)
 	fmt.Println(value)
 }
 
-func (i *Interpreter) interpretLogicalExpr(l *LogicalExpr) interface{} {
-	left := i.evalExpr(l.leftOperand)
+func (i *Interpreter) interpretLogicalExpr(l *ast.LogicalExpr) interface{} {
+	left := i.evalExpr(l.LeftOperand)
 
-	switch l.operator.tokenType {
-	case Or:
+	switch l.Operator.Type {
+	case ast.Or:
 		if isTruthy(left) {
 			return left
 		}
-	case And:
+	case ast.And:
 		if !isTruthy(left) {
 			return left
 		}
 	}
-	return i.evalExpr(l.rightOperand)
+	return i.evalExpr(l.RightOperand)
 }
 
-func (i *Interpreter) interpretAssignmentExpr(a *AssignmentExpr) interface{} {
-	value := i.evalExpr(a.val)
-	i.env.assign(a.identifier, value)
+func (i *Interpreter) interpretAssignmentExpr(a *ast.AssignmentExpr) interface{} {
+	value := i.evalExpr(a.Val)
+	i.env.Assign(a.Identifier, value)
 	return value
 }
 
-func (i *Interpreter) interpretVariableExpr(v *VariableExpr) interface{} {
-	return i.env.get(v.identifier)
+func (i *Interpreter) interpretVariableExpr(v *ast.VariableExpr) interface{} {
+	return i.env.Get(v.Identifier)
 }
 
-func (i *Interpreter) interpretLiteralExpr(l *LiteralExpr) interface{} {
-	if str, ok := l.val.(string); ok {
+func (i *Interpreter) interpretLiteralExpr(l *ast.LiteralExpr) interface{} {
+	if str, ok := l.Val.(string); ok {
 		return str
-	} else if num, ok := l.val.(float64); ok {
+	} else if num, ok := l.Val.(float64); ok {
 		return num
 	}
 	return nil
 }
 
-func (i *Interpreter) interpretGroupingExpr(g *GroupingExpr) interface{} {
-	return i.evalExpr(g.expression)
+func (i *Interpreter) interpretGroupingExpr(g *ast.GroupingExpr) interface{} {
+	return i.evalExpr(g.Expression)
 }
 
-func (i *Interpreter) interpretUnaryExpr(u *UnaryExpr) interface{} {
-	operand := i.evalExpr(u.operand)
+func (i *Interpreter) interpretUnaryExpr(u *ast.UnaryExpr) interface{} {
+	operand := i.evalExpr(u.Operand)
 
-	switch u.operator.tokenType {
-	case Minus:
+	switch u.Operator.Type {
+	case ast.Minus:
 		checkNumericValidity("Invalid usage of \"-\" on non-numeric operand", operand)
 		return -evalNumeric(operand)
-	case Bang:
+	case ast.Bang:
 		return !isTruthy(operand)
 	}
 	return nil
 }
 
-func (i *Interpreter) interpretBinaryExpr(b *BinaryExpr) interface{} {
-	leftOperand := i.evalExpr(b.leftOperand)
-	rightOperand := i.evalExpr(b.rightOperand)
+func (i *Interpreter) interpretBinaryExpr(b *ast.BinaryExpr) interface{} {
+	leftOperand := i.evalExpr(b.LeftOperand)
+	rightOperand := i.evalExpr(b.RightOperand)
 
-	switch b.operator.tokenType {
-	case Minus:
+	switch b.Operator.Type {
+	case ast.Minus:
 		checkNumericValidity("Invalid usage of \"-\" on non-numeric operands", leftOperand, rightOperand)
 		return evalNumeric(leftOperand) - evalNumeric(rightOperand)
-	case Plus:
+	case ast.Plus:
 		checkNumericValidity("Invalid usage of \"+\" on non-numeric operands", leftOperand, rightOperand)
 		return evalNumeric(leftOperand) + evalNumeric(rightOperand)
-	case Slash:
+	case ast.Slash:
 		checkNumericValidity("Invalid usage of \"/\" on non-numeric operands", leftOperand, rightOperand)
 		return evalNumeric(leftOperand) / evalNumeric(rightOperand)
-	case Star:
+	case ast.Star:
 		checkNumericValidity("Invalid usage of \"*\" on non-numeric operands", leftOperand, rightOperand)
 		return evalNumeric(leftOperand) * evalNumeric(rightOperand)
-	case Greater:
+	case ast.Greater:
 		checkNumericValidity("Invalid usage of \">\" on non-numeric operands", leftOperand, rightOperand)
 		return evalNumeric(leftOperand) > evalNumeric(rightOperand)
-	case Less:
+	case ast.Less:
 		checkNumericValidity("Invalid usage of \"<\" on non-numeric operands", leftOperand, rightOperand)
 		return evalNumeric(leftOperand) < evalNumeric(rightOperand)
-	case GreaterEqual:
+	case ast.GreaterEqual:
 		checkNumericValidity("Invalid usage of \">=\" on non-numeric operands", leftOperand, rightOperand)
 		return evalNumeric(leftOperand) >= evalNumeric(rightOperand)
-	case LessEqual:
+	case ast.LessEqual:
 		checkNumericValidity("Invalid usage of \"<=\" on non-numeric operands", leftOperand, rightOperand)
 		return evalNumeric(leftOperand) <= evalNumeric(rightOperand)
-	case EqualEqual:
+	case ast.EqualEqual:
 		return leftOperand == rightOperand
-	case BangEqual:
+	case ast.BangEqual:
 		return leftOperand != rightOperand
 	}
 	return nil
 }
 
-func (i *Interpreter) interpretCallExpr(c *CallExpr) interface{} {
-	callee := i.evalExpr(c.callee)
+func (i *Interpreter) interpretCallExpr(c *ast.CallExpr) interface{} {
+	callee := i.evalExpr(c.Callee)
 
 	var args []interface{}
-	for _, arg := range c.args {
+	for _, arg := range c.Args {
 		args = append(args, i.evalExpr(arg))
 	}
 
 	if function, ok := callee.(Callable); !ok {
 		if len(args) != function.arity() {
-			ReportErr(0, 0, "Expected "+string(function.arity())+" args but got "+string(len(args))+".")
+			okraerr.ReportErr(0, 0, "Expected "+string(function.arity())+" args but got "+string(len(args))+".")
 		}
 		return function.call(i, args)
 	}
 
-	ReportErr(0, 0, "Can only call funcs and structs.")
+	okraerr.ReportErr(0, 0, "Can only call funcs and structs.")
 	return nil
 }
 
@@ -229,7 +232,7 @@ func isTruthy(i interface{}) bool {
 func evalNumeric(i interface{}) float64 {
 	t, ok := i.(float64)
 	if !ok {
-		ReportErr(0, 0, "Expect numeric")
+		okraerr.ReportErr(0, 0, "Expect numeric")
 	}
 	return t
 }
@@ -237,7 +240,7 @@ func evalNumeric(i interface{}) float64 {
 func evalString(i interface{}) string {
 	t, ok := i.(string)
 	if !ok {
-		ReportErr(0, 0, "Expect string")
+		okraerr.ReportErr(0, 0, "Expect string")
 	}
 	return t
 }
@@ -248,7 +251,7 @@ func checkNumericValidity(msg string, i ...interface{}) {
 		case float64:
 			continue
 		default:
-			ReportErr(0, 0, msg)
+			okraerr.ReportErr(0, 0, msg)
 		}
 	}
 }

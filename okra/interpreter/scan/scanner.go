@@ -1,6 +1,8 @@
-package interpret
+package scan
 
 import (
+	"Okra/okra/interpreter/ast"
+	"Okra/okra/okraerr"
 	"strconv"
 	"unicode"
 )
@@ -8,18 +10,18 @@ import (
 // A Scanner takes in some stream of characters and tokenizes them based on Okra's syntax
 type Scanner struct {
 	source []rune
-	tokens []Token // Populated as result of ScanTokens()
-	start  int     // Where the current token begins
-	curr   int     // Where the scanner is within the source
+	tokens []ast.Token // Populated as result of ScanTokens()
+	start  int         // Where the current token begins
+	curr   int         // Where the scanner is within the source
 	line   int
 	col    int
 }
 
 func NewScanner(source string) *Scanner {
-	return &Scanner{[]rune(source), make([]Token, 0), 0, 0, 1, 1}
+	return &Scanner{[]rune(source), make([]ast.Token, 0), 0, 0, 1, 1}
 }
 
-func (s *Scanner) Tokens() []Token {
+func (s *Scanner) Tokens() []ast.Token {
 	return s.tokens
 }
 
@@ -34,12 +36,12 @@ func (s *Scanner) Col() int {
 // ScanTokens iterates through the source text and generates tokens based on Okra's defined syntax rules
 //   Args: nil
 //   Returns: Slice of token pointers
-func (s *Scanner) ScanTokens() []Token {
+func (s *Scanner) ScanTokens() []ast.Token {
 	for s.curr < len(s.source) {
 		s.start = s.curr
 		s.scan()
 	}
-	s.tokens = append(s.tokens, Token{EOF, "EOF", nil, s.line, s.col})
+	s.tokens = append(s.tokens, ast.Token{ast.EOF, "EOF", nil, s.line, s.col})
 	return s.tokens
 }
 
@@ -56,67 +58,67 @@ func (s *Scanner) scan() {
 
 	// Single character tokens
 	case '(':
-		s.addToken(LeftParen, nil)
+		s.addToken(ast.LeftParen, nil)
 		break
 	case ')':
-		s.addToken(RightParen, nil)
+		s.addToken(ast.RightParen, nil)
 		break
 	case '{':
-		s.addToken(LeftBrace, nil)
+		s.addToken(ast.LeftBrace, nil)
 		break
 	case '}':
-		s.addToken(RightBrace, nil)
+		s.addToken(ast.RightBrace, nil)
 		break
 	case '[':
-		s.addToken(LeftBracket, nil)
+		s.addToken(ast.LeftBracket, nil)
 		break
 	case ']':
-		s.addToken(RightBracket, nil)
+		s.addToken(ast.RightBracket, nil)
 		break
 	case ',':
-		s.addToken(Comma, nil)
+		s.addToken(ast.Comma, nil)
 		break
 	case '.':
-		s.addToken(Dot, nil)
+		s.addToken(ast.Dot, nil)
 		break
 	case '-':
-		s.addToken(Minus, nil)
+		s.addToken(ast.Minus, nil)
 		break
 	case '+':
-		s.addToken(Plus, nil)
+		s.addToken(ast.Plus, nil)
 		break
 	case ';':
-		s.addToken(Semicolon, nil)
+		s.addToken(ast.Semicolon, nil)
 		break
 	case '*':
-		s.addToken(Star, nil)
+		s.addToken(ast.Star, nil)
 		break
 
 	// Single or double character tokens
 	case '!':
-		s.addToken(s.ternaryMatch('=', BangEqual, Bang), nil)
+		s.addToken(s.ternaryMatch('=', ast.BangEqual, ast.Bang), nil)
 		break
 	case '=':
-		s.addToken(s.ternaryMatch('=', EqualEqual, Equal), nil)
+		s.addToken(s.ternaryMatch('=', ast.EqualEqual, ast.Equal), nil)
 		break
 	case '<':
-		s.addToken(s.ternaryMatch('=', LessEqual, Less), nil)
+		s.addToken(s.ternaryMatch('=', ast.LessEqual, ast.Less), nil)
 		break
 	case '>':
-		s.addToken(s.ternaryMatch('=', GreaterEqual, Greater), nil)
+		s.addToken(s.ternaryMatch('=', ast.GreaterEqual, ast.Greater), nil)
 		break
 	case '&':
 		if s.match('&') {
-			s.addToken(And, nil)
+			s.addToken(ast.And, nil)
 			break
 		}
-		ReportErr(s.line, s.col, "Invalid character")
+		okraerr.ReportErr(s.line, s.col, "Invalid character")
 	case '|':
 		if s.match('|') {
-			s.addToken(Or, nil)
+			s.addToken(ast.Or, nil)
 			break
 		}
-		ReportErr(s.line, s.col, "Invalid character")
+		okraerr.ReportErr(s.line, s.col, "Invalid character")
 
 	// Comments
 	case '/':
@@ -125,7 +127,7 @@ func (s *Scanner) scan() {
 				s.advance()
 			}
 		} else {
-			s.addToken(Slash, nil)
+			s.addToken(ast.Slash, nil)
 		}
 		break
 
@@ -138,7 +140,7 @@ func (s *Scanner) scan() {
 		} else if unicode.IsLetter(c) {
 			s.addIdentifierToken()
 		} else {
-			ReportErr(s.line, s.col, "Invalid character")
+			okraerr.ReportErr(s.line, s.col, "Invalid character")
 		}
 	}
 }
@@ -149,8 +151,8 @@ func (s *Scanner) advance() rune {
 	return s.source[s.curr-1]
 }
 
-func (s *Scanner) addToken(tokenType TokenType, literal interface{}) {
-	s.tokens = append(s.tokens, Token{tokenType, string(s.source[s.start:s.curr]), literal, s.line, s.col})
+func (s *Scanner) addToken(tokenType ast.TokenType, literal interface{}) {
+	s.tokens = append(s.tokens, ast.Token{tokenType, string(s.source[s.start:s.curr]), literal, s.line, s.col})
 }
 
 func (s *Scanner) match(expectedChar rune) bool {
@@ -165,7 +167,7 @@ func (s *Scanner) match(expectedChar rune) bool {
 	return false
 }
 
-func (s *Scanner) ternaryMatch(expectedChar rune, ifTrue TokenType, ifFalse TokenType) TokenType {
+func (s *Scanner) ternaryMatch(expectedChar rune, ifTrue ast.TokenType, ifFalse ast.TokenType) ast.TokenType {
 	if s.curr >= len(s.source) {
 		return ifFalse
 	}
@@ -186,12 +188,12 @@ func (s *Scanner) addStringToken() {
 	}
 
 	if s.curr >= len(s.source) {
-		ReportErr(s.line, s.col, "Unterminated character")
+		okraerr.ReportErr(s.line, s.col, "Unterminated character")
 	}
 
 	s.advance()
 	str := s.source[s.start+1 : s.curr-1]
-	s.addToken(String, str)
+	s.addToken(ast.String, str)
 }
 
 func (s *Scanner) addNumericToken() {
@@ -208,8 +210,8 @@ func (s *Scanner) addNumericToken() {
 	}
 
 	num, err := strconv.ParseFloat(string(s.source[s.start:s.curr]), 64)
-	CheckErr(err, s.line, s.col, "Could not scan numeric")
-	s.addToken(Numeric, num)
+	okraerr.CheckErr(err, s.line, s.col, "Could not scan numeric")
+	s.addToken(ast.Numeric, num)
 }
 
 func (s *Scanner) addIdentifierToken() {
@@ -221,8 +223,8 @@ func (s *Scanner) addIdentifierToken() {
 }
 
 func (s *Scanner) getKeyword(text string) {
-	if i, ok := keywordDict[text]; !ok {
-		s.addToken(Identifier, nil)
+	if i, ok := ast.KeywordDict[text]; !ok {
+		s.addToken(ast.Identifier, nil)
 	} else {
 		s.addToken(i, nil)
 	}

@@ -1,21 +1,17 @@
-package interpret
+package ast
 
 // A Token is a substring of source text given context or meaning by the scanner
 type Token struct {
-	tokenType TokenType
-	lexeme    string // Exact substring lexed by scanner
-	literal   interface{}
-	line      int
-	col       int
+	Type    TokenType
+	Lexeme  string // Exact substring lexed by scanner
+	Literal interface{}
+	Line    int
+	Col     int
 }
 
 // Only used for testing purposes within interpret_test package
-func NewToken(tokenType TokenType, literal interface{}) *Token {
-	return &Token{tokenType: tokenType, literal: literal}
-}
-
-func (t *Token) TokenType() TokenType {
-	return t.tokenType
+func NewToken(tokenType TokenType, lexeme string, literal interface{}, line int, col int) *Token {
+	return &Token{tokenType, lexeme, literal, line, col}
 }
 
 type TokenType int
@@ -66,7 +62,7 @@ const (
 	Variable
 )
 
-var keywordDict = map[string]TokenType{
+var KeywordDict = map[string]TokenType{
 	"class":  Class,
 	"else":   Else,
 	"false":  False,
