@@ -7,12 +7,14 @@ import (
 // An Interpreter takes in a given expression and evaluates it into its most basic literal form.
 // Interpreter inherits from the Visitor interface, allowing it interact with all Expr types.
 type Interpreter struct {
-	stmts []Stmt
-	env   *Environment
+	stmts  []Stmt
+	global *Environment
+	env    *Environment
 }
 
 func NewInterpreter(stmts []Stmt) *Interpreter {
-	return &Interpreter{stmts, NewEnvironment(nil)}
+	// TODO: Open to add standard library methods as part of global
+	return &Interpreter{stmts, NewEnvironment(nil), NewEnvironment(nil)}
 }
 
 // TODO: Update docstring after changes from stmt
@@ -191,6 +193,25 @@ func (i *Interpreter) interpretBinaryExpr(b *BinaryExpr) interface{} {
 	case BangEqual:
 		return leftOperand != rightOperand
 	}
+	return nil
+}
+
+func (i *Interpreter) interpretCallExpr(c *CallExpr) interface{} {
+	callee := i.evalExpr(c.callee)
+
+	var args []interface{}
+	for _, arg := range c.args {
+		args = append(args, i.evalExpr(arg))
+	}
+
+	if function, ok := callee.(Callable); !ok {
+		if len(args) != function.arity() {
+			ReportErr(0, 0, "Expected "+string(function.arity())+" args but got "+string(len(args))+".")
+		}
+		return function.call(i, args)
+	}
+
+	ReportErr(0, 0, "Can only call funcs and structs.")
 	return nil
 }
 

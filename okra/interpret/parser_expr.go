@@ -105,7 +105,33 @@ func (p *Parser) unary() Expr {
 		return &UnaryExpr{operator, operand}
 	}
 
-	return p.primary()
+	return p.call()
+}
+
+func (p *Parser) call() Expr {
+	expr := p.primary()
+
+	for {
+		if p.match(LeftParen) {
+			expr = p.finishCall(expr)
+		} else {
+			break
+		}
+	}
+
+	return expr
+}
+
+func (p *Parser) finishCall(callee Expr) Expr {
+	var args []Expr
+	if !p.check(RightParen) {
+		for p.match(Comma) {
+			args = append(args, p.Expression())
+		}
+	}
+	paren := p.consume(RightParen, "Expect ')' after function arguments.")
+
+	return &CallExpr{callee, paren, args}
 }
 
 func (p *Parser) primary() Expr {

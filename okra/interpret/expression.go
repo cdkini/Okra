@@ -82,3 +82,13 @@ type LogicalExpr struct {
 func (l LogicalExpr) GetType() string {
 	return fmt.Sprintf("%T", l)
 }
+
+type CallExpr struct {
+	callee Expr
+	paren  Token
+	args   []Expr
+}
+
+func (c CallExpr) GetType() string {
+	return fmt.Sprintf("%T", c)
+}
