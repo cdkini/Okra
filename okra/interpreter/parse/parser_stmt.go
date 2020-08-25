@@ -12,7 +12,7 @@ func (p *Parser) statement() ast.Stmt {
 		return p.forStmt()
 
 	case p.match(ast.LeftBrace):
-		stmts := p.blockStmt()
+		stmts := p.block()
 		return ast.NewBlockStmt(stmts)
 
 	case p.match(ast.Print):
@@ -46,7 +46,7 @@ func (p *Parser) forStmt() ast.Stmt {
 	return ast.NewForStmt(condition, body)
 }
 
-func (p *Parser) blockStmt() []ast.Stmt {
+func (p *Parser) block() []ast.Stmt {
 	stmts := []ast.Stmt{}
 
 	for !p.check(ast.RightBrace) && !p.isAtEOF() {

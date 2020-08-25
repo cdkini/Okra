@@ -37,6 +37,8 @@ func (i *Interpreter) evalStmt(stmt ast.Stmt) {
 	switch t := stmt.(type) {
 	case *ast.ExpressionStmt:
 		i.interpretExpressionStmt(t)
+	case *ast.FuncStmt:
+		i.interpretFuncStmt(t)
 	case *ast.BlockStmt:
 		i.interpretBlockStmt(t)
 	case *ast.PrintStmt:
@@ -47,6 +49,7 @@ func (i *Interpreter) evalStmt(stmt ast.Stmt) {
 		i.interpretIfStmt(t)
 	case *ast.ForStmt:
 		i.interpretForStmt(t)
+
 	default:
 		fmt.Println(t.GetType())
 	}
@@ -88,12 +91,16 @@ func (i *Interpreter) interpretForStmt(stmt *ast.ForStmt) {
 }
 
 func (i *Interpreter) interpretBlockStmt(stmt *ast.BlockStmt) {
+	i.executeBlock(stmt.Stmts, env.NewEnvironment(i.env))
+}
+
+func (i *Interpreter) executeBlock(stmts []ast.Stmt, env *env.Environment) {
 	prevEnv := i.env
 
-	i.env = env.NewEnvironment(prevEnv)
+	i.env = env
 	defer func() { i.env = prevEnv }()
 
-	for _, s := range stmt.Stmts {
+	for _, s := range stmts {
 		i.evalStmt(s)
 	}
 }
@@ -109,6 +116,11 @@ func (i *Interpreter) interpretVariableStmt(stmt *ast.VariableStmt) {
 
 func (i *Interpreter) interpretExpressionStmt(stmt *ast.ExpressionStmt) {
 	i.evalExpr(stmt.Expr)
+}
+
+func (i *Interpreter) interpretFuncStmt(stmt *ast.FuncStmt) {
+	function := NewFunction(stmt)
+	i.env.Define(stmt.Identifier.Lexeme, function)
 }
 
 func (i *Interpreter) interpretPrintStmt(stmt *ast.PrintStmt) {

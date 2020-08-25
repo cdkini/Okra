@@ -87,3 +87,17 @@ func NewForStmt(condition Expr, body Stmt) *ForStmt {
 func (f ForStmt) GetType() string {
 	return fmt.Sprintf("%T", f)
 }
+
+type FuncStmt struct {
+	Identifier Token
+	Params     []Token
+	Body       []Stmt
+}
+
+func NewFuncStmt(identifier Token, params []Token, body []Stmt) *FuncStmt {
+	return &FuncStmt{identifier, params, body}
+}
+
+func (f FuncStmt) GetType() string {
+	return fmt.Sprintf("%T", f)
+}

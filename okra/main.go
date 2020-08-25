@@ -7,8 +7,8 @@ import (
 	"Okra/okra/interpreter/interpret"
 	"Okra/okra/interpreter/parse"
 	"Okra/okra/interpreter/scan"
-	"Okra/okra/interpreter/stdlib"
 	"Okra/okra/okraerr"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -34,6 +34,8 @@ func main() {
 		}
 		fmtFile(os.Args[2])
 	}
+
+	fmt.Println("Program terminated.")
 }
 
 func runFile(path string) {
@@ -44,7 +46,7 @@ func runFile(path string) {
 	parser := parse.NewParser(tokens)
 	stmts, _ := parser.Parse()
 	interpreter := interpret.NewInterpreter(stmts)
-	interpreter.LoadStdlib(stdlib.BuildStdlib())
+	// interpreter.LoadStdlib(stdlib.BuildStdlib())
 	interpreter.Interpret()
 }
 
