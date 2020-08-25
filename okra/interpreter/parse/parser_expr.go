@@ -130,8 +130,11 @@ func (p *Parser) call() ast.Expr {
 func (p *Parser) finishCall(callee ast.Expr) ast.Expr {
 	var args []ast.Expr
 	if !p.check(ast.RightParen) {
-		for p.match(ast.Comma) {
+		for {
 			args = append(args, p.Expression())
+			if !p.match(ast.Comma) {
+				break
+			}
 		}
 	}
 	paren := p.consume(ast.RightParen, "Expect ')' after function arguments.")

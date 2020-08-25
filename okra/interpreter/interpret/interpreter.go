@@ -5,6 +5,7 @@ import (
 	"Okra/okra/interpreter/env"
 	"Okra/okra/okraerr"
 	"fmt"
+	"strconv"
 )
 
 // An Interpreter takes in a given expression and evaluates it into its most basic literal form.
@@ -71,6 +72,8 @@ func (i *Interpreter) evalExpr(expr ast.Expr) interface{} {
 		return i.interpretVariableExpr(t)
 	case *ast.LogicalExpr:
 		return i.interpretLogicalExpr(t)
+	case *ast.CallExpr:
+		return i.interpretCallExpr(t)
 	default:
 		return nil
 	}
@@ -119,7 +122,7 @@ func (i *Interpreter) interpretExpressionStmt(stmt *ast.ExpressionStmt) {
 }
 
 func (i *Interpreter) interpretFuncStmt(stmt *ast.FuncStmt) {
-	function := NewFunction(stmt)
+	function := NewFunction(*stmt)
 	i.env.Define(stmt.Identifier.Lexeme, function)
 }
 
@@ -225,9 +228,9 @@ func (i *Interpreter) interpretCallExpr(c *ast.CallExpr) interface{} {
 		args = append(args, i.evalExpr(arg))
 	}
 
-	if function, ok := callee.(Callable); !ok {
+	if function, ok := callee.(Callable); ok {
 		if len(args) != function.Arity() {
-			okraerr.ReportErr(0, 0, "Expected "+string(function.Arity())+" args but got "+string(len(args))+".")
+			okraerr.ReportErr(0, 0, "Expected "+strconv.Itoa(function.Arity())+" args but got "+strconv.Itoa(len(args))+".")
 		}
 		return function.Call(i, args)
 	}

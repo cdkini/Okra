@@ -11,10 +11,10 @@ type Callable interface {
 }
 
 type Function struct {
-	declaration *ast.FuncStmt
+	declaration ast.FuncStmt
 }
 
-func NewFunction(declaration *ast.FuncStmt) *Function {
+func NewFunction(declaration ast.FuncStmt) *Function {
 	return &Function{declaration}
 }
 

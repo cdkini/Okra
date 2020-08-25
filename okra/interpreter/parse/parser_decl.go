@@ -22,11 +22,15 @@ func (p *Parser) function() ast.Stmt {
 	p.consume(ast.LeftParen, "Expect '(' after identifier.")
 	var params []ast.Token
 	if !p.check(ast.RightParen) {
-		for p.match(ast.Comma) {
-			params = append(params, p.consume(ast.Identifier, "Expect parameter name."))
+		for {
+			params = append(params, p.consume(ast.Identifier, "Expect ')' after parameters."))
+			if !p.match(ast.Comma) {
+				break
+			}
 		}
 	}
 	p.consume(ast.RightParen, "Expect ')' after parameters.")
+	p.consume(ast.LeftBrace, "Expect '{' before func body.")
 	body := p.block()
 	return ast.NewFuncStmt(identifier, params, body)
 }
