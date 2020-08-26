@@ -40,6 +40,8 @@ func (i *Interpreter) evalStmt(stmt ast.Stmt) {
 		i.interpretExpressionStmt(t)
 	case *ast.FuncStmt:
 		i.interpretFuncStmt(t)
+	case *ast.ReturnStmt:
+		i.interpretReturnStmt(t)
 	case *ast.BlockStmt:
 		i.interpretBlockStmt(t)
 	case *ast.PrintStmt:
@@ -99,12 +101,11 @@ func (i *Interpreter) interpretBlockStmt(stmt *ast.BlockStmt) {
 
 func (i *Interpreter) executeBlock(stmts []ast.Stmt, env *env.Environment) {
 	prevEnv := i.env
-
 	i.env = env
-	defer func() { i.env = prevEnv }()
 
-	for _, s := range stmts {
-		i.evalStmt(s)
+	defer func() { i.env = prevEnv }()
+	for _, stmt := range stmts {
+		i.evalStmt(stmt)
 	}
 }
 
@@ -126,9 +127,24 @@ func (i *Interpreter) interpretFuncStmt(stmt *ast.FuncStmt) {
 	i.env.Define(stmt.Identifier.Lexeme, function)
 }
 
+func (i *Interpreter) interpretReturnStmt(stmt *ast.ReturnStmt) interface{} {
+	var val interface{}
+	if stmt.Val != nil {
+		val = i.evalExpr(stmt.Val)
+	}
+
+	// Added type checking to obtain appropriate output type. Open to remove if not necessary.
+	if str, ok := val.(string); ok {
+		return str
+	} else if num, ok := val.(float64); ok {
+		return num
+	}
+	return val
+}
+
 func (i *Interpreter) interpretPrintStmt(stmt *ast.PrintStmt) {
 	value := i.evalExpr(stmt.Expr)
-	fmt.Println(value)
+	fmt.Println(cleanPrintOutput(value))
 }
 
 func (i *Interpreter) interpretLogicalExpr(l *ast.LogicalExpr) interface{} {
@@ -284,6 +300,8 @@ func cleanPrintOutput(input interface{}) string {
 		output = string(val)
 	case float64:
 		output = fmt.Sprintf("%v", val)
+	case nil:
+		output = "null"
 	}
 	return output
 }
