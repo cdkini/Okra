@@ -101,3 +101,16 @@ func NewFuncStmt(identifier Token, params []Token, body []Stmt) *FuncStmt {
 func (f FuncStmt) GetType() string {
 	return fmt.Sprintf("%T", f)
 }
+
+type ReturnStmt struct {
+	Keyword Token
+	Val     Expr
+}
+
+func NewReturnStmt(keyword Token, val Expr) *ReturnStmt {
+	return &ReturnStmt{keyword, val}
+}
+
+func (g ReturnStmt) GetType() string {
+	return fmt.Sprintf("%T", g)
+}
