@@ -2,7 +2,6 @@ package interpret
 
 import (
 	"Okra/okra/interpreter/ast"
-	"Okra/okra/interpreter/env"
 	"Okra/okra/okraerr"
 	"fmt"
 	"strconv"
@@ -12,13 +11,13 @@ import (
 // Interpreter inherits from the Visitor interface, allowing it interact with all Expr types.
 type Interpreter struct {
 	stmts  []ast.Stmt
-	global *env.Environment
-	env    *env.Environment
+	global *Environment
+	env    *Environment
 }
 
 func NewInterpreter(stmts []ast.Stmt) *Interpreter {
 	// TODO: Open to add standard library methods as part of global
-	return &Interpreter{stmts, env.NewEnvironment(nil), env.NewEnvironment(nil)}
+	return &Interpreter{stmts, NewEnvironment(nil), NewEnvironment(nil)}
 }
 
 func (i *Interpreter) LoadStdlib(stdlib map[string]Callable) {
@@ -96,10 +95,10 @@ func (i *Interpreter) interpretForStmt(stmt *ast.ForStmt) {
 }
 
 func (i *Interpreter) interpretBlockStmt(stmt *ast.BlockStmt) {
-	i.executeBlock(stmt.Stmts, env.NewEnvironment(i.env))
+	i.executeBlock(stmt.Stmts, NewEnvironment(i.env))
 }
 
-func (i *Interpreter) executeBlock(stmts []ast.Stmt, env *env.Environment) {
+func (i *Interpreter) executeBlock(stmts []ast.Stmt, env *Environment) {
 	prevEnv := i.env
 	i.env = env
 

@@ -1,4 +1,4 @@
-package env
+package interpret
 
 import (
 	"Okra/okra/interpreter/ast"

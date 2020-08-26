@@ -2,7 +2,6 @@ package interpret
 
 import (
 	"Okra/okra/interpreter/ast"
-	"Okra/okra/interpreter/env"
 )
 
 type Callable interface {
@@ -23,7 +22,7 @@ func (f *Function) Arity() int {
 }
 
 func (f *Function) Call(i *Interpreter, args []interface{}) interface{} {
-	env := env.NewEnvironment(i.global)
+	env := NewEnvironment(i.global)
 	for i, token := range f.declaration.Params {
 		env.Define(token.Lexeme, args[i])
 	}
@@ -38,4 +37,18 @@ func (f *Function) String() string {
 
 type Struct struct {
 	// TODO: Open to update struct attributes and methods
+}
+
+func NewStruct() *Struct {
+	return &Struct{} // TODO: Open to update struct attributes and methods
+}
+
+func (s *Struct) Arity() int {
+	// TODO: Open to update struct attributes and methods
+	return 0
+}
+
+func (s *Struct) Call() interface{} {
+	// TODO: Open to update struct attributes and methods
+	return nil
 }
