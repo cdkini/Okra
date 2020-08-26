@@ -35,3 +35,7 @@ func (f *Function) Call(i *Interpreter, args []interface{}) interface{} {
 func (f *Function) String() string {
 	return "<func " + f.declaration.Identifier.Lexeme + " >"
 }
+
+type Struct struct {
+	// TODO: Open to update struct attributes and methods
+}
