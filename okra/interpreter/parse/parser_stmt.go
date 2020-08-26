@@ -18,6 +18,9 @@ func (p *Parser) statement() ast.Stmt {
 	case p.match(ast.Print):
 		return p.printStmt()
 
+	case p.match(ast.Return):
+		return p.returnStmt()
+
 	default:
 		return p.expressionStmt()
 	}
@@ -47,7 +50,7 @@ func (p *Parser) forStmt() ast.Stmt {
 }
 
 func (p *Parser) block() []ast.Stmt {
-	stmts := []ast.Stmt{}
+	var stmts []ast.Stmt
 
 	for !p.check(ast.RightBrace) && !p.isAtEOF() {
 		stmts = append(stmts, p.declaration())
@@ -63,6 +66,17 @@ func (p *Parser) printStmt() ast.Stmt {
 	p.consume(ast.Semicolon, "Expect ';' after value")
 
 	return ast.NewPrintStmt(expr)
+}
+
+func (p *Parser) returnStmt() ast.Stmt {
+	keyword := p.prevToken()
+	var val ast.Expr
+	if !p.check(ast.Semicolon) {
+		val = p.Expression()
+	}
+
+	p.consume(ast.Semicolon, "Expect ';' after return value.")
+	return ast.NewReturnStmt(keyword, val)
 }
 
 func (p *Parser) expressionStmt() ast.Stmt {
