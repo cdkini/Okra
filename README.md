@@ -55,6 +55,7 @@ Okra strongly encourages usage of the native formatting rules to ensure consiste
 ## Contributing
 Although Okra was designed as an educational project, any contributions or suggestions are greatly appreciated! If you would like to contribute to the codebase, please follow these steps:
 
+```
 1. Create an issue 
 2. Fork the repo
 3. Create a branch; please use the issue number and name when creating your branch (i.e. "134-AddTernaryOperator")
@@ -64,8 +65,9 @@ Although Okra was designed as an educational project, any contributions or sugge
 7. Ensure that your changes passes all tests using `go test`
 8. Squash your changes to as few commits as possible
 9. Make a pull request; please follow the same conventions as step #3
+```
 
-Failure to adhere to #4 and #5 will cause the commit to be rejected by Travis so please double check your work. Thanks!
+<i>Failure to adhere to #6 and #7 will cause changes to be rejected by Travis so please double check your work.</i>
 
 
 ## Credits
