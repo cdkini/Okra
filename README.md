@@ -31,7 +31,7 @@ Playground version: <b><i>1.0.0</i></b>
 
 
 ### Writing Scripts
-To learn more about Okra's syntax and the language's features, please see our dedicated [tutorial](www.google.com). We've included code snippets therein but we highly recommend testing and breaking the sample files on your own machine or [the playground]((https://repl.it).
+To learn more about Okra's syntax and the language's features, please see our dedicated [tutorial](www.google.com). We've included code snippets therein but we highly recommend testing and breaking the sample files on your own machine or [the playground](https://repl.it).
 
 
 ### Running Executable
