@@ -9,7 +9,7 @@ This tutorial assumes two things:
 - If this is not applicable to you: 
 
 ### Table of Contents
-- [Comments][#Comments]
+- [Comments](#Comments)
 
 
 ### Comments
