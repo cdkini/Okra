@@ -10,6 +10,17 @@ This tutorial assumes two things:
 
 ### Table of Contents
 - [Comments](#Comments)
+- [Variables](#Variables)
+- [Primitives](#Primitives)
+- [Operations](#Operations)
+- [Conditionals](#Conditionals)
+- [Looping](#Looping)
+- [Functions](#Functions)
+- [Structures](#Structures)
+- [Interfaces](#Interfaces)
+- [Modules](#Modules)
+- [stdlib](#stdlib)
+- [Style](#Style)
 
 
 ### Comments
@@ -18,13 +29,13 @@ This tutorial assumes two things:
 ### Variables
 
 
-### Data Types
+### Primitives
 
 
 ### Printing
 
 
-### Supported Operations
+### Operations
 
 
 ### Conditionals
@@ -44,5 +55,10 @@ This tutorial assumes two things:
 
 ### Modules
 
+
+### stdlib
+
+
+### Style
 
 
