@@ -44,8 +44,8 @@ Okra strongly encourages usage of the native formatting rules to ensure consiste
 ### Releases
 - 1.0.0: Initial release (TBD)
 ### Roadmap
-- High Priority:
-- Low Priority:
+##### High Priority:
+##### Low Priority:
 
 ## Contributing
 Although Okra was designed as an educational project, any contributions or suggestions are greatly appreciated! If you would like to contribute to the codebase, please follow these steps:
