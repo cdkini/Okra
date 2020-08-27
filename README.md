@@ -1,6 +1,8 @@
 ![Okra logo](img/logo.jpg)
 # Okra
-TODO: Fill out description
+Okra is an interpreted, high-level, general-purpose programming language designed with simplicity and extensibility in mind. Taking inspiration from the likes of Python, JavaScript, and Go, Okra emphasizes readability through a digestible syntax. Although largely procedural, Okra support object-oriented programming by means of structs, interfaces, and composition based inheritance through struct embedding. While Okra may not be "batteries included" like a more established language like Python, an extensive standard library to cover basic file I/O, mathematics, and key data structures and algorithms are included from the get-go.
+
+Please note that this interpreter was designed and implemented solely for educational purposes. The Okra development team has no intentions of monetization and exists to reinforce the value of open source software and its community.
 ### Table of Contents
 - [Installation](#Installation)
 - [Usage](#Usage)
