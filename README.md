@@ -7,7 +7,7 @@ Okra is an interpreted, high-level, general-purpose programming language designe
 <i>Please note that the contents of this repository were designed and implemented solely for educational purposes. The Okra development team has no intentions of monetization or commercialization and exists solely to reinforce the value of open source software and its community.</i>
 
 ### Playground
-To test out the language, visit [the official Okra playground](https://repl.it) as hosted on Repl.it! Please note that due to size and dependency restrictions, all language features may not be supported. We've include sample files, which are the same as those noted in the [tutorial](www.google.com), for your reference.
+To test out the language, visit [the official Okra playground](https://repl.it) as hosted on Repl.it! Please note that due to size and dependency restrictions, all language features may not be supported. We've include sample files, which are the same as those noted in the [tutorial](https://github.com/cdkini/Okra/tree/master/tutorial), for your reference.
 
 Playground version: <b><i>1.0.0</i></b>
 
@@ -31,7 +31,7 @@ Playground version: <b><i>1.0.0</i></b>
 
 
 ### Writing Scripts
-To learn more about Okra's syntax and the language's features, please see our dedicated [tutorial](www.google.com). We've included code snippets therein but we highly recommend testing and breaking the sample files on your own machine or [the playground](https://repl.it).
+To learn more about Okra's syntax and the language's features, please see our dedicated [tutorial](https://github.com/cdkini/Okra/tree/master/tutorial). We've included code snippets therein but we highly recommend testing and breaking the sample files on your own machine or [the playground](https://repl.it).
 
 
 ### Running Executable
@@ -46,7 +46,7 @@ okra run [script]
 okra fmt [script/dir]
 ```
 
-Okra strongly encourages usage of the native formatting rules to ensure consistency between file and codebases; we recommend reading [the official style guide](https://github.com/cdkini/Okra/tree/master/tutorial#style) to learn the language's standards. However, if you would like to modify the base rules, please update `rules.json` in `okra/formatter` before creating the executable. Directions on how to adjust format parameters are included therein.
+Okra strongly encourages usage of the native formatting rules to ensure consistency between file and codebases; we recommend reading [the 'Style' section](https://github.com/cdkini/Okra/tree/master/tutorial#style) of the tutorial to learn the language's standards. However, if you would like to modify the base rules, please update `rules.json` in `okra/formatter` before creating the executable. Directions on how to adjust format parameters are included therein.
 
 <i>Please note that both commands will only work on files with a `.okr` extension. The formatter will ignore invalid files if used on a directory.</i>
 
