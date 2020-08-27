@@ -2,6 +2,7 @@
 <h2 align="center">A Simple Yet Extensible Scripting Language</h2>
 Okra is an interpreted, high-level, general-purpose programming language designed to make scripting easy and maintainable. Taking inspiration from the likes of Python, JavaScript, and Go, Okra emphasizes readability through a digestible syntax. Although largely procedural, Okra supports an object-oriented paradigm by means of structs, interfaces, and struct embedding. While Okra may not be "batteries included" like Python, an extensive standard library to cover basic file I/O, mathematics, and key data structures and algorithms is included from the get-go and is continually updated. To promote consistency across the language, a built-in formatter akin to `go fmt` is included.
 
+
 To test out the language, visit [our playground](https://repl.it)! Please note that due to size and dependency restrictions from Repl.it, all language features may not be supported.
 
 Playground updated as of version: **1.0.0**
