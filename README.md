@@ -27,13 +27,12 @@ Please note that this interpreter was designed and implemented solely for educat
 
 ### Contributing
 Although Okra was designed as an educational project, any contributions or suggestions are greatly appreciated! If you would like to contribute to the codebase, please follow these steps:
-1. Fork the repo.
-2. Make changes to your fork.
-3. Write unit tests as applicable.
-+ *As a rule of thumb, ensure that the test suite has coverage over your changes. Minor updates like documentation do not require changes to testing.*
-4. Format your code using go fmt.
-5. Ensure that your commit passes all tests.
-6. Make a pull request.
+1. Fork the repo
+2. Make changes to your fork
+3. Write unit tests as applicable (*As a rule of thumb, ensure that the test suite has coverage over your changes*)
+4. Format your code using `go fmt`
+5. Ensure that your commit passes all tests
+6. Make a pull request
 
 Failure to adhere to #4 and #5 will cause the commit to be rejected by Travis CI so please double check your work before sending it up for review.
 
