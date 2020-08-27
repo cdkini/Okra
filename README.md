@@ -66,7 +66,8 @@ Although Okra was designed as an educational project, any contributions or sugge
 8. Squash your changes to as few commits as possible*
 9. Make a pull request*
 ```
-*<i>Please use the issue number and name when possible to improve clarity and project maintainability (i.e. "134-AddTernaryOperator")
+*<i>Please use the issue number and name when possible to improve clarity and project maintainability (i.e. "134-AddTernaryOperator")</i>
+
 **<i>Failure to run commands can cause changes to be rejected by Travis so please double check your work.</i>
 
 
