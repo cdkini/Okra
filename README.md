@@ -29,8 +29,10 @@ Playground version: <b><i>1.0.0</i></b>
 
 ## Usage
 
+
 ### Writing Scripts
-To learn more about Okra's syntax and the language's features, please see our dedicated [tutorial](www.google.com). We've included code snippets therein but we recommend testing (and <b>breaking</b>) the sample files on your own machine or the playground.
+To learn more about Okra's syntax and the language's features, please see our dedicated [tutorial](www.google.com). We've included code snippets therein but we highly recommend testing and breaking the sample files on your own machine or the playground.
+
 
 ### Running Executable
 Upon building the executable and setting up your path, there are two ways in which you can utilize the `okra` command:
