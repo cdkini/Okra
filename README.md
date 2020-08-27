@@ -7,7 +7,7 @@ Okra is an interpreted, high-level, general-purpose programming language designe
 <i>Please note that the contents of this repository were designed and implemented solely for educational purposes. The Okra development team has no intentions of monetization or commercialization and exists solely to reinforce the value of open source software and its community.</i>
 
 ### Playground
-To test out the language, visit [the official Okra playground](https://repl.it) as hosted on Repl.it! Please note that due to size and dependency restrictions, all language features may not be supported.
+To test out the language, visit [the official Okra playground](https://repl.it) as hosted on Repl.it! Please note that due to size and dependency restrictions, all language features may not be supported. We've include sample files, which are the same as those noted in the [tutorial](www.google.com), for your reference.
 
 Playground version: <b><i>1.0.0</i></b>
 
@@ -31,7 +31,7 @@ Playground version: <b><i>1.0.0</i></b>
 
 
 ### Writing Scripts
-To learn more about Okra's syntax and the language's features, please see our dedicated [tutorial](www.google.com). We've included code snippets therein but we highly recommend testing and breaking the sample files on your own machine or the playground.
+To learn more about Okra's syntax and the language's features, please see our dedicated [tutorial](www.google.com). We've included code snippets therein but we highly recommend testing and breaking the sample files on your own machine or [the playground]((https://repl.it).
 
 
 ### Running Executable
