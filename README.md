@@ -30,7 +30,7 @@ Although Okra was designed as an educational project, any contributions or sugge
 
 1. Create an issue 
 2. Fork the repo
-3. Create a branch (*Please use the issue number and name when creating your branch i.e. "134-TernaryOperator")
+3. Create a branch (*Please use the issue number and name when creating your branch i.e. "134-AddTernaryOperator"*)
 2. Make your changes
 3. Write unit tests as applicable (*As a rule of thumb, ensure that the test suite has coverage over your changes*)
 4. Format the codebase using `go fmt`
