@@ -9,7 +9,7 @@ Okra is an interpreted, high-level, general-purpose programming language designe
 ### Playground
 To test out the language, visit [our playground](https://repl.it) as hosted on Repl.it! Please note that due to size and dependency restrictions, all language features may not be supported.
 
-Playground updated as of version: **1.0.0**
+Playground version: <b><i>1.0.0</i></b>
 
 
 ## Table of Contents
@@ -20,7 +20,9 @@ Playground updated as of version: **1.0.0**
 - [Credits](#Credits)
 - [License](#License)
 
+
 ## Installation
+
 
 ### Dependencies
 
@@ -41,12 +43,14 @@ Okra strongly encourages usage of the native formatting rules to ensure consiste
 
 <i>Please note that both commands will only work on files with a `.okr` extension. The formatter will ignore invalid files if used on a directory.</i>
 
+
 ## Updates
 ### Releases
 - 1.0.0: Initial release (TBD)
 ### Roadmap
 ##### High Priority:
 ##### Low Priority:
+
 
 ## Contributing
 Although Okra was designed as an educational project, any contributions or suggestions are greatly appreciated! If you would like to contribute to the codebase, please follow these steps:
@@ -63,12 +67,14 @@ Although Okra was designed as an educational project, any contributions or sugge
 
 Failure to adhere to #4 and #5 will cause the commit to be rejected by Travis so please double check your work. Thanks!
 
+
 ## Credits
 This project would not have have been possible without the following resources: 
 - [Crafting Interpreters](https://craftinginterpreters.com/) by Bob Nystrom and the Lox language discussed therein
 - [Structure and Interpretation of Computer Programs](https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book.html) by Gerald Jay Sussman and Hal Abelson and the res of the team behind [MIT 6.001](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-001-structure-and-interpretation-of-computer-programs-spring-2005/)
 - Alex Gaynor's [PyCon 2013 talk](https://www.youtube.com/watch?v=LCslqgM48D4) on writing interpreters
 - [Composing Programs](https://composingprograms.com/) by John DeNero
+
 
 ## License
 The Okra project is licensed under the MIT License Copyright (c) 2020.
