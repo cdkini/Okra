@@ -8,7 +8,7 @@ Playground updated as of version: **1.0.0**
 
 Please note that this interpreter was designed and implemented solely for educational purposes. The Okra development team has no intentions of monetization or commercialization and exists solely to reinforce the value of open source software and its community.
 
-### Table of Contents
+## Table of Contents
 - [Installation](#Installation)
 - [Usage](#Usage)
 - [Updates](#Updates)
@@ -16,9 +16,9 @@ Please note that this interpreter was designed and implemented solely for educat
 - [Credits](#Credits)
 - [License](#License)
 
-### Installation
+## Installation
 
-### Usage
+## Usage
 Upon building the executable and setting up your path, there are two ways in which you can utilize the `okra` command:
 ##### `okra run [script]`
 This command will run the interpreter on your program. All output, including error messages, will be displayed to your terminal.
@@ -27,7 +27,7 @@ This command will run the formatter on your program or all files in a particular
 
 Please note that both commands will only work on files with a `.okr` extension. The formatter will ignore invalid files if used on a directory.
 
-### Updates
+## Updates
 ##### Releases
 - 1.0.0: Initial release (TBD)
 ##### Roadmap
@@ -35,7 +35,7 @@ High Priority:
 
 Low Priority:
 
-### Contributing
+## Contributing
 Although Okra was designed as an educational project, any contributions or suggestions are greatly appreciated! If you would like to contribute to the codebase, please follow these steps:
 
 1. Create an issue 
@@ -50,14 +50,14 @@ Although Okra was designed as an educational project, any contributions or sugge
 
 Failure to adhere to #4 and #5 will cause the commit to be rejected by Travis CI so please double check your work. Thanks!
 
-### Credits
+## Credits
 This project would not have have been possible without the following resources: 
 - [Crafting Interpreters](https://craftinginterpreters.com/) by Bob Nystrom and the Lox language discussed therein
 - [Structure and Interpretation of Computer Programs](https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book.html) by Gerald Jay Sussman and Hal Abelson and the res of the team behind [MIT 6.001](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-001-structure-and-interpretation-of-computer-programs-spring-2005/)
 - Alex Gaynor's [PyCon 2013 talk](https://www.youtube.com/watch?v=LCslqgM48D4) on writing interpreters
 - [Composing Programs](https://composingprograms.com/) by John DeNero
 
-### License
+## License
 The Okra project is licensed under the MIT License Copyright (c) 2020.
 
 See the [LICENSE](https://github.com/cdkini/Okra/blob/master/LICENSE) for information on the history of this software, terms & conditions for usage, and a DISCLAIMER OF ALL WARRANTIES.
