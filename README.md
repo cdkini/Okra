@@ -18,6 +18,9 @@ Please note that this interpreter was designed and implemented solely for educat
 
 ## Installation
 
+##### Dependencies
+
+
 ## Usage
 Upon building the executable and setting up your path, there are two ways in which you can utilize the `okra` command:
 ##### `okra run [script]`
