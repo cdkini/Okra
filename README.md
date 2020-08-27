@@ -27,15 +27,13 @@ Playground updated as of version: **1.0.0**
 ## Usage
 Upon building the executable and setting up your path, there are two ways in which you can utilize the `okra` command:
 
----
-##### `okra run [script]`
-This command will run the interpreter on your program. All output, including error messages, will be displayed to your terminal.
+Run the interpreter on a script:
+`okra run [script]`
+Run the formatter on a script or directory:
+`okra fmt [script/dir]`
 
----
-##### `okra fmt [script/dir]`
-This command will run the formatter on your program or all files in a particular directory. Okra strongly encourages usage of the native formatting rules to ensure consistency between file and codebases. If you would like to modify the standard rules, please update `rules.json` in `okra/formatter` before creating the executable. Directions on how to adjust format parameters are included therein.
+Okra strongly encourages usage of the native formatting rules to ensure consistency between file and codebases. However, if you would like to modify the standard rules, please update `rules.json` in `okra/formatter` before creating the executable. Directions on how to adjust format parameters are included therein.
 
----
 <i>Please note that both commands will only work on files with a `.okr` extension. The formatter will ignore invalid files if used on a directory.</i>
 
 ## Updates
