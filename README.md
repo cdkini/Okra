@@ -1,12 +1,12 @@
 ![Okra logo](img/logo.jpg)
 # Okra
-Okra is an interpreted, high-level, general-purpose programming language designed with simplicity and extensibility in mind. Taking inspiration from the likes of Python, JavaScript, and Go, Okra emphasizes readability through a digestible syntax. Although largely procedural, Okra support object-oriented programming by means of structs, interfaces, and composition-based inheritance through struct embedding. While Okra may not be "batteries included" like Python, an extensive standard library to cover basic file I/O, mathematics, and key data structures and algorithms are included from the get-go.
+Okra is an interpreted, high-level, general-purpose programming language designed with simplicity and extensibility in mind. Taking inspiration from the likes of Python, JavaScript, and Go, Okra emphasizes readability through a digestible syntax. Although largely procedural, Okra support object-oriented programming by means of structs, interfaces, and composition-based inheritance through struct embedding. While Okra may not be "batteries included" like Python, an extensive standard library to cover basic file I/O, mathematics, and key data structures and algorithms are included from the get-go. To promote consistency across the language, a built-in formatter akin to `go fmt` is included.
 
 To test out the language, visit our playground! Please note that due to size and dependency restrictions from Repl.it, all language features may not be supported.
 
 Playground updated as of version: **1.0.0**
 
-Please note that this interpreter was designed and implemented solely for educational purposes. The Okra development team has no intentions of monetization and exists to reinforce the value of open source software and its community.
+Please note that this interpreter was designed and implemented solely for educational purposes. The Okra development team has no intentions of monetization or commercialization and exists solely to reinforce the value of open source software and its community.
 
 ### Table of Contents
 - [Installation](#Installation)
@@ -19,16 +19,21 @@ Please note that this interpreter was designed and implemented solely for educat
 ### Installation
 
 ### Usage
-
+Upon building the executable and setting up your path, there are two ways in which you can utilize the `okra` command:
 ##### `okra run [script]`
+This command will run the interpreter on your program. All output, including error messages, will be displayed to your terminal.
+##### `okra fmt [script/dir]`
+This command will run the formatter on your program or all files in a particular directory. Okra strongly encourages usage of the native formatting rules to ensure consistency between file and codebases. If you would like to modify the standard rules, please update `fmt.json` in `okra/formatter` accordingly.
 
-##### `okra fmt [script]`
+Please note that both commands will only work on files with a `.okr` extension. The formatter will ignore invalid files if used on a directory.
 
 ### Updates
-
 ##### Releases
-
+- 1.0.0: Initial release (TBD)
 ##### Roadmap
+High Priority:
+
+Low Priority:
 
 ### Contributing
 Although Okra was designed as an educational project, any contributions or suggestions are greatly appreciated! If you would like to contribute to the codebase, please follow these steps:
