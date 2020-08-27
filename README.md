@@ -46,7 +46,7 @@ okra run [script]
 okra fmt [script/dir]
 ```
 
-Okra strongly encourages usage of the native formatting rules to ensure consistency between file and codebases; we recommend reading the guidelines on [Idiomatic Okra](www.google.com) to learn the language's standards. However, if you would like to modify the base rules, please update `rules.json` in `okra/formatter` before creating the executable. Directions on how to adjust format parameters are included therein.
+Okra strongly encourages usage of the native formatting rules to ensure consistency between file and codebases; we recommend reading [the official style guide](github.com/cdkini/Okra/tree/master/tutorial#style) to learn the language's standards. However, if you would like to modify the base rules, please update `rules.json` in `okra/formatter` before creating the executable. Directions on how to adjust format parameters are included therein.
 
 <i>Please note that both commands will only work on files with a `.okr` extension. The formatter will ignore invalid files if used on a directory.</i>
 
