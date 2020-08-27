@@ -21,7 +21,7 @@ Playground updated as of version: **1.0.0**
 
 ## Installation
 
-##### Dependencies
+### Dependencies
 
 
 ## Usage
@@ -34,12 +34,11 @@ This command will run the formatter on your program or all files in a particular
 Please note that both commands will only work on files with a `.okr` extension. The formatter will ignore invalid files if used on a directory.
 
 ## Updates
-##### Releases
+### Releases
 - 1.0.0: Initial release (TBD)
-##### Roadmap
-High Priority:
-
-Low Priority:
+### Roadmap
+- High Priority:
+- Low Priority:
 
 ## Contributing
 Although Okra was designed as an educational project, any contributions or suggestions are greatly appreciated! If you would like to contribute to the codebase, please follow these steps:
