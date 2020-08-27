@@ -8,6 +8,9 @@ This tutorial assumes two things:
 2. You have a decent understanding of programming fundamentals (variables, conditionals, loops, structs, etc)
 - If this is not applicable to you: 
 
+### Table of Contents
+- [Comments][#Comments]
+
 
 ### Comments
 
