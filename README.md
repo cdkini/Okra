@@ -10,7 +10,7 @@ Please note that this interpreter was designed and implemented solely for educat
 ### Table of Contents
 - [Installation](#Installation)
 - [Usage](#Usage)
-- [Releases](#Releases)
+- [Updates](#Updates)
 - [Contributing](#Contributing)
 - [Credits](#Credits)
 - [License](#License)
@@ -23,7 +23,11 @@ Please note that this interpreter was designed and implemented solely for educat
 
 ##### `okra fmt [script]`
 
-### Releases
+### Updates
+
+##### Releases
+
+##### Roadmap
 
 ### Contributing
 Although Okra was designed as an educational project, any contributions or suggestions are greatly appreciated! If you would like to contribute to the codebase, please follow these steps:
@@ -49,20 +53,3 @@ This project would not have have been possible without the following resources:
 
 ### License
 
-
-TO-DO:
-- Fix line and column tracking from scanner
-
-Order of files to clean up:
-  - token
-  - scanner
-  - expression
-  - parser
-  - okra_error
-  - statement
-  - parser_expr
-  - parser_stmt
-  - parser_decl
-  - environment
-  - interpreter 
-  
