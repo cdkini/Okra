@@ -26,7 +26,7 @@ Upon building the executable and setting up your path, there are two ways in whi
 ##### `okra run [script]`
 This command will run the interpreter on your program. All output, including error messages, will be displayed to your terminal.
 ##### `okra fmt [script/dir]`
-This command will run the formatter on your program or all files in a particular directory. Okra strongly encourages usage of the native formatting rules to ensure consistency between file and codebases. If you would like to modify the standard rules, please update `fmt.json` in `okra/formatter` before creating the executable.
+This command will run the formatter on your program or all files in a particular directory. Okra strongly encourages usage of the native formatting rules to ensure consistency between file and codebases. If you would like to modify the standard rules, please update `rules.json` in `okra/formatter` before creating the executable. Directions on how to adjust format parameters are included therein.
 
 Please note that both commands will only work on files with a `.okr` extension. The formatter will ignore invalid files if used on a directory.
 
