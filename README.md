@@ -53,4 +53,8 @@ This project would not have have been possible without the following resources:
 - [Composing Programs](https://composingprograms.com/) by John DeNero
 
 ### License
+The Okra project is licensed under the MIT License Copyright (c) 2020.
 
+See the [LICENSE](https://github.com/cdkini/Okra/blob/master/LICENSE) for information on the history of this software, terms & conditions for usage, and a DISCLAIMER OF ALL WARRANTIES.
+
+All trademarks referenced herein are property of their respective holders.
