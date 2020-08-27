@@ -19,9 +19,9 @@ Please note that this interpreter was designed and implemented solely for educat
 
 ### Usage
 
-##### okra run [script]
+##### `okra run [script]`
 
-##### okra fmt [script]
+##### `okra fmt [script]`
 
 ### Releases
 
