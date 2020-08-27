@@ -2,12 +2,18 @@
 # Okra
 TODO: Fill out description
 ### Table of Contents
+- [Installation](#Installation)
+- [Usage](#Usage)
+- [Releases](#Releases)
+- [Contributing](#Contributing)
+- [Credits](#Credits)
+- [License](#License)
 ### Installation
 ### Usage
 ##### okra run [script]
 ##### okra fmt [script]
-### Release Notes
-### Contributing Guidelines
+### Releases
+### Contributing
 ### Credits
 ### License
 
