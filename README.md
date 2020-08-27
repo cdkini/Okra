@@ -1,4 +1,15 @@
 ![Okra logo](img/logo.jpg)
+# Okra
+TODO: Fill out description
+### Table of Contents
+### Installation
+### Usage
+##### okra run [script]
+##### okra fmt [script]
+### Release Notes
+### Contributing Guidelines
+### Credits
+### License
 
 TO-DO:
 - Fix line and column tracking from scanner
