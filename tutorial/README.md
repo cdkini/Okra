@@ -4,9 +4,9 @@
 ### Preface
 This tutorial assumes two things:
 1. You've followed the installation instructions or have a playground instance up and running
-- If this is not applicable to you:
+   <br><i>If this is not applicable to you:</i> Follow (the installation instructions)[https://github.com/cdkini/Okra#installation] or visit (the playground)[https://repl.it]
 2. You have a decent understanding of programming fundamentals (variables, conditionals, loops, structs, etc)
-- If this is not applicable to you: 
+   <br><i>If this is not applicable to you:</i> Learn an established language first! Okra is an academic exercise and thus should not be your first foray into programming.
 
 ### Table of Contents
 - [Comments](#Comments)
