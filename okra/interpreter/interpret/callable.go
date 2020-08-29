@@ -22,17 +22,16 @@ func (f *Function) Arity() int {
 }
 
 func (f *Function) Call(i *Interpreter, args []interface{}) interface{} {
-	env := NewEnvironment(i.global)
+	env := NewEnvironment(i.globalEnv)
 	for i, token := range f.declaration.Params {
 		env.Define(token.Lexeme, args[i])
 	}
-	i.executeBlock(f.declaration.Body, env)
 
+	block := i.executeBlock(f.declaration.Body, env)
+	if r, ok := block.(*ReturnValue); ok {
+		return r.LiteralExpr.Val
+	}
 	return nil
-}
-
-func (f *Function) String() string {
-	return "<func " + f.declaration.Identifier.Lexeme + " >"
 }
 
 type Struct struct {
