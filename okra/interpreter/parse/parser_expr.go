@@ -167,6 +167,9 @@ func (p *Parser) primary() ast.Expr {
 	case p.match(ast.Identifier):
 		return ast.NewVariableExpr(p.prevToken())
 
+	case p.match(ast.This):
+		return ast.NewThisExpr(p.prevToken())
+
 	case p.match(ast.LeftParen):
 		expr := p.Expression()
 
