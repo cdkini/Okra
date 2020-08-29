@@ -67,9 +67,9 @@ Although Okra was designed as an educational project, any contributions or sugge
 2. Fork the repo
 3. Create a branch*
 4. Make your changes
-5. Write unit tests as applicable; as a rule of thumb, ensure that the test suite has coverage over your changes
-6. Format the codebase using `go fmt`**
-7. Ensure that your changes passes all tests using `go test`**
+5. Write unit tests as applicable
+6. Format the codebase using 'go fmt'**
+7. Ensure that your changes passes all tests using 'go test'**
 8. Squash your changes to as few commits as possible*
 9. Make a pull request*
 ```
