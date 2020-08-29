@@ -1,9 +1,10 @@
 #!/bin/bash
 
-chmod u+x install.sh
+chmod u+x INSTALL
 
 cd src
 go build -o okra
-mv okra ../bin
+mkdir ../bin
+mv okra ../bin/
 cd ..
 echo "Executable successfully downloaded to ./bin"
