@@ -1,6 +1,6 @@
 package parse
 
-import "Okra/okra/interpreter/ast"
+import "Okra/src/interpreter/ast"
 
 func (p *Parser) statement() ast.Stmt {
 	switch {

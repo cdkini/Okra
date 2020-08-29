@@ -1,8 +1,8 @@
 package interpret
 
 import (
-	"Okra/okra/interpreter/ast"
-	"Okra/okra/okraerr"
+	"Okra/src/interpreter/ast"
+	"Okra/src/okraerr"
 )
 
 type Callable interface {

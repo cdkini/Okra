@@ -1,6 +1,6 @@
 package interpret
 
-import "Okra/okra/interpreter/ast"
+import "Okra/src/interpreter/ast"
 
 type ReturnValue struct {
 	*ast.LiteralExpr

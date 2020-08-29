@@ -1,7 +1,7 @@
 package scan
 
 import (
-	. "Okra/okra/interpreter/ast"
+	. "Okra/src/interpreter/ast"
 	"testing"
 )
 

@@ -1,8 +1,8 @@
 package parse
 
 import (
-	"Okra/okra/interpreter/ast"
-	"Okra/okra/okraerr"
+	"Okra/src/interpreter/ast"
+	"Okra/src/okraerr"
 )
 
 func (p *Parser) Expression() ast.Expr {

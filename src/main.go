@@ -1,14 +1,10 @@
-// Package main runs Okra interpreter
-// on user provided path of a .okr file
-
 package main
 
 import (
-	"Okra/okra/interpreter/interpret"
-	"Okra/okra/interpreter/parse"
-	"Okra/okra/interpreter/scan"
-	"Okra/okra/okraerr"
-	"fmt"
+	"Okra/src/interpreter/interpret"
+	"Okra/src/interpreter/parse"
+	"Okra/src/interpreter/scan"
+	"Okra/src/okraerr"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -34,17 +30,22 @@ func main() {
 		}
 		fmtFile(os.Args[2])
 	}
-
-	fmt.Println("Program terminated.")
 }
 
 func runFile(path string) {
+	// Check for valid path
 	bytes, err := ioutil.ReadFile(path)
 	okraerr.CheckErr(err, 0, 0, "Path not found")
+
+	// Lex or tokenize input stream
 	scanner := scan.NewScanner(string(bytes))
 	tokens := scanner.ScanTokens()
+
+	// Parse tokens into AST
 	parser := parse.NewParser(tokens)
 	stmts, _ := parser.Parse()
+
+	// Traverse AST to generate output
 	interpreter := interpret.NewInterpreter()
 	// interpreter.LoadStdlib(stdlib.BuildStdlib())
 	interpreter.Interpret(stmts)

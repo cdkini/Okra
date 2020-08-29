@@ -1,7 +1,7 @@
 package stdlib
 
 import (
-	"Okra/okra/interpreter/interpret"
+	"Okra/src/interpreter/interpret"
 	"fmt"
 )
 

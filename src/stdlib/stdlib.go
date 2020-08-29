@@ -1,6 +1,6 @@
 package stdlib
 
-import "Okra/okra/interpreter/interpret"
+import "Okra/src/interpreter/interpret"
 
 func BuildStdlib() (stdlib map[string]interpret.Callable) {
 	stdlib["hello"] = &StdStr{}

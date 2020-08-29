@@ -1,7 +1,7 @@
 package parse
 
 import (
-	"Okra/okra/interpreter/scan"
+	"Okra/src/interpreter/scan"
 	"testing"
 )
 

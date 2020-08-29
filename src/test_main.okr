@@ -1,0 +1,10 @@
+struct Circle {
+    construct :: {
+        this.radius: 5;
+    }
+    getRadius :: {
+        print this.radius;
+    }
+}
+
+Circle().getRadius();
