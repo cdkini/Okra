@@ -80,6 +80,11 @@ func (i *Interpreter) interpretExpr(expr ast.Expr) interface{} {
 		return i.interpretLogicalExpr(t)
 	case *ast.CallExpr:
 		return i.interpretCallExpr(t)
+	case *ast.GetExpr:
+		return i.interpretGetExpr(t)
+	case *ast.SetExpr:
+		return i.interpretSetExpr(t)
+
 	default:
 		return nil
 	}
@@ -272,6 +277,27 @@ func (i *Interpreter) interpretCallExpr(c *ast.CallExpr) interface{} {
 	}
 
 	okraerr.ReportErr(0, 0, "Can only call funcs and structs.")
+	return nil
+}
+
+func (i *Interpreter) interpretGetExpr(g *ast.GetExpr) interface{} {
+	object := i.interpretExpr(g.Object)
+	if instance, ok := object.(Instance); ok {
+		return instance.get(g.Property)
+	}
+	okraerr.ReportErr(0, 0, "Only struct instances have properties.")
+	return nil
+}
+
+func (i *Interpreter) interpretSetExpr(s *ast.SetExpr) interface{} {
+	object := i.interpretExpr(s.Object)
+	if instance, ok := object.(Instance); !ok {
+		okraerr.ReportErr(0, 0, "Only struct instances have properties.")
+	} else {
+		val := i.interpretStmt(s.Val)
+		instance.set(s.Property, val)
+		return val
+	}
 	return nil
 }
 

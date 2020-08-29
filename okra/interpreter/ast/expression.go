@@ -124,3 +124,30 @@ func NewCallExpr(callee Expr, paren Token, args []Expr) *CallExpr {
 func (c CallExpr) GetType() string {
 	return fmt.Sprintf("%T", c)
 }
+
+type GetExpr struct {
+	Object   Expr
+	Property Token
+}
+
+func NewGetExpr(object Expr, property Token) *GetExpr {
+	return &GetExpr{object, property}
+}
+
+func (g GetExpr) GetType() string {
+	return fmt.Sprintf("%T", g)
+}
+
+type SetExpr struct {
+	Object   Expr
+	Property Token
+	Val      Expr
+}
+
+func NewSetExpr(object Expr, property Token, val Expr) *SetExpr {
+	return &SetExpr{object, property, val}
+}
+
+func (s SetExpr) GetType() string {
+	return fmt.Sprintf("%T", s)
+}

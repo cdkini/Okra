@@ -2,6 +2,7 @@ package interpret
 
 import (
 	"Okra/okra/interpreter/ast"
+	"Okra/okra/okraerr"
 )
 
 type Callable interface {
@@ -52,9 +53,22 @@ func (s *Struct) Call(i *Interpreter, args []interface{}) interface{} {
 }
 
 type Instance struct {
-	class Struct
+	class  Struct
+	fields map[string]interface{}
 }
 
 func NewInstance(class Struct) *Instance {
-	return &Instance{class}
+	return &Instance{class, make(map[string]interface{})}
+}
+
+func (i *Instance) get(property ast.Token) interface{} {
+	if val, ok := i.fields[property.Lexeme]; ok {
+		return val
+	}
+	okraerr.ReportErr(0, 0, "Undefined property "+property.Lexeme+".")
+	return nil
+}
+
+func (i *Instance) set(property ast.Token, val interface{}) {
+	i.fields[property.Lexeme] = val
 }

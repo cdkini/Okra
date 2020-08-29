@@ -16,9 +16,11 @@ func (p *Parser) assignment() ast.Expr {
 		prev := p.prevToken()
 		value := p.assignment()
 
-		switch t := expr.(type) {
+		switch expr := expr.(type) {
 		case *ast.VariableExpr:
-			return ast.NewAssignmentExpr(t.Identifier, value)
+			return ast.NewAssignmentExpr(expr.Identifier, value)
+		case *ast.GetExpr:
+			return ast.NewSetExpr(expr.Object, expr.Property, value)
 		default:
 			curr := p.currToken()
 			okraerr.ReportErr(curr.Line, curr.Col, "Invalid assignment target: '"+prev.Lexeme+"'")
@@ -119,6 +121,9 @@ func (p *Parser) call() ast.Expr {
 	for {
 		if p.match(ast.LeftParen) {
 			expr = p.finishCall(expr)
+		} else if p.match(ast.Dot) {
+			property := p.consume(ast.Identifier, "Expect property name after '.'.")
+			expr = ast.NewGetExpr(expr, property)
 		} else {
 			break
 		}
