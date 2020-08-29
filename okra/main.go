@@ -45,9 +45,9 @@ func runFile(path string) {
 	tokens := scanner.ScanTokens()
 	parser := parse.NewParser(tokens)
 	stmts, _ := parser.Parse()
-	interpreter := interpret.NewInterpreter(stmts)
+	interpreter := interpret.NewInterpreter()
 	// interpreter.LoadStdlib(stdlib.BuildStdlib())
-	interpreter.Interpret()
+	interpreter.Interpret(stmts)
 }
 
 func fmtFile(path string) {
