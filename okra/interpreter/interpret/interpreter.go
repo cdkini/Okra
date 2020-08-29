@@ -10,16 +10,13 @@ import (
 // An Interpreter takes in a given expression and evaluates it into its most basic literal form.
 // Interpreter inherits from the Visitor interface, allowing it interact with all Expr types.
 type Interpreter struct {
-	env       *Environment
-	globalEnv *Environment
+	env     *Environment
+	globals *Environment
 }
 
 func NewInterpreter() *Interpreter {
 	// TODO: Open to add standard library methods as part of global
-	interpreter := new(Interpreter)
-	interpreter.env = NewEnvironment(nil)
-	interpreter.globalEnv = interpreter.env
-	return interpreter
+	return &Interpreter{NewEnvironment(nil), NewEnvironment(nil)}
 }
 
 // func (i *Interpreter) LoadStdlib(stdlib map[string]Callable) {
@@ -57,7 +54,6 @@ func (i *Interpreter) interpretStmt(stmt ast.Stmt) interface{} {
 		return i.interpretForStmt(t)
 
 	default:
-		fmt.Println(t.GetType())
 		return nil
 	}
 }
@@ -84,6 +80,8 @@ func (i *Interpreter) interpretExpr(expr ast.Expr) interface{} {
 		return i.interpretGetExpr(t)
 	case *ast.SetExpr:
 		return i.interpretSetExpr(t)
+	case *ast.ThisExpr:
+		return i.interpretThisExpr(t)
 
 	default:
 		return nil
@@ -140,7 +138,7 @@ func (i *Interpreter) interpretExpressionStmt(stmt *ast.ExpressionStmt) interfac
 }
 
 func (i *Interpreter) interpretFuncStmt(stmt *ast.FuncStmt) interface{} {
-	function := NewFunction(*stmt)
+	function := NewFunction(*stmt, i.env, false)
 	i.env.Define(stmt.Identifier.Lexeme, function)
 	return nil
 }
@@ -149,7 +147,7 @@ func (i *Interpreter) interpretStructStmt(stmt *ast.StructStmt) interface{} {
 	i.env.Define(stmt.Name.Lexeme, nil)
 	methods := make(map[string]*Function)
 	for _, method := range stmt.Methods {
-		methods[method.Identifier.Lexeme] = NewFunction(method)
+		methods[method.Identifier.Lexeme] = NewFunction(method, i.env, method.Identifier.Lexeme == "construct")
 	}
 	i.env.Assign(stmt.Name, NewStruct(stmt.Name.Lexeme, methods))
 	return nil
@@ -295,7 +293,7 @@ func (i *Interpreter) interpretGetExpr(g *ast.GetExpr) interface{} {
 
 func (i *Interpreter) interpretSetExpr(s *ast.SetExpr) interface{} {
 	object := i.interpretExpr(s.Object)
-	if instance, ok := object.(Instance); !ok {
+	if instance, ok := object.(*Instance); !ok {
 		okraerr.ReportErr(0, 0, "Only struct instances have properties.")
 	} else {
 		val := i.interpretStmt(s.Val)
@@ -303,6 +301,11 @@ func (i *Interpreter) interpretSetExpr(s *ast.SetExpr) interface{} {
 		return val
 	}
 	return nil
+}
+
+func (i *Interpreter) interpretThisExpr(t *ast.ThisExpr) interface{} {
+	// TODO: Not currently working; open to check and write tests
+	return i.env.Get(t.Keyword)
 }
 
 func isTruthy(i interface{}) bool {
