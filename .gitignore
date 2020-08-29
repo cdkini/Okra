@@ -2,3 +2,4 @@ okra/test_main.okr
 .vscode/
 tools
 okra/__debug_bin
+bin
