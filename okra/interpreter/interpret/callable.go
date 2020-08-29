@@ -36,11 +36,12 @@ func (f *Function) Call(i *Interpreter, args []interface{}) interface{} {
 }
 
 type Struct struct {
-	name string
+	name    string
+	methods map[string]*Function
 }
 
-func NewStruct(name string) *Struct {
-	return &Struct{name}
+func NewStruct(name string, methods map[string]*Function) *Struct {
+	return &Struct{name, methods}
 }
 
 func (s *Struct) Arity() int {
@@ -50,6 +51,13 @@ func (s *Struct) Arity() int {
 func (s *Struct) Call(i *Interpreter, args []interface{}) interface{} {
 	return NewInstance(*s)
 
+}
+
+func (s *Struct) findMethod(method string) interface{} {
+	if _, ok := s.methods[method]; ok {
+		return s.methods[method]
+	}
+	return nil
 }
 
 type Instance struct {
@@ -64,6 +72,9 @@ func NewInstance(class Struct) *Instance {
 func (i *Instance) get(property ast.Token) interface{} {
 	if val, ok := i.fields[property.Lexeme]; ok {
 		return val
+	}
+	if method := i.class.findMethod(property.Lexeme); method != nil {
+		return method
 	}
 	okraerr.ReportErr(0, 0, "Undefined property "+property.Lexeme+".")
 	return nil

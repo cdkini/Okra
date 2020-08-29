@@ -26,8 +26,8 @@ func (p *Parser) structDeclaration() ast.Stmt {
 
 	var methods []ast.FuncStmt
 	for !p.check(ast.RightBrace) && !p.isAtEOF() {
-		if f, ok := p.function().(ast.FuncStmt); ok {
-			methods = append(methods, f)
+		if f, ok := p.function().(*ast.FuncStmt); ok {
+			methods = append(methods, *f)
 		}
 	}
 	p.consume(ast.RightBrace, "Expect '}' after struct body.")

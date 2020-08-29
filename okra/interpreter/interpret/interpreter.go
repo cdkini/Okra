@@ -147,7 +147,11 @@ func (i *Interpreter) interpretFuncStmt(stmt *ast.FuncStmt) interface{} {
 
 func (i *Interpreter) interpretStructStmt(stmt *ast.StructStmt) interface{} {
 	i.env.Define(stmt.Name.Lexeme, nil)
-	i.env.Assign(stmt.Name, NewStruct(stmt.Name.Lexeme))
+	methods := make(map[string]*Function)
+	for _, method := range stmt.Methods {
+		methods[method.Identifier.Lexeme] = NewFunction(method)
+	}
+	i.env.Assign(stmt.Name, NewStruct(stmt.Name.Lexeme, methods))
 	return nil
 }
 
@@ -282,7 +286,7 @@ func (i *Interpreter) interpretCallExpr(c *ast.CallExpr) interface{} {
 
 func (i *Interpreter) interpretGetExpr(g *ast.GetExpr) interface{} {
 	object := i.interpretExpr(g.Object)
-	if instance, ok := object.(Instance); ok {
+	if instance, ok := object.(*Instance); ok {
 		return instance.get(g.Property)
 	}
 	okraerr.ReportErr(0, 0, "Only struct instances have properties.")
