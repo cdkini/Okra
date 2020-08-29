@@ -151,3 +151,15 @@ func NewSetExpr(object Expr, property Token, val Expr) *SetExpr {
 func (s SetExpr) GetType() string {
 	return fmt.Sprintf("%T", s)
 }
+
+type ThisExpr struct {
+	Keyword Token
+}
+
+func NewThisExpr(keyword Token) *ThisExpr {
+	return &ThisExpr{keyword}
+}
+
+func (t ThisExpr) GetType() string {
+	return fmt.Sprintf("%T", t)
+}
