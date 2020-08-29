@@ -10,54 +10,57 @@ import (
 // An Interpreter takes in a given expression and evaluates it into its most basic literal form.
 // Interpreter inherits from the Visitor interface, allowing it interact with all Expr types.
 type Interpreter struct {
-	stmts  []ast.Stmt
-	global *Environment
-	env    *Environment
+	env       *Environment
+	globalEnv *Environment
 }
 
-func NewInterpreter(stmts []ast.Stmt) *Interpreter {
+func NewInterpreter() *Interpreter {
 	// TODO: Open to add standard library methods as part of global
-	return &Interpreter{stmts, NewEnvironment(nil), NewEnvironment(nil)}
+	interpreter := new(Interpreter)
+	interpreter.env = NewEnvironment(nil)
+	interpreter.globalEnv = interpreter.env
+	return interpreter
 }
 
-func (i *Interpreter) LoadStdlib(stdlib map[string]Callable) {
-	for k, v := range stdlib {
-		i.global.Define(k, v)
-	}
-}
+// func (i *Interpreter) LoadStdlib(stdlib map[string]Callable) {
+// 	for k, v := range stdlib {
+// 		i.globalEnv.Define(k, v)
+// 	}
+// }
 
 // TODO: Update docstring after changes from stmt
-func (i *Interpreter) Interpret() {
-	for _, stmt := range i.stmts {
-		i.evalStmt(stmt)
+func (i *Interpreter) Interpret(stmts []ast.Stmt) {
+	for _, stmt := range stmts {
+		i.interpretStmt(stmt)
 	}
 }
 
-func (i *Interpreter) evalStmt(stmt ast.Stmt) {
+func (i *Interpreter) interpretStmt(stmt ast.Stmt) interface{} {
 	switch t := stmt.(type) {
 	case *ast.ExpressionStmt:
-		i.interpretExpressionStmt(t)
+		return i.interpretExpressionStmt(t)
 	case *ast.FuncStmt:
-		i.interpretFuncStmt(t)
+		return i.interpretFuncStmt(t)
 	case *ast.ReturnStmt:
-		i.interpretReturnStmt(t)
+		return i.interpretReturnStmt(t)
 	case *ast.BlockStmt:
-		i.interpretBlockStmt(t)
+		return i.interpretBlockStmt(t)
 	case *ast.PrintStmt:
-		i.interpretPrintStmt(t)
+		return i.interpretPrintStmt(t)
 	case *ast.VariableStmt:
-		i.interpretVariableStmt(t)
+		return i.interpretVariableStmt(t)
 	case *ast.IfStmt:
-		i.interpretIfStmt(t)
+		return i.interpretIfStmt(t)
 	case *ast.ForStmt:
-		i.interpretForStmt(t)
+		return i.interpretForStmt(t)
 
 	default:
 		fmt.Println(t.GetType())
+		return nil
 	}
 }
 
-func (i *Interpreter) evalExpr(expr ast.Expr) interface{} {
+func (i *Interpreter) interpretExpr(expr ast.Expr) interface{} {
 	switch t := expr.(type) {
 	case *ast.AssignmentExpr:
 		return i.interpretAssignmentExpr(t)
@@ -80,74 +83,77 @@ func (i *Interpreter) evalExpr(expr ast.Expr) interface{} {
 	}
 }
 
-func (i *Interpreter) interpretIfStmt(stmt *ast.IfStmt) {
-	if isTruthy(i.evalExpr(stmt.Condition)) {
-		i.evalStmt(stmt.ThenBranch)
+func (i *Interpreter) interpretIfStmt(stmt *ast.IfStmt) interface{} {
+	if isTruthy(i.interpretExpr(stmt.Condition)) {
+		i.interpretStmt(stmt.ThenBranch)
 	} else if stmt.ElseBranch != nil {
-		i.evalStmt(stmt.ElseBranch)
+		i.interpretStmt(stmt.ElseBranch)
 	}
+	return nil
 }
 
-func (i *Interpreter) interpretForStmt(stmt *ast.ForStmt) {
-	for isTruthy(i.evalExpr(stmt.Condition)) {
-		i.evalStmt(stmt.Body)
+func (i *Interpreter) interpretForStmt(stmt *ast.ForStmt) interface{} {
+	for isTruthy(i.interpretExpr(stmt.Condition)) {
+		i.interpretStmt(stmt.Body)
 	}
+	return nil
 }
 
-func (i *Interpreter) interpretBlockStmt(stmt *ast.BlockStmt) {
+func (i *Interpreter) interpretBlockStmt(stmt *ast.BlockStmt) interface{} {
 	i.executeBlock(stmt.Stmts, NewEnvironment(i.env))
+	return nil
 }
 
-func (i *Interpreter) executeBlock(stmts []ast.Stmt, env *Environment) {
+func (i *Interpreter) executeBlock(stmts []ast.Stmt, env *Environment) interface{} {
 	prevEnv := i.env
 	i.env = env
 
 	defer func() { i.env = prevEnv }()
+	var eval interface{}
 	for _, stmt := range stmts {
-		i.evalStmt(stmt)
+		if eval = i.interpretStmt(stmt); eval != nil {
+			break
+		}
 	}
+	return eval
 }
 
-func (i *Interpreter) interpretVariableStmt(stmt *ast.VariableStmt) {
+func (i *Interpreter) interpretVariableStmt(stmt *ast.VariableStmt) interface{} {
 	var val interface{}
 	if stmt.Expr != nil {
-		val = i.evalExpr(stmt.Expr)
+		val = i.interpretExpr(stmt.Expr)
 	}
 
 	i.env.Define(stmt.Identifier.Lexeme, val)
+	return nil
 }
 
-func (i *Interpreter) interpretExpressionStmt(stmt *ast.ExpressionStmt) {
-	i.evalExpr(stmt.Expr)
+func (i *Interpreter) interpretExpressionStmt(stmt *ast.ExpressionStmt) interface{} {
+	return i.interpretExpr(stmt.Expr)
 }
 
-func (i *Interpreter) interpretFuncStmt(stmt *ast.FuncStmt) {
+func (i *Interpreter) interpretFuncStmt(stmt *ast.FuncStmt) interface{} {
 	function := NewFunction(*stmt)
 	i.env.Define(stmt.Identifier.Lexeme, function)
+	return nil
 }
 
 func (i *Interpreter) interpretReturnStmt(stmt *ast.ReturnStmt) interface{} {
 	var val interface{}
 	if stmt.Val != nil {
-		val = i.evalExpr(stmt.Val)
+		val = i.interpretExpr(stmt.Val)
 	}
-
-	// Added type checking to obtain appropriate output type. Open to remove if not necessary.
-	if str, ok := val.(string); ok {
-		return str
-	} else if num, ok := val.(float64); ok {
-		return num
-	}
-	return val
+	return NewReturnValue(ast.NewLiteralExpr(val))
 }
 
-func (i *Interpreter) interpretPrintStmt(stmt *ast.PrintStmt) {
-	value := i.evalExpr(stmt.Expr)
+func (i *Interpreter) interpretPrintStmt(stmt *ast.PrintStmt) interface{} {
+	value := i.interpretExpr(stmt.Expr)
 	fmt.Println(cleanPrintOutput(value))
+	return nil
 }
 
 func (i *Interpreter) interpretLogicalExpr(l *ast.LogicalExpr) interface{} {
-	left := i.evalExpr(l.LeftOperand)
+	left := i.interpretExpr(l.LeftOperand)
 
 	switch l.Operator.Type {
 	case ast.Or:
@@ -159,11 +165,11 @@ func (i *Interpreter) interpretLogicalExpr(l *ast.LogicalExpr) interface{} {
 			return left
 		}
 	}
-	return i.evalExpr(l.RightOperand)
+	return i.interpretExpr(l.RightOperand)
 }
 
 func (i *Interpreter) interpretAssignmentExpr(a *ast.AssignmentExpr) interface{} {
-	value := i.evalExpr(a.Val)
+	value := i.interpretExpr(a.Val)
 	i.env.Assign(a.Identifier, value)
 	return value
 }
@@ -177,16 +183,18 @@ func (i *Interpreter) interpretLiteralExpr(l *ast.LiteralExpr) interface{} {
 		return str
 	} else if num, ok := l.Val.(float64); ok {
 		return num
+	} else if boolean, ok := l.Val.(bool); ok {
+		return boolean
 	}
-	return nil
+	return l.Val
 }
 
 func (i *Interpreter) interpretGroupingExpr(g *ast.GroupingExpr) interface{} {
-	return i.evalExpr(g.Expression)
+	return i.interpretExpr(g.Expression)
 }
 
 func (i *Interpreter) interpretUnaryExpr(u *ast.UnaryExpr) interface{} {
-	operand := i.evalExpr(u.Operand)
+	operand := i.interpretExpr(u.Operand)
 
 	switch u.Operator.Type {
 	case ast.Minus:
@@ -199,8 +207,8 @@ func (i *Interpreter) interpretUnaryExpr(u *ast.UnaryExpr) interface{} {
 }
 
 func (i *Interpreter) interpretBinaryExpr(b *ast.BinaryExpr) interface{} {
-	leftOperand := i.evalExpr(b.LeftOperand)
-	rightOperand := i.evalExpr(b.RightOperand)
+	leftOperand := i.interpretExpr(b.LeftOperand)
+	rightOperand := i.interpretExpr(b.RightOperand)
 
 	switch b.Operator.Type {
 	case ast.Minus:
@@ -236,11 +244,11 @@ func (i *Interpreter) interpretBinaryExpr(b *ast.BinaryExpr) interface{} {
 }
 
 func (i *Interpreter) interpretCallExpr(c *ast.CallExpr) interface{} {
-	callee := i.evalExpr(c.Callee)
+	callee := i.interpretExpr(c.Callee)
 
 	var args []interface{}
 	for _, arg := range c.Args {
-		args = append(args, i.evalExpr(arg))
+		args = append(args, i.interpretExpr(arg))
 	}
 
 	if function, ok := callee.(Callable); ok {
