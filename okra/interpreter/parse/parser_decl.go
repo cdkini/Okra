@@ -6,6 +6,9 @@ func (p *Parser) declaration() ast.Stmt {
 
 	switch {
 
+	case p.match(ast.Struct):
+		return p.structDeclaration()
+
 	case p.match(ast.Func):
 		return p.function()
 
@@ -15,6 +18,20 @@ func (p *Parser) declaration() ast.Stmt {
 	default:
 		return p.statement()
 	}
+}
+
+func (p *Parser) structDeclaration() ast.Stmt {
+	name := p.consume(ast.Identifier, "Expect struct name.")
+	p.consume(ast.LeftBrace, "Expect '{' before struct body.")
+
+	var methods []ast.FuncStmt
+	for !p.check(ast.RightBrace) && !p.isAtEOF() {
+		if f, ok := p.function().(ast.FuncStmt); ok {
+			methods = append(methods, f)
+		}
+	}
+	p.consume(ast.RightBrace, "Expect '}' after struct body.")
+	return ast.NewStructStmt(name, methods)
 }
 
 func (p *Parser) function() ast.Stmt {

@@ -35,19 +35,26 @@ func (f *Function) Call(i *Interpreter, args []interface{}) interface{} {
 }
 
 type Struct struct {
-	// TODO: Open to update struct attributes and methods
+	name string
 }
 
-func NewStruct() *Struct {
-	return &Struct{} // TODO: Open to update struct attributes and methods
+func NewStruct(name string) *Struct {
+	return &Struct{name}
 }
 
 func (s *Struct) Arity() int {
-	// TODO: Open to update struct attributes and methods
 	return 0
 }
 
-func (s *Struct) Call() interface{} {
-	// TODO: Open to update struct attributes and methods
-	return nil
+func (s *Struct) Call(i *Interpreter, args []interface{}) interface{} {
+	return NewInstance(*s)
+
+}
+
+type Instance struct {
+	class Struct
+}
+
+func NewInstance(class Struct) *Instance {
+	return &Instance{class}
 }

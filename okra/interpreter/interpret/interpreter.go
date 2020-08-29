@@ -41,6 +41,8 @@ func (i *Interpreter) interpretStmt(stmt ast.Stmt) interface{} {
 		return i.interpretExpressionStmt(t)
 	case *ast.FuncStmt:
 		return i.interpretFuncStmt(t)
+	case *ast.StructStmt:
+		return i.interpretStructStmt(t)
 	case *ast.ReturnStmt:
 		return i.interpretReturnStmt(t)
 	case *ast.BlockStmt:
@@ -138,6 +140,12 @@ func (i *Interpreter) interpretFuncStmt(stmt *ast.FuncStmt) interface{} {
 	return nil
 }
 
+func (i *Interpreter) interpretStructStmt(stmt *ast.StructStmt) interface{} {
+	i.env.Define(stmt.Name.Lexeme, nil)
+	i.env.Assign(stmt.Name, NewStruct(stmt.Name.Lexeme))
+	return nil
+}
+
 func (i *Interpreter) interpretReturnStmt(stmt *ast.ReturnStmt) interface{} {
 	var val interface{}
 	if stmt.Val != nil {
@@ -148,7 +156,12 @@ func (i *Interpreter) interpretReturnStmt(stmt *ast.ReturnStmt) interface{} {
 
 func (i *Interpreter) interpretPrintStmt(stmt *ast.PrintStmt) interface{} {
 	value := i.interpretExpr(stmt.Expr)
-	fmt.Println(cleanPrintOutput(value))
+	switch v := value.(type) {
+	case nil:
+		fmt.Println("null")
+	default:
+		fmt.Printf("%v\n", v)
+	}
 	return nil
 }
 
@@ -298,17 +311,4 @@ func checkNumericValidity(msg string, i ...interface{}) {
 			okraerr.ReportErr(0, 0, msg)
 		}
 	}
-}
-
-func cleanPrintOutput(input interface{}) string {
-	var output string
-	switch val := input.(type) {
-	case []int32:
-		output = string(val)
-	case float64:
-		output = fmt.Sprintf("%v", val)
-	case nil:
-		output = "null"
-	}
-	return output
 }

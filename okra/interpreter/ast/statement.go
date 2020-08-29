@@ -114,3 +114,16 @@ func NewReturnStmt(keyword Token, val Expr) *ReturnStmt {
 func (g ReturnStmt) GetType() string {
 	return fmt.Sprintf("%T", g)
 }
+
+type StructStmt struct {
+	Name    Token
+	Methods []FuncStmt
+}
+
+func NewStructStmt(name Token, methods []FuncStmt) *StructStmt {
+	return &StructStmt{name, methods}
+}
+
+func (s StructStmt) GetType() string {
+	return fmt.Sprintf("%T", s)
+}
