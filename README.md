@@ -25,6 +25,12 @@ Playground version: <b><i>1.0.0</i></b>
 
 
 ### Dependencies
+Okra was written on a 64-bit [Ubuntu 20.04 LTS OS](https://releases.ubuntu.com/20.04/) using [Go 1.14.3](https://golang.org/dl/). The project uses no external dependencies so access to any version of Go 1.1x and bash to run `.sh` files should be all you need. Since Go compiles down to a binary specific to the architecture it's running on, we leave the actual creation of the executable up to you.
+
+### Building Executable
+You can either:
+1. Run the installation script by running `./INSTALL` or `bash INSTALL` to create the `bin` directory. Your executable is located within.
+2. Build the file using the Go compiler by running `go build -o okra` in `src` and moving the executable to your desired location.
 
 
 ## Usage
