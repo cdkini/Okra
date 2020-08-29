@@ -6,3 +6,4 @@ cd src
 go build -o okra
 mv okra ../bin
 cd ..
+echo "Executable successfully downloaded to ./bin"
