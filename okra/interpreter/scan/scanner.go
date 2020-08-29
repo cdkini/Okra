@@ -65,12 +65,6 @@ func (s *Scanner) scan() {
 	case '}':
 		s.addToken(ast.RightBrace, nil)
 		break
-	case '[':
-		s.addToken(ast.LeftBracket, nil)
-		break
-	case ']':
-		s.addToken(ast.RightBracket, nil)
-		break
 	case ',':
 		s.addToken(ast.Comma, nil)
 		break
@@ -89,13 +83,16 @@ func (s *Scanner) scan() {
 	case '*':
 		s.addToken(ast.Star, nil)
 		break
+	case '=':
+		s.addToken(ast.Equal, nil)
+		break
+	case ':':
+		s.addToken(ast.Colon, nil)
+		break
 
 	// Single or double character tokens
 	case '!':
 		s.addToken(s.ternaryMatch('=', ast.BangEqual, ast.Bang), nil)
-		break
-	case '=':
-		s.addToken(s.ternaryMatch('=', ast.EqualEqual, ast.Equal), nil)
 		break
 	case '<':
 		s.addToken(s.ternaryMatch('=', ast.LessEqual, ast.Less), nil)

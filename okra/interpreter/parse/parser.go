@@ -107,7 +107,7 @@ func (p *Parser) synchronize() {
 		}
 
 		switch p.peek().Type {
-		case ast.Class,
+		case ast.Struct,
 			ast.Func,
 			ast.Variable,
 			ast.For,

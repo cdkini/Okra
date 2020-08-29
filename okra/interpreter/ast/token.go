@@ -20,14 +20,12 @@ const (
 	And TokenType = iota
 	Bang
 	BangEqual
-	Class
+	Colon
 	Comma
-	Construct
 	Dot
 	Else
 	EOF
 	Equal
-	EqualEqual
 	False
 	For
 	Func
@@ -37,7 +35,6 @@ const (
 	If
 	Invalid
 	LeftBrace
-	LeftBracket
 	LeftParen
 	Less
 	LessEqual
@@ -49,21 +46,19 @@ const (
 	Print
 	Return
 	RightBrace
-	RightBracket
 	RightParen
 	Semicolon
 	Slash
 	Star
 	String
 	Struct
-	Super
 	This
 	True
 	Variable
 )
 
 var KeywordDict = map[string]TokenType{
-	"class":  Class,
+	"struct": Struct,
 	"else":   Else,
 	"false":  False,
 	"for":    For,
@@ -72,7 +67,6 @@ var KeywordDict = map[string]TokenType{
 	"null":   Null,
 	"print":  Print,
 	"return": Return,
-	"super":  Super,
 	"this":   This,
 	"true":   True,
 	"var":    Variable,

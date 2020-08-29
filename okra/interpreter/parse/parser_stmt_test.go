@@ -10,7 +10,7 @@ func TestParseExpressionStmt(t *testing.T) {
 		input  string
 		output []string
 	}{
-		{"1 + 1 == 2;", []string{"ast.ExpressionStmt"}},
+		{"1 + 1 = 2;", []string{"ast.ExpressionStmt"}},
 		{"a + b >= c;", []string{"ast.ExpressionStmt"}},
 		{"!d;", []string{"ast.ExpressionStmt"}},
 		{"true != false;", []string{"ast.ExpressionStmt"}},
@@ -71,8 +71,8 @@ func TestParseVariableStmt(t *testing.T) {
 		input  string
 		output []string
 	}{
-		{"var a = 1;", []string{"ast.VariableStmt"}},
-		{"var name = \"Bob\";", []string{"ast.VariableStmt"}},
+		{"var a: 1;", []string{"ast.VariableStmt"}},
+		{"var name: \"Bob\";", []string{"ast.VariableStmt"}},
 		{"var abc;", []string{"ast.VariableStmt"}},
 	}
 

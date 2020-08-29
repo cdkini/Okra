@@ -48,10 +48,8 @@ func TestScanSingleCharTokens(t *testing.T) {
 	}{
 		{"(", []TokenType{LeftParen, EOF}},
 		{"{", []TokenType{LeftBrace, EOF}},
-		{"[", []TokenType{LeftBracket, EOF}},
 		{")", []TokenType{RightParen, EOF}},
 		{"}", []TokenType{RightBrace, EOF}},
-		{"]", []TokenType{RightBracket, EOF}},
 		{",", []TokenType{Comma, EOF}},
 		{".", []TokenType{Dot, EOF}},
 		{"-", []TokenType{Minus, EOF}},
@@ -87,7 +85,6 @@ func TestScanDoubleCharTokens(t *testing.T) {
 		{"!", []TokenType{Bang, EOF}},
 		{"!=", []TokenType{BangEqual, EOF}},
 		{"=", []TokenType{Equal, EOF}},
-		{"==", []TokenType{EqualEqual, EOF}},
 		{">", []TokenType{Greater, EOF}},
 		{">=", []TokenType{GreaterEqual, EOF}},
 		{"<", []TokenType{Less, EOF}},
@@ -166,7 +163,7 @@ func TestScanMiscellaneous(t *testing.T) {
 		{"x", []TokenType{Identifier, EOF}},
 
 		// Keyword
-		{"class", []TokenType{Class, EOF}},
+		{"struct", []TokenType{Struct, EOF}},
 		{"else", []TokenType{Else, EOF}},
 		{"false", []TokenType{False, EOF}},
 		{"for", []TokenType{For, EOF}},
@@ -175,7 +172,6 @@ func TestScanMiscellaneous(t *testing.T) {
 		{"null", []TokenType{Null, EOF}},
 		{"print", []TokenType{Print, EOF}},
 		{"return", []TokenType{Return, EOF}},
-		{"super", []TokenType{Super, EOF}},
 		{"this", []TokenType{This, EOF}},
 		{"true", []TokenType{True, EOF}},
 		{"var", []TokenType{Variable, EOF}},

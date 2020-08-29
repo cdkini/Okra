@@ -12,7 +12,7 @@ func (p *Parser) Expression() ast.Expr {
 func (p *Parser) assignment() ast.Expr {
 	expr := p.or()
 
-	if p.match(ast.Equal) {
+	if p.match(ast.Colon) {
 		prev := p.prevToken()
 		value := p.assignment()
 
@@ -53,7 +53,7 @@ func (p *Parser) and() ast.Expr {
 func (p *Parser) equality() ast.Expr {
 	expr := p.comparison()
 
-	for p.match(ast.BangEqual, ast.EqualEqual) {
+	for p.match(ast.BangEqual, ast.Equal) {
 		operator := p.prevToken()
 		rightOperand := p.comparison()
 

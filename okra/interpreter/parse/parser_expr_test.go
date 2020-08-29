@@ -41,7 +41,7 @@ func TestParseBinaryExpr(t *testing.T) {
 		{"11 >= 12", "ast.BinaryExpr"},
 		{"13 < 14", "ast.BinaryExpr"},
 		{"14 <= 15", "ast.BinaryExpr"},
-		{"16 == 17", "ast.BinaryExpr"},
+		{"16 = 17", "ast.BinaryExpr"},
 		{"18 != 19", "ast.BinaryExpr"},
 	}
 

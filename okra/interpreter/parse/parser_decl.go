@@ -19,17 +19,17 @@ func (p *Parser) declaration() ast.Stmt {
 
 func (p *Parser) function() ast.Stmt {
 	identifier := p.consume(ast.Identifier, "Expect valid identifier.")
-	p.consume(ast.LeftParen, "Expect '(' after identifier.")
+	p.consume(ast.Colon, "Expect ':' after identifier.")
 	var params []ast.Token
-	if !p.check(ast.RightParen) {
+	if !p.check(ast.Colon) {
 		for {
-			params = append(params, p.consume(ast.Identifier, "Expect ')' after parameters."))
+			params = append(params, p.consume(ast.Identifier, "Expect ':' after parameters."))
 			if !p.match(ast.Comma) {
 				break
 			}
 		}
 	}
-	p.consume(ast.RightParen, "Expect ')' after parameters.")
+	p.consume(ast.Colon, "Expect ':' after parameters.")
 	p.consume(ast.LeftBrace, "Expect '{' before func body.")
 	body := p.block()
 	return ast.NewFuncStmt(identifier, params, body)
@@ -39,7 +39,7 @@ func (p *Parser) varDeclaration() ast.Stmt {
 	identifier := p.consume(ast.Identifier, "Expect variable name.")
 
 	var initializer ast.Expr
-	if p.match(ast.Equal) {
+	if p.match(ast.Colon) {
 		initializer = p.Expression()
 	}
 

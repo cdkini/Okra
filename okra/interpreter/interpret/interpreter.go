@@ -235,7 +235,7 @@ func (i *Interpreter) interpretBinaryExpr(b *ast.BinaryExpr) interface{} {
 	case ast.LessEqual:
 		checkNumericValidity("Invalid usage of \"<=\" on non-numeric operands", leftOperand, rightOperand)
 		return evalNumeric(leftOperand) <= evalNumeric(rightOperand)
-	case ast.EqualEqual:
+	case ast.Equal:
 		return leftOperand == rightOperand
 	case ast.BangEqual:
 		return leftOperand != rightOperand
