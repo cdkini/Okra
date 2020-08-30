@@ -1,0 +1,180 @@
+// Okra implementation of the list or dynamic array abstract data type.
+
+
+// ListNode is a helper struct used to create the List data type.
+// Args:
+//   val  (any):      The value to be stored in the node
+//   next (ListNode): Pointer to the next ListNode
+//   prev (ListNode): Pointer to the prior ListNode
+// Returns:
+//   List: Empty instance of struct
+struct ListNode {
+    construct : val, next, prev : {
+        this.val:  val;
+        this.next: next; 
+        this.prev: prev; 
+    }
+}
+
+
+// List is Okra's primary collection, utilizing a linked-list based approach to store
+// contiguous values of any type. Elements are ordered and mutable.
+// Args:
+//   null
+// Returns:
+//   List: Empty instance of struct
+struct List {
+    construct :: {
+        this.dummyHead: ListNode(null, null, null)
+        this.dummyTail: ListNode(null, null, null) 
+        this.size: 0;                               
+        this.dummyHead.next: this.dummyTail;
+        this.dummyTail.prev: this.dummyHead;
+    }
+
+    // get retrieves an element from the list based on index.
+    // Args:
+    //   i (numeric): The index of the desired node
+    // Returns:
+    //   any: Value stored in the ith node
+    // Raises:
+    //   ListError: If i is greater than the current size
+    get : i : {
+        if (i >= this.size || this.size = 0) {
+            print "ListError: Index out of bounds.";
+            return;
+        }
+        var ptr: this.dummyHead;
+        var count: i + 1;
+        for (count > 0) {
+            ptr: ptr.next;
+            count: count - 1;
+        }
+        return ptr.val;
+    }
+
+    // set changes the value of an existing node in the list based on index.
+    // Args:
+    //   i (numeric): The index of the desired node
+    //   val (any):   The value to be set in the ith node
+    // Returns:
+    //   any: Value stored in the ith node
+    // Raises:
+    //   ListError: If i is greater than the current size
+    set : i, val : {
+        if (i >= this.size || this.size = 0) {
+            print "ListError: Index out of bounds.";
+            return;
+        }
+        var ptr: this.dummyHead;
+        var count: i + 1;
+        for (count > 0) {
+            ptr: ptr.next;
+            count: count - 1;
+        }
+        ptr.val: val;
+    }
+
+    // insert creates a new node and places it in the list based on index.
+    // Args:
+    //   i (numeric): The index of the desired node
+    //   val (any):   The value to be set in the ith node
+    // Returns:
+    //   null
+    // Raises:
+    //   ListError: If i is greater than the current size
+    insert : i, val : {
+        // TODO: Open to implement
+    }
+
+    // TODO: Add docstring
+    append : val : {
+        newNode: ListNode(val, this.dummyTail, this.dummyTail.prev);
+        this.dummyTail.prev: newNode;
+        newNode.prev.next: newNode;
+        this.size: this.size + 1;
+    }
+
+    // TODO: Add docstring
+    pop : i : {
+        if (i >= this.size || this.size = 0) {
+            print "ListError: Index out of bounds.";
+            return;
+        }
+        var ptr: this.dummyHead;
+        var count: i + 1;
+        for (count > 0) {
+            ptr: ptr.next;
+            count: count - 1;
+        }
+        var res: ptr.val;
+        ptr.prev.next: ptr.next;
+        ptr.next.prev: ptr.prev;
+        this.size: this.size - 1;
+        return res;
+    }
+
+    // TODO: Add docstring
+    remove : val : {
+        if (this.size = 0) {
+            return;
+        }
+        var ptr: this.dummyHead;
+        var count: this.size;
+        for (count > 0) {
+            ptr: ptr.next
+            count: count - 1;
+            if (ptr.val = val) {
+                ptr.prev.next: ptr.next;
+                ptr.next.prev: ptr.prev;
+                this.size: this.size - 1;
+            }
+        }
+    }
+
+    // len returns the length or size of the list.
+    // Args:
+    //   null
+    // Returns:
+    //   numeric: Number of items in list
+    len :: {
+        return this.size;
+    }
+
+    // reverse reverses the list in place.
+    // Args:
+    //   null
+    // Returns:
+    //   null
+    reverse :: {
+        var ptr: this.dummyHead;
+        var count: this.size + 1;
+        for (count > 0) {
+            var temp: ptr.next;
+            ptr.next: ptr.prev;
+            ptr.prev: temp; 
+
+            ptr: ptr.next;
+            count: count - 1;
+        }
+    }
+
+    // copy creates a duplicate of the current list.
+    // Args:
+    //   null
+    // Returns:
+    //   List: Copy of the original list
+    copy :: {
+        var newList: List();
+        if (this.size = 0) {
+            return newList;
+        }
+        var ptr: this.dummyHead.next;
+        var count: this.size;
+        for (count > 0) {
+            newList.append(ptr.val);
+            ptr: ptr.next;
+            count: count - 1;
+        }
+    }
+}
