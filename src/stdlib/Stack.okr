@@ -1,0 +1,90 @@
+// Okra implementation of the stack abstract data type.
+
+
+// StackNode is a helper struct used to create the Stack data type.
+// Args:
+//   val  (any):       The value to be stored in the node
+//   next (StackNode): Pointer to the next StackNode
+//   prev (StackNode): Pointer to the next StackNode
+// Returns:
+//   StackNode: Instance of struct with given value.
+struct StackNode {
+    construct : val, next, prev : {
+        this.val:  val;
+        this.next: next;
+        this.prev: prev;
+    }
+}
+
+
+// Stack is a linear, last-in first-out (LIFO) based collection.
+// Args:
+//   null
+// Returns:
+//   Stack: Empty instance of struct
+struct Stack {
+    construct :: {
+        this.sentinel: StackNode(null, null, null);
+        this.curr: this.sentinel;
+        this.size: 0;
+    }
+
+    // TODO: Fill out and test!
+    // Args:
+    //   item (any):
+    // Returns:
+    //   null 
+    push : item : {
+        newNode: StackNode(item, null, this.curr);
+        this.curr.next: newNode;
+        this.curr: this.curr.next;
+        this.size: this.size + 1;
+    }
+
+    // TODO: Fill out and test!
+    // Args:
+    //   null
+    // Returns:
+    //   numeric: 
+    len :: {
+        return this.size;
+    }
+
+    // TODO: Fill out and test!
+    // Args:
+    //   null
+    // Returns:
+    //   bool: 
+    isEmpty :: {
+        this.size = 0;
+    }
+
+    // TODO: Fill out and test!
+    // Args:
+    //   null
+    // Returns:
+    //   any: 
+    peek :: {
+        if (this.isEmpty()) {
+            print "StackError: Cannot peek an empty stack";
+            return;
+        }
+        return this.curr.val;
+    }
+
+    // TODO: Fill out and test!
+    // Args:
+    //   null
+    // Returns:
+    //   any: 
+    pop :: {
+        if (this.isEmpty()) {
+            print "StackError: Cannot pop an empty stack";
+            return;
+        }
+        res: this.curr.val;
+        this.curr: this.curr.prev;
+        this.curr.next: null;
+        return res;
+    }
+}

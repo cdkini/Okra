@@ -7,7 +7,7 @@
 //   next (ListNode): Pointer to the next ListNode
 //   prev (ListNode): Pointer to the prior ListNode
 // Returns:
-//   List: Empty instance of struct
+//   ListNode: Instance of struct with given value
 struct ListNode {
     construct : val, next, prev : {
         this.val:  val;
@@ -17,16 +17,15 @@ struct ListNode {
 }
 
 
-// List is Okra's primary collection, utilizing a linked-list based approach to store
-// contiguous values of any type. Elements are ordered and mutable.
+// List is Okra's primary collection and stores data in sequential order.
 // Args:
 //   null
 // Returns:
 //   List: Empty instance of struct
 struct List {
     construct :: {
-        this.dummyHead: ListNode(null, null, null)
-        this.dummyTail: ListNode(null, null, null) 
+        this.dummyHead: ListNode(null, null, null);
+        this.dummyTail: ListNode(null, null, null);
         this.size: 0;     
 
         this.dummyHead.next: this.dummyTail;
@@ -127,7 +126,7 @@ struct List {
     // Args:
     //   i (numeric): The index of the desired node
     // Returns:
-    //   res (any): The value of the deleted node
+    //   any: The value of the deleted node
     // Raises:
     //   ListError: If i is greater than the current size
     pop : i : {
@@ -169,7 +168,7 @@ struct List {
                 ptr.next.prev: ptr.prev;
                 this.size: this.size - 1;
             }
-            ptr: ptr.next
+            ptr: ptr.next;
             count: count - 1;   
         }
     }
