@@ -47,14 +47,14 @@ Okra supports four base data types or primitives: `numerics`, `strings`, `boolea
 
 <i>Code Snippet</i>:
 ```
-var age: 20;        // 'age' is of type 'numeric'
-var pi: 3.14;       // 'pi' is of type 'numeric'
-var letter: "X";    // 'letter' is of type 'string'
-var word: "potato"; // 'word' is of type 'string'
-var isTrue: true;   // 'isTrue' is of type 'boolean'
-var isFalse: false; // 'isFalse' is of type 'boolean'
-var nothing: null;  // 'nothing' is of type 'null'
-var empty;          // 'empty' is of type 'null'
+var age: 20;        // 'age' is of type numeric
+var pi: 3.14;       // 'pi' is of type numeric
+var letter: "X";    // 'letter' is of type string
+var word: "potato"; // 'word' is of type string
+var isTrue: true;   // 'isTrue' is of type boolean
+var isFalse: false; // 'isFalse' is of type boolean
+var nothing: null;  // 'nothing' is of type null
+var empty;          // 'empty' is of type null
 ```
 
 ### Printing
@@ -62,14 +62,7 @@ The `print` keyword is used to display the result of an expression to the consol
 
 <i>Code Snippet</i>:
 ```
-[script.okr]:
-print "Hello, World!";
-
-==============================
-
-[Terminal]:
->>> okra run script.okr
-"Hello, World!"
+print "Hello, World!"; // Prints "Hello, World!" to the terminal
 ```
 
 ### Operators
@@ -80,39 +73,41 @@ Not explicity discussed but used before, assignment is done using `:`.
 As of release <b>1.0.0</b>, string concatenation through `+` is not supported. As such, these operations are only valid on instances of the `numeric` data type. Incompatible primitives will cause an error to be raised.</i>
 
 ##### Arithmetic Operators
-- `+`: Add
-- `-`: Subtract
-- `*`: Multiply
-- `/`: Divide
+- `+`: <i>Add</i>
+- `-`: <i>Subtract</i>
+- `*`: <i>Multiply</i>
+- `/`: <i>Divide</i>
 
 ##### Comparison Operators
-- `=`:  Equal
-- `!=`: Not equal
-- `>`:  Greater than
-- `<`:  Less than
-- `>=`: Greater than or equal to
-- `<=`: Less than or equal to
+- `=`:  <i>Equal</i>
+- `!=`: <i>Not equal</i>
+- `>`:  <i>Greater than</i>
+- `<`:  <i>Less than</i>
+- `>=`: <i>Greater than or equal to</i>
+- `<=`: <i>Less than or equal to</i>
 
 ##### Logical Operators
-- `&&`: And
-- `||`: Or
-- `!`:  Not
+- `&&`: <i>And</i>
+- `||`: <i>Or</i>
+- `!`:  <i>Not</i>
 
 <i>Code Snippet</i>:
 ```
-[script.okr]:
-print 1 + 1;
-var x: 2;
-print x * 2;
-print "sushi" * 7;
+var a: 3 + 5;        // 'a' is equal to 8
+var b: 3 - 5;        // 'b' is equal to -2
+var c: 3 * 5;        // 'c' is equal to 15
+var d: 3 / 5;        // 'd' is equal to 0.6
+var e: 3 = 5;        // 'e' is equal to false
+var f: 3 != 5;       // 'f' is equal to true
+var g: 3 > 5;        // 'g' is equal to false
+var h: 3 < 5;        // 'h' is equal to true
+var i: 3 >= 3;       // 'i' is equal to true
+var j: 3 <= 3:       // 'j' is equal to true
+var k: true && false // 'k' is equal to false
+var l: true || false // 'l' is equal to true
+var m: !true         // 'm' is equal to false
 
-==============================
-
-[Terminal]:
->>> okra run script.okr
-2
-4
-OkraError [4,6]: Invalid usage of "*" on non-numeric operands.
+var n: 1 + 'a'       // 'n' raises an error due to incompatible types being adde
 ```
 
 ### Looping
