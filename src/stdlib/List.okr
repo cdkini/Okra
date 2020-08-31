@@ -27,7 +27,8 @@ struct List {
     construct :: {
         this.dummyHead: ListNode(null, null, null)
         this.dummyTail: ListNode(null, null, null) 
-        this.size: 0;                               
+        this.size: 0;     
+
         this.dummyHead.next: this.dummyTail;
         this.dummyTail.prev: this.dummyHead;
     }
@@ -44,12 +45,14 @@ struct List {
             print "ListError: Index out of bounds.";
             return;
         }
+
         var ptr: this.dummyHead;
         var count: i + 1;
         for (count > 0) {
             ptr: ptr.next;
             count: count - 1;
         }
+
         return ptr.val;
     }
 
@@ -66,13 +69,30 @@ struct List {
             print "ListError: Index out of bounds.";
             return;
         }
-        var ptr: this.dummyHead;
-        var count: i + 1;
+
+        var ptr: this.dummyHead.next;
+        var count: i;
         for (count > 0) {
             ptr: ptr.next;
             count: count - 1;
         }
+
         ptr.val: val;
+    }
+
+    // append add a node to the end of the list.
+    // Args:
+    //   val (any): The value of the new node added to the list
+    // Returns:
+    //   null
+    append : val : {
+        var newNode: ListNode(val, null, null);
+        newNode.next = this.dummyTail;
+        newNode.prev = this.dummyTail.prev;
+
+        this.dummyTail.prev: newNode;
+        newNode.prev.next: newNode;
+        this.size: this.size + 1;
     }
 
     // insert creates a new node and places it in the list based on index.
@@ -81,54 +101,76 @@ struct List {
     //   val (any):   The value to be set in the ith node
     // Returns:
     //   null
-    // Raises:
-    //   ListError: If i is greater than the current size
     insert : i, val : {
-        // TODO: Open to implement
-    }
+        if (i >= this.size || this.size = 0) {
+            this.append(val);
+            return;
+        }
 
-    // TODO: Add docstring
-    append : val : {
-        newNode: ListNode(val, this.dummyTail, this.dummyTail.prev);
-        this.dummyTail.prev: newNode;
+        var ptr: this.dummyHead;
+        var count: i
+        for (count > 0) {
+            ptr: ptr.next;
+            count: count - 1;
+        }
+
+        var newNode: ListNode(val, null, null);
+        newNode.next: ptr.next;
+        newNode.prev: ptr;
         newNode.prev.next: newNode;
+        newNode.next.prev: newNode;
+
         this.size: this.size + 1;
     }
 
-    // TODO: Add docstring
+    // pop removes and returns the element at a given index.
+    // Args:
+    //   i (numeric): The index of the desired node
+    // Returns:
+    //   res (any): The value of the deleted node
+    // Raises:
+    //   ListError: If i is greater than the current size
     pop : i : {
         if (i >= this.size || this.size = 0) {
             print "ListError: Index out of bounds.";
             return;
         }
-        var ptr: this.dummyHead;
-        var count: i + 1;
+
+        var ptr: this.dummyHead.next;
+        var count: i;
         for (count > 0) {
             ptr: ptr.next;
             count: count - 1;
         }
+
         var res: ptr.val;
         ptr.prev.next: ptr.next;
         ptr.next.prev: ptr.prev;
         this.size: this.size - 1;
+
         return res;
     }
 
-    // TODO: Add docstring
+    // remove deletes all nodes from the list that have a particular value.
+    // Args:
+    //   val (any): Value of nodes to be deleted from list.
+    // Returns:
+    //   null
     remove : val : {
         if (this.size = 0) {
             return;
         }
-        var ptr: this.dummyHead;
-        var count: this.size;
+
+        var ptr: this.dummyHead.next;
+        var count: this.size - 1;
         for (count > 0) {
-            ptr: ptr.next
-            count: count - 1;
             if (ptr.val = val) {
                 ptr.prev.next: ptr.next;
                 ptr.next.prev: ptr.prev;
                 this.size: this.size - 1;
             }
+            ptr: ptr.next
+            count: count - 1;   
         }
     }
 
@@ -141,24 +183,6 @@ struct List {
         return this.size;
     }
 
-    // reverse reverses the list in place.
-    // Args:
-    //   null
-    // Returns:
-    //   null
-    reverse :: {
-        var ptr: this.dummyHead;
-        var count: this.size + 1;
-        for (count > 0) {
-            var temp: ptr.next;
-            ptr.next: ptr.prev;
-            ptr.prev: temp; 
-
-            ptr: ptr.next;
-            count: count - 1;
-        }
-    }
-
     // copy creates a duplicate of the current list.
     // Args:
     //   null
@@ -169,6 +193,7 @@ struct List {
         if (this.size = 0) {
             return newList;
         }
+
         var ptr: this.dummyHead.next;
         var count: this.size;
         for (count > 0) {
@@ -176,5 +201,7 @@ struct List {
             ptr: ptr.next;
             count: count - 1;
         }
+
+        return newList;
     }
 }
