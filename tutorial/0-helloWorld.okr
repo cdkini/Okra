@@ -1,4 +1,3 @@
-// Your very first Okra program!
-
+// 0-helloWorld.okr
 
 print "Hello, World!";
