@@ -12,14 +12,12 @@ This tutorial assumes two things:
 - [Comments](#Comments)
 - [Variables](#Variables)
 - [Primitives](#Primitives)
-- [Operations](#Operations)
-- [Conditionals](#Conditionals)
+- [Operators](#Operators)
 - [Looping](#Looping)
 - [Functions](#Functions)
 - [Structures](#Structures)
 - [Interfaces](#Interfaces)
-- [Modules](#Modules)
-- [stdlib](#stdlib)
+- [Packages](#Packages)
 - [Style](#Style)
 
 
@@ -64,21 +62,58 @@ The `print` keyword is used to display the result of an expression to the consol
 
 <i>Code Snippet</i>:
 ```
-// 0-helloWorld.okr
+[script.okr]:
 print "Hello, World!";
 
 ==============================
 
 [Terminal]:
->>> okra run 0-helloWorld.okr
+>>> okra run script.okr
 "Hello, World!"
 ```
 
-### Operations
+### Operators
+Okra supports your traditional arithmetic, comparison, and logical operators.
 
+Not explicity discussed but used before, assignment is done using `:`.
 
-### Conditionals
+As of release <b>1.0.0</b>, string concatenation through `+` is not supported. As such, these operations are only valid on instances of the `numeric` data type. Incompatible primitives will cause an error to be raised.</i>
 
+##### Arithmetic Operators
+- `+`: Add
+- `-`: Subtract
+- `*`: Multiply
+- `/`: Divide
+
+##### Comparison Operators
+- `=`:  Equal
+- `!=`: Not equal
+- `>`:  Greater than
+- `<`:  Less than
+- `>=`: Greater than or equal to
+- `<=`: Less than or equal to
+
+##### Logical Operators
+- `&&`: And
+- `||`: Or
+- `!`:  Not
+
+<i>Code Snippet</i>:
+```
+[script.okr]:
+print 1 + 1;
+var x: 2;
+print x * 2;
+print "sushi" * 7;
+
+==============================
+
+[Terminal]:
+>>> okra run script.okr
+2
+4
+OkraError [4,6]: Invalid usage of "*" on non-numeric operands.
+```
 
 ### Looping
 
@@ -92,10 +127,7 @@ print "Hello, World!";
 ### Interfaces
 
 
-### Modules
-
-
-### stdlib
+### Packages
 
 
 ### Style
