@@ -33,8 +33,13 @@ struct BST {
     }
 
     // TODO:
+    IsEmpty :: {
+        return this.size = 0;
+    }
+
+    // TODO:
     Find : val : {
-        if (this.size = 0) {
+        if (this.IsEmpty()) {
             return false;
         }
 

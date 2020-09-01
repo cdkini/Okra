@@ -32,6 +32,11 @@ struct List {
         this.dummyTail.prev: this.dummyHead;
     }
 
+    // TODO:
+    IsEmpty :: {
+        return this.size = 0;
+    }
+
     // Get retrieves an element from the list based on index.
     // Args:
     //   i (numeric): The index of the desired node
@@ -40,7 +45,7 @@ struct List {
     // Raises:
     //   ListError: If i is greater than the current size
     Get : i : {
-        if (i >= this.size || this.size = 0) {
+        if (i >= this.size || this.IsEmpty()) {
             print "ListError: Index out of bounds.";
             return;
         }
@@ -64,7 +69,7 @@ struct List {
     // Raises:
     //   ListError: If i is greater than the current size
     Set : i, val : {
-        if (i >= this.size || this.size = 0) {
+        if (i >= this.size || this.IsEmpty()) {
             print "ListError: Index out of bounds.";
             return;
         }
@@ -101,7 +106,7 @@ struct List {
     // Returns:
     //   null
     Insert : i, val : {
-        if (i >= this.size || this.size = 0) {
+        if (i >= this.size || this.IsEmpty()) {
             this.append(val);
             return;
         }
@@ -130,7 +135,7 @@ struct List {
     // Raises:
     //   ListError: If i is greater than the current size
     Pop : i : {
-        if (i >= this.size || this.size = 0) {
+        if (i >= this.size || this.IsEmpty()) {
             print "ListError: Index out of bounds.";
             return;
         }
@@ -156,7 +161,7 @@ struct List {
     // Returns:
     //   null
     Remove : val : {
-        if (this.size = 0) {
+        if (this.IsEmpty()) {
             return;
         }
 
@@ -189,7 +194,7 @@ struct List {
     //   List: Copy of the original list
     Copy :: {
         var newList: List();
-        if (this.size = 0) {
+        if (this.IsEmpty()) {
             return newList;
         }
 

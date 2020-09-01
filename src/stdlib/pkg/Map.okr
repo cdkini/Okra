@@ -1,0 +1,43 @@
+// Okra implementation of the map abstract data type. We use a hash-based implementation.
+
+
+struct Map {
+    construct :: {
+
+    }
+
+    // TODO:
+    Put : key, val : {
+
+    }
+
+    // TODO:
+    IsEmpty :: {
+
+    }
+
+    // TODO:
+    Get : key : {
+
+    }
+
+    // TODO:
+    Len :: {
+
+    }
+
+    // TODO:
+    ContainsKey : key : {
+
+    }
+
+    // TODO:
+    ContainsVal : val : {
+
+    }
+
+    // TODO:
+    Remove : key : {
+        
+    }
+}

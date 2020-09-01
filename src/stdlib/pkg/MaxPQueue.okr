@@ -1,0 +1,33 @@
+// Okra implementation of the max priority queue ADT. We use a heap-based implementation.
+
+
+struct MaxPQueue {
+    construct :: {
+
+    }
+
+    // TODO:
+    Add : val : {
+
+    }
+
+    // TODO:
+    IsEmpty :: {
+
+    }
+
+    // TODO:
+    Peek :: {
+
+    }
+
+    // TODO:
+    Pop :: {
+
+    }
+
+    // TODO:
+    Len :: {
+
+    }
+}
