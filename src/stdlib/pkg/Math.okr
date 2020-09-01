@@ -1,11 +1,33 @@
 // The Math package provides the user with access to common, useful math functions.
 
 
-// TODO:
+// Math comprises all Okra mathetmatic/arithmetic functions. 
+// As static methods are not supported in Okra, instantiation is necessary to utilize Math's functionality.
+// Args:
+//   null
+// Returns:
+//   Math: An instance of the struct
 struct Math {
   construct :: {}
   
-  // TODO:
+  // Abs returns the absolute value of a number.
+  // Args:
+  //   x (numeric): The number to be converted
+  // Returns:
+  //   numeric: The absolute value of x
+  Abs : x : {
+    if (x < 0) {
+      return x * -1;
+    }
+    return x;
+  }
+  
+  // Max returns the maximum of two values.
+  // Args:
+  //   x (numeric): The first number to be evaluated
+  //   y (numeric): The second number to be evaluated
+  // Returns:
+  //   numeric: The larger of the two values. In the case of equal numbers, y is returned by default.
   Max : x, y {
     if (x > y) {
       return x;
@@ -13,7 +35,12 @@ struct Math {
     return y;
   }
   
-  // TODO:
+  // Min returns the minimum of two values.
+  // Args:
+  //   x (numeric): The first number to be evaluated
+  //   y (numeric): The second number to be evaluated
+  // Returns:
+  //   numeric: The smaller of the two values. In the case of equal numbers, y is returned by default.
   Min : x, y {
     if (x < y) {
       return x;
@@ -40,7 +67,27 @@ struct Math {
   
   // TODO:
   Pow : x, y : {
-  
+    if (x = 0) {
+      return 0;
+    }
+    if (y = 0) {
+      return 1;
+    }
+    if (y = 1) {
+      return x;
+    }
+    
+    var res: 1;
+    var count: this.Abs(y);
+    for (count > 0) {
+      res: res * x;
+      count: count - 1;
+    }
+    
+    if (y < 0) {
+      return 1/ res;
+    }
+    return res;
   }
   
   // TODO:
