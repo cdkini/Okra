@@ -1,7 +1,7 @@
 // Okra implementation of the min priority queue ADT. We use a heap-based implementation.
 
 
-struct MinPQueue {
+struct MinPQ {
     construct :: {
 
     }
