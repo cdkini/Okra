@@ -1,0 +1,37 @@
+// Okra's basic error handling and unit test functionality
+
+
+// Error is a simple wrapper around a user defined error message. It may be raised as the user deems fit.
+// Args:
+//   msg (string): The error message to be displayed if an error exists
+// Returns:
+//   null
+struct Error {
+  construct : msg : {
+    this.msg: msg;
+  }
+  
+  // Raise prints the contents of the error message to the terminal or console.
+  // Args:
+  //   null
+  // Returns:
+  //   null
+  Raise :: {
+    print this.msg;
+  }
+  
+  // Assert checks whether or not a particular statement evaluates as expected.
+  // If the assertion does not match expectations, an error is raised.
+  // If the assertion matches expectations, nothing is outputted to the terminal.
+  // Args:
+  //   statement (bool):   Any statement that evaluates to a boolean or truthy/falsy value
+  //   expectation (bool): The expected result of the statement argument
+  // Returns:
+  //   null
+  Assert : statement, expectation : {
+    if (statement != expectation) {
+      print "Error: Assertion failed!";
+      this.Raise();
+    }
+  }
+}
