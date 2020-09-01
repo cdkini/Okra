@@ -172,6 +172,40 @@ closure();                   // Prints "local" to the terminal
 ### Structures
 Structures or structs are Okra's way of allowing the user to define their own objects. 
 
+Defining a struct uses the `struct` keyword. To write the constructor, the `construct` method within the class definition must be written.
+
+Instance variables or attributes are passed to the constructor in a similar fashion to calling a function; the struct name, followed by arguments wrapped by parentheses, will invoke the constructor and create a new struct instance.
+
+Assignment of these variables to the struct instance are done using `this`. These fields must be defined in the `construct` method and can be accessed using dot notation.
+
+<i>As of release <b>1.0.0</b>, access modifiers (public, private, protected) are not available. All attributes are public.</i>
+
+<i>Code Snippet</i>:
+```
+struct Person {
+   construct : name, age, job : {
+      this.name:     name;
+      this.age:      age;
+      this.job:      job;
+      this.graduate: true;
+   }
+   
+   hello :: {
+      print "Hello!";
+   }
+   
+   getAge :: {
+      return this.age;
+   }
+}
+
+
+var bob: Person("Bob", 42, "Accountant");  // Instantiates an instance of the Person struct
+bob.hello();                               // Prints "Hello!" to the teriminal
+var bobAge: bob.getAge();                  // Sets 'bobAge' to 42
+print bob.age;                             // Prints 42 to the terminal
+```
+
 ### Interfaces
 Interfaces are named collections of method signatures. To implement an interface in Okra, we need to implement all the methods in the interface. If a structure is said to implement an interface but fails to define all the method signatures noted within that interface, an error will be raised.
 
@@ -255,3 +289,4 @@ print stack.len();   // Prints 3 to the terminal
 ##### Miscellaneous
 - Any capitalized object should be documented with a docstring
 - Imports should always be at the very top of the program and nowhere else
+- CamelCase is preferred over snake_case or PascalCase
