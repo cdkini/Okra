@@ -173,11 +173,85 @@ closure();                   // Prints "local" to the terminal
 Structures or structs are Okra's way of allowing the user to define their own objects. 
 
 ### Interfaces
+Interfaces are named collections of method signatures. To implement an interface in Okra, we need to implement all the methods in the interface. If a structure is said to implement an interface but fails to define all the method signatures noted within that interface, an error will be raised.
 
+Interfaces are defined by the `interface` keyword using the following format: `interface interfaceName {}`.
+
+A structure is said to implement an interface when the interface name is noted within square brackets next to the structure name: `struct structName [interfaceName*]`. Structures are allowed to implement multiple interfaces.
+
+<i>Code Snippet</i>:
+```
+import std.Math;
+
+
+interface Geometry {
+   area();
+   perimeter();
+}
+
+
+struct Rectangle [Geometry] {
+   construct : width, height : {
+      this.width:  width;
+      this.height: height;
+   }
+   
+   area :: {
+      return this.width * this.height;
+   }
+   
+   perimeter :: {
+      return 2*this.width + 2*this.height;
+   }
+}
+
+
+struct Circle [Geometry] {
+   construct : radius : {
+      this.radius: radius;
+   }
+   
+   area :: {
+      return PI * this.radius * this.radius;
+   }
+}
+
+
+var r: Rectangle(3, 5);  // Successfully implements the Geometry interface
+var c: Circle(7);        // Raises an error due to Circle not implementing the perimeter method
+```
 
 ### Packages
+Packages, which are inclusive of functions and structures defined in other files, are imported at the top of a script using the `import` keyword. In importing a particular package, the global scope of the current program gains access to the objects defined in that package.
 
+<i>As of release <b>1.0.0</b>, the only imports that are supported are those for the standard library. Current stdlib packages can be found in [the stdlib directory](https://github.com/cdkini/Okra/tree/master/src/stdlib).</i>
+
+<i>Code Snippet</i>:
+```
+import std.Stack;
+
+
+var stack: Stack();
+
+stack.push(3);
+stack.push(2);
+stack.push(1);
+
+print stack.peek();  // Prints 1 to the terminal
+print stack.len();   // Prints 3 to the terminal
+```
 
 ### Style
 
+##### Structs / Interfaces
+- Structures and interfaces should capitalize their first letter
+- There should be two lines between structure and interface definitions and the rest of the program
+- Public methods should be listed towards the top and private/helper methods should be listed towards the bottom
 
+##### Functions
+- Any public functions/methods should capitalize their first letter while any private function/methods should be all lowercase
+- There should be a single line between function/method definitions and the rest of the program
+
+##### Miscellaneous
+- Any capitalized object should be documented with a docstring
+- Imports should always be at the very top of the program and nowhere else
