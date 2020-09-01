@@ -34,8 +34,8 @@ Variables are declared using the `var` keyword. Variables can either be immediat
 
 <i>Code Snippet</i>:
 ```
-var x: 1; // The variable 'x' is declared and assigned to the numeric value of 1
-var y;    // The variable 'y' is declared but is not initialized with a value. Therefore, 'y' is equal to 'null'
+var x: 1;  // The variable 'x' is declared and assigned to the numeric value of 1
+var y;     // The variable 'y' is declared but is not initialized with a value. Therefore, 'y' is equal to 'null'
 ```
 
 ### Primitives
@@ -47,14 +47,14 @@ Okra supports four base data types or primitives: `numerics`, `strings`, `boolea
 
 <i>Code Snippet</i>:
 ```
-var age: 20;        // 'age' is of type numeric
-var pi: 3.14;       // 'pi' is of type numeric
-var letter: "X";    // 'letter' is of type string
-var word: "potato"; // 'word' is of type string
-var isTrue: true;   // 'isTrue' is of type boolean
-var isFalse: false; // 'isFalse' is of type boolean
-var nothing: null;  // 'nothing' is of type null
-var empty;          // 'empty' is of type null
+var age: 20;         // 'age' is of type numeric
+var pi: 3.14;        // 'pi' is of type numeric
+var letter: "X";     // 'letter' is of type string
+var word: "potato";  // 'word' is of type string
+var isTrue: true;    // 'isTrue' is of type boolean
+var isFalse: false;  // 'isFalse' is of type boolean
+var nothing: null;   // 'nothing' is of type null
+var empty;           // 'empty' is of type null
 ```
 
 ### Printing
@@ -62,7 +62,7 @@ The `print` keyword is used to display the result of an expression to the consol
 
 <i>Code Snippet</i>:
 ```
-print "Hello, World!"; // Prints "Hello, World!" to the terminal
+print "Hello, World!";  // Prints "Hello, World!" to the terminal
 ```
 
 ### Operators
@@ -79,45 +79,98 @@ As of release <b>1.0.0</b>, string concatenation through `+` is not supported. A
 - `/`: <i>Divide</i>
 
 ##### Comparison Operators
-- `=`:  <i>Equal</i>
+- `=`: &nbsp;<i>Equal</i>
 - `!=`: <i>Not equal</i>
-- `>`:  <i>Greater than</i>
-- `<`:  <i>Less than</i>
+- `>`: &nbsp;<i>Greater than</i>
+- `<`: &nbsp;<i>Less than</i>
 - `>=`: <i>Greater than or equal to</i>
 - `<=`: <i>Less than or equal to</i>
 
 ##### Logical Operators
 - `&&`: <i>And</i>
 - `||`: <i>Or</i>
-- `!`:  <i>Not</i>
+- `!`: &nbsp;<i>Not</i>
 
 <i>Code Snippet</i>:
 ```
-var a: 3 + 5;        // 'a' is equal to 8
-var b: 3 - 5;        // 'b' is equal to -2
-var c: 3 * 5;        // 'c' is equal to 15
-var d: 3 / 5;        // 'd' is equal to 0.6
-var e: 3 = 5;        // 'e' is equal to false
-var f: 3 != 5;       // 'f' is equal to true
-var g: 3 > 5;        // 'g' is equal to false
-var h: 3 < 5;        // 'h' is equal to true
-var i: 3 >= 3;       // 'i' is equal to true
-var j: 3 <= 3:       // 'j' is equal to true
-var k: true && false // 'k' is equal to false
-var l: true || false // 'l' is equal to true
-var m: !true         // 'm' is equal to false
+var a: 3 + 5;         // 'a' is equal to 8
+var b: 3 - 5;         // 'b' is equal to -2
+var c: 3 * 5;         // 'c' is equal to 15
+var d: 3 / 5;         // 'd' is equal to 0.6
+var e: 3 = 5;         // 'e' is equal to false
+var f: 3 != 5;        // 'f' is equal to true
+var g: 3 > 5;         // 'g' is equal to false
+var h: 3 < 5;         // 'h' is equal to true
+var i: 3 >= 3;        // 'i' is equal to true
+var j: 3 <= 3:        // 'j' is equal to true
+var k: true && false  // 'k' is equal to false
+var l: true || false  // 'l' is equal to true
+var m: !true          // 'm' is equal to false
 
-var n: 1 + 'a'       // 'n' raises an error due to incompatible types being adde
+var n: 1 + 'a'        // 'n' raises an error due to incompatible types being addes
 ```
 
 ### Looping
+Loops in Okra are done using the `for` keyword. The initialization of a variable must be done outside of the loop while the terminating condition must be written inside the parentheses after the keyword.
 
+<i>As of release <b>1.0.0</b>, traditional looping constructs ala `for (var i: 1; i < 5; i++)` are not available.</i>
+
+<i>Code Snippet</i>:
+```
+var sum: 0;
+
+var i: 1;
+for (i < 5) {
+  sum: sum + i;
+  i: i + 1;
+}
+
+print sum;  // 'sum' is equal to 10
+```
 
 ### Functions
+Functions are defined by the `func` keyword using the following format: `func funcName : funcArgs : {}`.
 
+Function returns are done using the `return` statement akin to other programming languages. Invocation or the calling of the function after definition require the usage of `funcName()`. 
+
+As functions are treated as first class objects, recursion and closures are supported features.
+
+<i>Code Snippet</i>:
+```
+func hello :: {
+   print "Hello!";
+}
+
+func adder : x, y : {
+   return x + y;
+}
+
+func fib : n : {
+   if (n <= 2) {
+   return 1;
+   }
+   return fib(n-1) + fib(n-2);
+}
+
+func makeClosure :: {
+   var local: "local";
+   func closure :: {
+      print local;
+   }
+   return closure;
+}
+
+
+hello();                     // Prints "Hello!" to the terminal
+var z: adder(3, 5);          // 'z'is equal to 8
+var thirdFib: fib(3);        // 'thirdFib' is equal to 2 (fib(2) and fib(1) both evaluate to 1)
+
+var closure: makeClosure();  // Sets 'closure' to the enclosed function in makeClosure
+closure();                   // Prints "local" to the terminal
+```
 
 ### Structures
-
+Structures or structs are Okra's way of allowing the user to define their own objects. 
 
 ### Interfaces
 
