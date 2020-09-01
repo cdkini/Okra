@@ -3,7 +3,7 @@
 
 // BSTNode is a helper struct used to create the BST data type.
 // Args:
-//   val  (any):       The value to be stored in the node
+//   val  (any):     The value to be stored in the node
 //   left (BSTNode): Pointer to the left BSTNode
 //   prev (BSTNode): Pointer to the right BSTNode
 // Returns:
@@ -31,3 +31,42 @@ struct BST {
         this.root: BSTNode(null, null, null);
         this.size: 0;
     }
+
+    // TODO:
+    Find : val : {
+        if (this.size = 0) {
+            return false;
+        }
+
+        var ptr: this.root;
+        for (ptr != null) {
+            if (ptr.val > val) {
+                ptr: ptr.left;
+            }
+            if (ptr.val < val) {
+                ptr: ptr.right;
+            }
+            if (ptr.val = val) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // TODO:
+    Insert : val : {
+        var newNode: BSTNode(val, null, null);
+        var ptr: this.root;
+        
+    }
+
+    // TODO:
+    Delete : val : {
+
+    }
+
+    // TODO:
+    Len :: {
+        return this.size;
+    }
+}
