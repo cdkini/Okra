@@ -1,0 +1,85 @@
+// Okra implementation of the queue abstract data type.
+
+
+// QueueNode is a helper struct used to create the Queue data type.
+// Args:
+//   val  (any):       The value to be stored in the node
+//   next (QueueNode): Pointer to the next QueueNode
+//   prev (QueueNode): Pointer to the prior QueueNode
+// Returns:
+//   QueueNode: Instance of struct with given value
+struct StackNode {
+    construct : val, next, prev : {
+        this.val:  val;
+        this.next: next;
+        this.prev: prev;
+    }
+}
+
+
+// Queue is a linear, first-in last-out (FIFO) based collection.
+// Args:
+//   null
+// Returns:
+//   Queue: Empty instance of struct
+struct Queue {
+    construct :: {
+        this.dummyHead: QueueNode(null, null, null);
+        this.dummyTail: QueueNode(null, null, null);
+        this.size: 0;
+
+        this.dummyHead.next: this.dummyTail;
+        this.dummyTail.prev: this.dummyHead;
+    }
+
+    // enqueue adds a node to the end of the queue.
+    // Args:
+    //   item (any): The value of the new node added to the stack
+    // Returns:
+    //   null 
+    enqueue : item : {
+        var newNode: QueueNode(item, self.dummyTail, self.dummyTail.prev);
+        newNode.prev.next: newNode;
+        newNode.next.prev: newNode;
+        this.size: this.size += 1;
+    }
+
+    // isEmpty returns whether or not the queue contains items.
+    // Args:
+    //   null
+    // Returns:
+    //   bool: true if the stack has no items else false
+    isEmpty :: {
+        this.size = 0;
+    }
+
+    // dequeue removes the first node from the queue and returns its value.
+    // Args:
+    //   null
+    // Returns:
+    //   any: The value of the first node of the queue
+    // Raises:
+    //   QueueError: If invoked upon an empty queue
+    dequeue : item : {
+        if (this.isEmpty()) {
+            print "QueueError: Cannot dequeue an empty queue."
+            return;
+        }
+        var res: self.dummyHead.next.val;
+
+        self.dummyHead.next: self.dummyHead.next.next;
+        self.dummyHead.next.prev: self.dummyHead;
+        self.size: self.size - 1;
+
+        return res;
+    }
+
+    // len returns the length or size of the queue.
+    // Args:
+    //   null
+    // Returns:
+    //   numeric: Number of items in the queue
+    len :: {
+        return this.size;
+    }
+}

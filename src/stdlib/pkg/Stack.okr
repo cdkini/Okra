@@ -7,7 +7,7 @@
 //   next (StackNode): Pointer to the next StackNode
 //   prev (StackNode): Pointer to the prior StackNode
 // Returns:
-//   StackNode: Instance of struct with given value.
+//   StackNode: Instance of struct with given value
 struct StackNode {
     construct : val, next, prev : {
         this.val:  val;
@@ -31,7 +31,7 @@ struct Stack {
 
     // push adds a node to the top or end of the stack.
     // Args:
-    //   item (any): The value of thenew node added to the stack
+    //   item (any): The value of the new node added to the stack
     // Returns:
     //   null 
     push : item : {
