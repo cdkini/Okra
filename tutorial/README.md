@@ -178,7 +178,10 @@ Instance variables or attributes are passed to the constructor in a similar fash
 
 Assignment of these variables to the struct instance are done using `this`. These fields must be defined in the `construct` method and can be accessed using dot notation.
 
-<i>As of release <b>1.0.0</b>, access modifiers (public, private, protected) are not available. All attributes are public.</i>
+<i>As of release <b>1.0.0</b>: 
+   - Access modifiers (public, private, protected) are not available. All attributes are public.
+   - Static methods are not supported. Invokation of class methods or usage of class attributes requires instantiation .
+</i>
 
 <i>Code Snippet</i>:
 ```
@@ -217,6 +220,7 @@ A structure is said to implement an interface when the interface name is noted w
 ```
 import std.Math;
 
+var pi: Math().Pi();
 
 interface Geometry {
    area();
@@ -246,7 +250,7 @@ struct Circle [Geometry] {
    }
    
    area :: {
-      return PI * this.radius * this.radius;
+      return pi * this.radius * this.radius;
    }
 }
 
@@ -276,6 +280,7 @@ print stack.len();   // Prints 3 to the terminal
 ```
 
 ### Style
+Although style is subjective, we've determined a few base guidelines that are necessary for idiomatic Okra. The formatter, which can be run using `okra fmt [script]`, applies the below rules to a source file for you.
 
 ##### Structs / Interfaces
 - Structures and interfaces should capitalize their first letter
