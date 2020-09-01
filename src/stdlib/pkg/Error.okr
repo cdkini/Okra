@@ -27,11 +27,13 @@ struct Error {
   //   statement (bool):   Any statement that evaluates to a boolean or truthy/falsy value
   //   expectation (bool): The expected result of the statement argument
   // Returns:
-  //   null
+  //   int: 0 if run successfully and -1 if an error occurred and was raised
   Assert : statement, expectation : {
     if (statement != expectation) {
       print "Error: Assertion failed!";
       this.Raise();
+      return -1;
     }
+    return 0;
   }
 }
