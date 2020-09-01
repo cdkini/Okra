@@ -29,9 +29,9 @@ struct Stack {
         this.size: 0;
     }
 
-    // TODO: Fill out and test!
+    // push adds a node to the top or end of the stack.
     // Args:
-    //   item (any):
+    //   item (any): The value of thenew node added to the stack
     // Returns:
     //   null 
     push : item : {
@@ -41,29 +41,31 @@ struct Stack {
         this.size: this.size + 1;
     }
 
-    // TODO: Fill out and test!
+    // len returns the length or size of the stack.
     // Args:
     //   null
     // Returns:
-    //   numeric: 
+    //   numeric: Number of items in the stack
     len :: {
         return this.size;
     }
 
-    // TODO: Fill out and test!
+    // isEmpty returns whether or not the stack contains items.
     // Args:
     //   null
     // Returns:
-    //   bool: 
+    //   bool: true if the stack has no items else false
     isEmpty :: {
         this.size = 0;
     }
 
-    // TODO: Fill out and test!
+    // peek reveals the top or last node on the stack but does not remove it.
     // Args:
     //   null
     // Returns:
-    //   any: 
+    //   any: The value of the top or last node of the stack
+    // Raises:
+    //   StackError: If invoked upon an empty stack
     peek :: {
         if (this.isEmpty()) {
             print "StackError: Cannot peek an empty stack";
@@ -72,11 +74,13 @@ struct Stack {
         return this.curr.val;
     }
 
-    // TODO: Fill out and test!
+    // pop reveals the top or last node on the stack and removes it.
     // Args:
     //   null
     // Returns:
-    //   any: 
+    //   any: The value of the top or last node of the stack
+    // Raises:
+    //   StackError: If invoked upon an empty stack
     pop :: {
         if (this.isEmpty()) {
             print "StackError: Cannot pop an empty stack";

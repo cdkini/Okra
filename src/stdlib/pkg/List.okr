@@ -79,7 +79,7 @@ struct List {
         ptr.val: val;
     }
 
-    // append add a node to the end of the list.
+    // append adds a node to the end of the list.
     // Args:
     //   val (any): The value of the new node added to the list
     // Returns:
@@ -177,7 +177,7 @@ struct List {
     // Args:
     //   null
     // Returns:
-    //   numeric: Number of items in list
+    //   numeric: Number of items in the list
     len :: {
         return this.size;
     }
