@@ -1,0 +1,70 @@
+// The Math package provides the user with access to common, useful math functions.
+
+
+// TODO:
+struct Math {
+  construct :: {}
+  
+  // TODO:
+  Max : x, y {
+    if (x > y) {
+      return x;
+    }
+    return y;
+  }
+  
+  // TODO:
+  Min : x, y {
+    if (x < y) {
+      return x;
+    }
+    return y;
+  }
+  
+  // TODO:
+  Round : x : {
+  
+  }
+  
+  // TODO:
+  Truncate : x : {
+  
+  }
+  
+  // TODO:
+  Factorial : x : {
+    if (x < 0) {
+      print "MathError: The factorial of a negative value
+    }
+  }
+  
+  // TODO:
+  Pow : x, y : {
+  
+  }
+  
+  // TODO:
+  Sqrt : x : {
+  
+  }
+  
+  // TODO:
+  Log : x, base : {
+  
+  }
+  
+  // TODO:
+  GCD : x, y : {
+  
+  }
+  
+  // TODO:
+  Pi :: {
+    return 355/133;
+  }
+  
+  // TODO:
+  E :: {
+    return 2.7182818284590452353602874713527;
+  }
+}
