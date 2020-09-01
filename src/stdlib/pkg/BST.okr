@@ -32,45 +32,102 @@ struct BST {
         this.size: 0;
     }
 
-    // TODO:
+    // IsEmpty returns whether or not the BST contains items.
+    // Args:
+    //   null
+    // Returns:
+    //   bool: true if the BST has no items else false
     IsEmpty :: {
         return this.size = 0;
     }
 
-    // TODO:
+    // _find is a recursive helper method used in Find.
+    // Args:
+    //   curr (BSTNode): The current BSTNode being evaluated
+    //   val (any):      The value stored in the current BSTNode
+    // Returns:
+    //   bool: true if val is in BST else false
+    _find : curr, val : {
+        if (curr = null) {
+            return false;
+        }
+        if (ptr.val > val) {
+            return find(ptr.left, val);
+        }
+        if (ptr.val < val) {
+            return find(ptr.right, val);
+        }
+        return true;
+    }
+
+    // Find traverses the BST to determine whether or not a value is included within.
+    // Args:
+    //   val (any): The target value to be found
+    // Returns:
+    //   bool: true if val is in BST else false
     Find : val : {
         if (this.IsEmpty()) {
             return false;
         }
+        return _find(this.root, val);
+    }
 
-        var ptr: this.root;
-        for (ptr != null) {
-            if (ptr.val > val) {
-                ptr: ptr.left;
-            }
-            if (ptr.val < val) {
-                ptr: ptr.right;
-            }
-            if (ptr.val = val) {
-                return true;
-            }
+    // _insert is a recursive helper method used in Insert.
+    // Args:
+    //   curr (BSTNode): The current BSTNode being evaluated
+    //   val (any):      The value to be inserted into the BST
+    // Returns:
+    //   BSTNode: Either the root node or the newly inserted node (depending on which recursive call)
+    _insert : curr, val : {
+        if (curr = null) {
+            this.size: this.size + 1;
+            return BSTNode(val, null, null);
         }
-        return false;
+        if (val < curr.val) {
+            curr.left: this._insert(curr.left, val);
+        }
+        if (val > curr.val) {
+            curr.right: this._insert(curr.right, val);
+        }
+        return curr;
+    }
+
+    // Insert traverses the BST and inserts a new node with the given value.
+    // If the value is already located in the BST, no node is added.
+    // Args:
+    //   val (any): The value to be inserted into the BST
+    // Returns:
+    //   null
+    Insert : val : {
+        this.root: _insert(this.root, val);
     }
 
     // TODO:
-    Insert : val : {
-        var newNode: BSTNode(val, null, null);
-        var ptr: this.root;
-        
+    _delete : curr, val : {
+        if (curr = null) {
+            return curr;
+        }
+        if (val < curr.val) {
+            curr.left: self._delete(curr.left, val);
+        }
+        if (val > curr.val) {
+            curr.right: self._delete(curr.right, val);
+        }
+        if (val = curr.val) {
+            
+        }
     }
 
     // TODO:
     Delete : val : {
-
+        this.root: _delete(this.root, val);
     }
 
-    // TODO:
+    // Len returns the length or size of the BST.
+    // Args:
+    //   null
+    // Returns:
+    //   numeric: Number of items in the BST
     Len :: {
         return this.size;
     }
