@@ -1,0 +1,21 @@
+// The classical interview question done in Okra! (A bit convoluted without 'else if' or 'modulo'!)
+
+
+func fizzBuzz : n : {
+    if (n / 15 * 15 = n) {
+        return "FizzBuzz";
+    }
+    if (n / 5 * 5 = n){
+        return "Buzz";
+    }
+    if (n / 3 * 3 = n) {
+        return "Fizz";
+    }
+    return n;
+}
+
+var i: 1;
+for (i <= 100) {
+    print fizzBuzz(i);
+    i: i + 1;
+}

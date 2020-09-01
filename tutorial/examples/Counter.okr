@@ -1,0 +1,19 @@
+// A basic counter using closures in Okra!
+
+
+func counter :: {
+    var count: 0;
+    func closure :: {
+        count: count + 1;
+        return count;
+    }
+    return closure;
+}
+
+var x: counter();
+
+var i: 1;
+for (i < 10) {
+    print x();
+    i: i + 1;
+}
