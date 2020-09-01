@@ -32,36 +32,36 @@ struct Queue {
         this.dummyTail.prev: this.dummyHead;
     }
 
-    // enqueue adds a node to the end of the queue.
+    // Enqueue adds a node to the end of the queue.
     // Args:
     //   item (any): The value of the new node added to the stack
     // Returns:
     //   null 
-    enqueue : item : {
+    Enqueue : item : {
         var newNode: QueueNode(item, self.dummyTail, self.dummyTail.prev);
         newNode.prev.next: newNode;
         newNode.next.prev: newNode;
         this.size: this.size += 1;
     }
 
-    // isEmpty returns whether or not the queue contains items.
+    // IsEmpty returns whether or not the queue contains items.
     // Args:
     //   null
     // Returns:
     //   bool: true if the stack has no items else false
-    isEmpty :: {
+    IsEmpty :: {
         this.size = 0;
     }
 
-    // dequeue removes the first node from the queue and returns its value.
+    // Dequeue removes the first node from the queue and returns its value.
     // Args:
     //   null
     // Returns:
     //   any: The value of the first node of the queue
     // Raises:
     //   QueueError: If invoked upon an empty queue
-    dequeue : item : {
-        if (this.isEmpty()) {
+    Dequeue : item : {
+        if (this.IsEmpty()) {
             print "QueueError: Cannot dequeue an empty queue."
             return;
         }
@@ -74,12 +74,12 @@ struct Queue {
         return res;
     }
 
-    // len returns the length or size of the queue.
+    // Len returns the length or size of the queue.
     // Args:
     //   null
     // Returns:
     //   numeric: Number of items in the queue
-    len :: {
+    Len :: {
         return this.size;
     }
 }

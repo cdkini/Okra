@@ -32,14 +32,14 @@ struct List {
         this.dummyTail.prev: this.dummyHead;
     }
 
-    // get retrieves an element from the list based on index.
+    // Get retrieves an element from the list based on index.
     // Args:
     //   i (numeric): The index of the desired node
     // Returns:
     //   any: Value stored in the ith node
     // Raises:
     //   ListError: If i is greater than the current size
-    get : i : {
+    Get : i : {
         if (i >= this.size || this.size = 0) {
             print "ListError: Index out of bounds.";
             return;
@@ -55,7 +55,7 @@ struct List {
         return ptr.val;
     }
 
-    // set changes the value of an existing node in the list based on index.
+    // Set changes the value of an existing node in the list based on index.
     // Args:
     //   i (numeric): The index of the desired node
     //   val (any):   The value to be set in the ith node
@@ -63,7 +63,7 @@ struct List {
     //   any: Value stored in the ith node
     // Raises:
     //   ListError: If i is greater than the current size
-    set : i, val : {
+    Set : i, val : {
         if (i >= this.size || this.size = 0) {
             print "ListError: Index out of bounds.";
             return;
@@ -79,12 +79,12 @@ struct List {
         ptr.val: val;
     }
 
-    // append adds a node to the end of the list.
+    // Append adds a node to the end of the list.
     // Args:
     //   val (any): The value of the new node added to the list
     // Returns:
     //   null
-    append : val : {
+    Append : val : {
         var newNode: ListNode(val, null, null);
         newNode.next = this.dummyTail;
         newNode.prev = this.dummyTail.prev;
@@ -94,13 +94,13 @@ struct List {
         this.size: this.size + 1;
     }
 
-    // insert creates a new node and places it in the list based on index.
+    // Insert creates a new node and places it in the list based on index.
     // Args:
     //   i (numeric): The index of the desired node
     //   val (any):   The value to be set in the ith node
     // Returns:
     //   null
-    insert : i, val : {
+    Insert : i, val : {
         if (i >= this.size || this.size = 0) {
             this.append(val);
             return;
@@ -122,14 +122,14 @@ struct List {
         this.size: this.size + 1;
     }
 
-    // pop removes and returns the element at a given index.
+    // Pop removes and returns the element at a given index.
     // Args:
     //   i (numeric): The index of the desired node
     // Returns:
     //   any: The value of the deleted node
     // Raises:
     //   ListError: If i is greater than the current size
-    pop : i : {
+    Pop : i : {
         if (i >= this.size || this.size = 0) {
             print "ListError: Index out of bounds.";
             return;
@@ -150,12 +150,12 @@ struct List {
         return res;
     }
 
-    // remove deletes all nodes from the list that have a particular value.
+    // Remove deletes all nodes from the list that have a particular value.
     // Args:
     //   val (any): Value of nodes to be deleted from list.
     // Returns:
     //   null
-    remove : val : {
+    Remove : val : {
         if (this.size = 0) {
             return;
         }
@@ -173,21 +173,21 @@ struct List {
         }
     }
 
-    // len returns the length or size of the list.
+    // Len returns the length or size of the list.
     // Args:
     //   null
     // Returns:
     //   numeric: Number of items in the list
-    len :: {
+    Len :: {
         return this.size;
     }
 
-    // copy creates a duplicate of the current list.
+    // Copy creates a duplicate of the current list.
     // Args:
     //   null
     // Returns:
     //   List: Copy of the original list
-    copy :: {
+    Copy :: {
         var newList: List();
         if (this.size = 0) {
             return newList;

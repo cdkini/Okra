@@ -29,59 +29,59 @@ struct Stack {
         this.size: 0;
     }
 
-    // push adds a node to the top or end of the stack.
+    // Push adds a node to the top or end of the stack.
     // Args:
     //   item (any): The value of the new node added to the stack
     // Returns:
     //   null 
-    push : item : {
+    Push : item : {
         newNode: StackNode(item, null, this.curr);
         this.curr.next: newNode;
         this.curr: this.curr.next;
         this.size: this.size + 1;
     }
 
-    // len returns the length or size of the stack.
+    // Len returns the length or size of the stack.
     // Args:
     //   null
     // Returns:
     //   numeric: Number of items in the stack
-    len :: {
+    Len :: {
         return this.size;
     }
 
-    // isEmpty returns whether or not the stack contains items.
+    // IsEmpty returns whether or not the stack contains items.
     // Args:
     //   null
     // Returns:
     //   bool: true if the stack has no items else false
-    isEmpty :: {
+    IsEmpty :: {
         this.size = 0;
     }
 
-    // peek reveals the top or last node on the stack but does not remove it.
+    // Peek reveals the top or last node on the stack but does not remove it.
     // Args:
     //   null
     // Returns:
     //   any: The value of the top or last node of the stack
     // Raises:
     //   StackError: If invoked upon an empty stack
-    peek :: {
-        if (this.isEmpty()) {
+    Peek :: {
+        if (this.IsEmpty()) {
             print "StackError: Cannot peek an empty stack";
             return;
         }
         return this.curr.val;
     }
 
-    // pop reveals the top or last node on the stack and removes it.
+    // Pop reveals the top or last node on the stack and removes it.
     // Args:
     //   null
     // Returns:
     //   any: The value of the top or last node of the stack
     // Raises:
     //   StackError: If invoked upon an empty stack
-    pop :: {
+    Pop :: {
         if (this.isEmpty()) {
             print "StackError: Cannot pop an empty stack";
             return;
