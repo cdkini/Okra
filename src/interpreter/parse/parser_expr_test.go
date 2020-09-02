@@ -153,3 +153,118 @@ func TestParseAssignmentExpr(t *testing.T) {
 		})
 	}
 }
+
+// TODO: Fill out tests!
+func TestParseLogicalExpr(t *testing.T) {
+	table := []struct {
+		input  string
+		output string
+	}{
+		// {},
+	}
+
+	for _, test := range table {
+		t.Run(test.input, func(t *testing.T) {
+			scanner := scan.NewScanner(test.input)
+			scanner.ScanTokens()
+			parser := NewParser(scanner.Tokens())
+			expr := parser.Expression()
+
+			if expr.GetType() != test.output {
+				t.Errorf("Expected *%v, received %T", test.output, expr)
+			}
+		})
+	}
+}
+
+// TODO: Fill out tests!
+func TestParseCallExpr(t *testing.T) {
+	table := []struct {
+		input  string
+		output string
+	}{
+		// {},
+	}
+
+	for _, test := range table {
+		t.Run(test.input, func(t *testing.T) {
+			scanner := scan.NewScanner(test.input)
+			scanner.ScanTokens()
+			parser := NewParser(scanner.Tokens())
+			expr := parser.Expression()
+
+			if expr.GetType() != test.output {
+				t.Errorf("Expected *%v, received %T", test.output, expr)
+			}
+		})
+	}
+}
+
+// TODO: Fill out tests!
+func TestParseGetExpr(t *testing.T) {
+	table := []struct {
+		input  string
+		output string
+	}{
+		// {},
+	}
+
+	for _, test := range table {
+		t.Run(test.input, func(t *testing.T) {
+			scanner := scan.NewScanner(test.input)
+			scanner.ScanTokens()
+			parser := NewParser(scanner.Tokens())
+			expr := parser.Expression()
+
+			if expr.GetType() != test.output {
+				t.Errorf("Expected *%v, received %T", test.output, expr)
+			}
+		})
+	}
+}
+
+// TODO: Fill out tests!
+func TestParseSetExpr(t *testing.T) {
+	table := []struct {
+		input  string
+		output string
+	}{
+		// {},
+	}
+
+	for _, test := range table {
+		t.Run(test.input, func(t *testing.T) {
+			scanner := scan.NewScanner(test.input)
+			scanner.ScanTokens()
+			parser := NewParser(scanner.Tokens())
+			expr := parser.Expression()
+
+			if expr.GetType() != test.output {
+				t.Errorf("Expected *%v, received %T", test.output, expr)
+			}
+		})
+	}
+}
+
+// TODO: Fill out tests!
+func TestParseThisExpr(t *testing.T) {
+	table := []struct {
+		input  string
+		output string
+	}{
+		// {},
+	}
+
+	for _, test := range table {
+		t.Run(test.input, func(t *testing.T) {
+			scanner := scan.NewScanner(test.input)
+			scanner.ScanTokens()
+			parser := NewParser(scanner.Tokens())
+			expr := parser.Expression()
+
+			if expr.GetType() != test.output {
+				t.Errorf("Expected *%v, received %T", test.output, expr)
+			}
+		})
+	}
+}
