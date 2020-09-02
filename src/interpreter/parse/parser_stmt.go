@@ -2,6 +2,11 @@ package parse
 
 import "Okra/src/interpreter/ast"
 
+// statement is a helper method that is triggered by declaration in parser_decl.go if the currently evaluated item does
+// not meet the requirements of a declared Stmt. statement covers the rest of Okra's Stmts, evaluating to an
+// ExpressionStmt if no other Stmt fits the given criteria.
+// Args: nil
+// Returns: Instance of Stmt that fits the ENBF / context-free grammar rules as set by Okra
 func (p *Parser) statement() ast.Stmt {
 	switch {
 
@@ -12,7 +17,7 @@ func (p *Parser) statement() ast.Stmt {
 		return p.forStmt()
 
 	case p.match(ast.LeftBrace):
-		stmts := p.block()
+		stmts := p.blockStmt()
 		return ast.NewBlockStmt(stmts)
 
 	case p.match(ast.Print):
@@ -49,21 +54,21 @@ func (p *Parser) forStmt() ast.Stmt {
 	return ast.NewForStmt(condition, body)
 }
 
-func (p *Parser) block() []ast.Stmt {
+func (p *Parser) blockStmt() []ast.Stmt {
 	var stmts []ast.Stmt
 
 	for !p.check(ast.RightBrace) && !p.isAtEOF() {
 		stmts = append(stmts, p.declaration())
 	}
 
-	p.consume(ast.RightBrace, "Expect '}' at end of block")
+	p.consume(ast.RightBrace, "Expect '}' at end of block.")
 
 	return stmts
 }
 
 func (p *Parser) printStmt() ast.Stmt {
 	expr := p.Expression()
-	p.consume(ast.Semicolon, "Expect ';' after value")
+	p.consume(ast.Semicolon, "Expect ';' after value.")
 
 	return ast.NewPrintStmt(expr)
 }
@@ -81,7 +86,7 @@ func (p *Parser) returnStmt() ast.Stmt {
 
 func (p *Parser) expressionStmt() ast.Stmt {
 	expr := p.Expression()
-	p.consume(ast.Semicolon, "Expect ';' after expression")
+	p.consume(ast.Semicolon, "Expect ';' after expression.")
 
 	return ast.NewExpressionStmt(expr)
 }

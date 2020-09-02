@@ -21,11 +21,7 @@ func TestParseExpressionStmt(t *testing.T) {
 			scanner := scan.NewScanner(test.input)
 			scanner.ScanTokens()
 			parser := NewParser(scanner.Tokens())
-			stmts, err := parser.Parse()
-
-			if err {
-				t.Error("Parse error noted")
-			}
+			stmts := parser.Parse()
 
 			for i, stmt := range stmts {
 				if stmt.GetType() != test.output[i] {
@@ -51,11 +47,7 @@ func TestParsePrintStmt(t *testing.T) {
 			scanner := scan.NewScanner(test.input)
 			scanner.ScanTokens()
 			parser := NewParser(scanner.Tokens())
-			stmts, err := parser.Parse()
-
-			if err {
-				t.Error("Parse error noted")
-			}
+			stmts := parser.Parse()
 
 			for i, stmt := range stmts {
 				if stmt.GetType() != test.output[i] {
@@ -81,11 +73,7 @@ func TestParseVariableStmt(t *testing.T) {
 			scanner := scan.NewScanner(test.input)
 			scanner.ScanTokens()
 			parser := NewParser(scanner.Tokens())
-			stmts, err := parser.Parse()
-
-			if err {
-				t.Error("Parse error noted")
-			}
+			stmts := parser.Parse()
 
 			for i, stmt := range stmts {
 				if stmt.GetType() != test.output[i] {
@@ -112,11 +100,7 @@ func TestParseBlockStmt(t *testing.T) {
 			scanner := scan.NewScanner(test.input)
 			scanner.ScanTokens()
 			parser := NewParser(scanner.Tokens())
-			stmts, err := parser.Parse()
-
-			if err {
-				t.Error("Parse error noted")
-			}
+			stmts := parser.Parse()
 
 			for i, stmt := range stmts {
 				if stmt.GetType() != test.output[i] {

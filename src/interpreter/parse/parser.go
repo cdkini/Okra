@@ -3,14 +3,13 @@ package parse
 import (
 	"Okra/src/interpreter/ast"
 	"Okra/src/okraerr"
-	"fmt"
 )
 
 // A Parser evaluates a collection of tokens and constructs abstract syntax trees (ASTs) out of
 // the resulting expressions and statements. It is also responsible for consolidating parse errors
 // and providing useful feedback to the user.
 type Parser struct {
-	tokens   []ast.Token
+	tokens   []ast.Token // As created by the scanner
 	current  int
 	hadError bool
 }
@@ -20,32 +19,43 @@ func NewParser(tokens []ast.Token) *Parser {
 }
 
 // Parse triggers the recursive descent parsing, checking the given tokens and their state against
-// the grammar rules of the language. Upon reaching a terminal, the function adds an instance of
+// Okra's EBNF context free grammar. Upon reaching a terminal, the function adds an instance of
 // the appropriate statement to a resulting statement slice.
 //   Args: nil
 //   Returns: Slice of statements to interpret
 //            Bool that tracks whether or not a parse error occurred
-func (p *Parser) Parse() ([]ast.Stmt, bool) {
+func (p *Parser) Parse() []ast.Stmt {
 	stmts := []ast.Stmt{}
 
 	for !p.isAtEOF() {
 		p.parse(&stmts)
 	}
 
-	return stmts, p.hadError
+	return stmts
 }
 
+// parse is a helper method used in Parse to actually kick off the recursive descent parsing.
+// It is responsible for syncronizing the parser in the case a parser error is met.
+//   Args: stmts [*[]Stmt] - The resulting slice to be returned and interpreted upon completion of parsing.
+//   Returns: nil
 func (p *Parser) parse(stmts *[]ast.Stmt) {
-	defer func() {
-		if r := recover(); r != nil {
-			fmt.Println("Parse Error:", r.(error))
-			p.hadError = true
-			p.synchronize()
-		}
-	}()
-
 	stmt := p.declaration()
 	*stmts = append(*stmts, stmt)
+}
+
+// consume is a helper method used throughout the parser to iterate over and utilize the input token slice.
+// If the token type argument does not match expectations, an error is raised. Otherwise, it is evaluated
+// and the parser moves along to the next item.
+//   Args: t   (ast.TokenType) - The token type the parser is expecting to evaluate
+//         msg (string)        - The error message to be used in the raised error, if applicable
+//   Returns: The next token in the sequence
+//   Raises: OkraError if the token type does not match the parser's expectation
+func (p *Parser) consume(t ast.TokenType, msg string) ast.Token {
+	if !p.check(t) {
+		curr := p.currToken()
+		okraerr.ReportErr(curr.Line, curr.Col, msg)
+	}
+	return p.advance()
 }
 
 func (p *Parser) match(types ...ast.TokenType) bool {
@@ -55,7 +65,6 @@ func (p *Parser) match(types ...ast.TokenType) bool {
 			return true
 		}
 	}
-
 	return false
 }
 
@@ -70,7 +79,6 @@ func (p *Parser) advance() ast.Token {
 	if !p.isAtEOF() {
 		p.current++
 	}
-
 	return p.prevToken()
 }
 
@@ -88,35 +96,4 @@ func (p *Parser) currToken() ast.Token {
 
 func (p *Parser) prevToken() ast.Token {
 	return p.tokens[p.current-1]
-}
-
-func (p *Parser) consume(t ast.TokenType, msg string) ast.Token {
-	if !p.check(t) {
-		curr := p.currToken()
-		okraerr.ReportErr(curr.Line, curr.Col, msg)
-	}
-	return p.advance()
-}
-
-func (p *Parser) synchronize() {
-	p.advance()
-
-	for !p.isAtEOF() {
-		if p.prevToken().Type == ast.Semicolon {
-			return
-		}
-
-		switch p.peek().Type {
-		case ast.Struct,
-			ast.Func,
-			ast.Variable,
-			ast.For,
-			ast.If,
-			ast.Print,
-			ast.Return:
-			return
-		}
-
-		p.advance()
-	}
 }

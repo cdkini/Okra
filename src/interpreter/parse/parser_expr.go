@@ -5,6 +5,11 @@ import (
 	"Okra/src/okraerr"
 )
 
+// Expression is triggered to parse an Expr or the contents of a Stmt that includes an Expr as a property.
+// The method uses recursive descent like the rest of the parser, moving down parser helper methods in order of
+// precedence until a set of grammar rules are met.
+// Args: nil
+// Returns: Instance of Expr that fits the ENBF / context-free grammar rules as set by Okra
 func (p *Parser) Expression() ast.Expr {
 	return p.assignment()
 }
@@ -23,7 +28,7 @@ func (p *Parser) assignment() ast.Expr {
 			return ast.NewSetExpr(expr.Object, expr.Property, value)
 		default:
 			curr := p.currToken()
-			okraerr.ReportErr(curr.Line, curr.Col, "Invalid assignment target: '"+prev.Lexeme+"'")
+			okraerr.ReportErr(curr.Line, curr.Col, "Invalid assignment target: '"+prev.Lexeme+"'.")
 		}
 
 	}
@@ -178,7 +183,7 @@ func (p *Parser) primary() ast.Expr {
 
 	default:
 		curr := p.currToken()
-		okraerr.ReportErr(curr.Line, curr.Col, "Expect expression")
+		okraerr.ReportErr(curr.Line, curr.Col, "Expect expression.")
 		return nil
 	}
 }
