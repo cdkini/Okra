@@ -30,9 +30,7 @@ func (p *Parser) assignment() ast.Expr {
 			curr := p.currToken()
 			okraerr.ReportErr(curr.Line, curr.Col, "Invalid assignment target: '"+prev.Lexeme+"'.")
 		}
-
 	}
-
 	return expr
 }
 
@@ -66,7 +64,6 @@ func (p *Parser) equality() ast.Expr {
 
 		expr = ast.NewBinaryExpr(expr, operator, rightOperand)
 	}
-
 	return expr
 }
 
@@ -79,7 +76,6 @@ func (p *Parser) comparison() ast.Expr {
 
 		expr = ast.NewBinaryExpr(expr, operator, rightOperand)
 	}
-
 	return expr
 }
 
@@ -92,7 +88,6 @@ func (p *Parser) additionOrSubtraction() ast.Expr {
 
 		expr = ast.NewBinaryExpr(expr, operator, rightOperand)
 	}
-
 	return expr
 }
 
@@ -105,7 +100,6 @@ func (p *Parser) multiplicationOrDivision() ast.Expr {
 
 		expr = ast.NewBinaryExpr(expr, operator, rightOperand)
 	}
-
 	return expr
 }
 
@@ -116,7 +110,6 @@ func (p *Parser) unary() ast.Expr {
 
 		return ast.NewUnaryExpr(operator, operand)
 	}
-
 	return p.call()
 }
 
@@ -133,7 +126,6 @@ func (p *Parser) call() ast.Expr {
 			break
 		}
 	}
-
 	return expr
 }
 
@@ -154,6 +146,7 @@ func (p *Parser) finishCall(callee ast.Expr) ast.Expr {
 
 func (p *Parser) primary() ast.Expr {
 	switch {
+
 	case p.match(ast.False):
 		return ast.NewLiteralExpr(false)
 
