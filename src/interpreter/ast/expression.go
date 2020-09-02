@@ -4,17 +4,16 @@ import (
 	"fmt"
 )
 
-// An Expr groups together source code that can be reduced to a value. In order to allow different
-// structs that inherit from Expr to interact with one another, the ExprVisitor design pattern is used.
-// TODO: Explain ExprVisitor design pattern better!
+// An Expr groups together source code that can be reduced to a value. We use this generic interface in the method
+// signatures of our parser and interpreter due to not knowing the specific type until runtime.
 type Expr interface {
-	GetType() string // TODO: Implement type for Expr and Stmts
+	GetType() string
 }
 
-// A UnaryExpr expression is one that applies a single operator to a single operand.
-// UnaryExpr inherits from the Expr interface in order to utilize the ExprVisitor design pattern.
+// A UnaryExpr is an expression that applies a single operator to a single operand.
+// UnaryExpr successfully fulfills all of the Expr interface's methods.
 type UnaryExpr struct {
-	Operator Token
+	Operator Token // Either '-' or '!'
 	Operand  Expr
 }
 
@@ -27,10 +26,10 @@ func (u UnaryExpr) GetType() string {
 }
 
 // A BinaryExpr expression is one that applies a single operator to a multiple operands.
-// BinaryExpr inherits from the Expr interface in order to utilize the ExprVisitor design pattern.
+// BinaryExpr successfully fulfills all of the Expr interface's methods.
 type BinaryExpr struct {
 	LeftOperand  Expr
-	Operator     Token
+	Operator     Token // Either '+', '-', '*', or '/'
 	RightOperand Expr
 }
 
@@ -43,7 +42,7 @@ func (b BinaryExpr) GetType() string {
 }
 
 // A GroupingExpr sets a higher level of precedence for another expression within its bounds.
-// GroupingExpr inherits from the Expr interface in order to utilize the ExprVisitor design pattern.
+// GroupingExpr successuflly fulfills all of the Expr interface's methods.
 type GroupingExpr struct {
 	Expression Expr
 }
@@ -57,7 +56,7 @@ func (g GroupingExpr) GetType() string {
 }
 
 // A LiteralExpr is the most basic expression type and represents a fully evaluated value.
-// LiteralExpr inherits from the Expr interface in order to utilize the ExprVisitor design pattern.
+// LiteralExpr successuflly fulfills all of the Expr interface's methods.
 type LiteralExpr struct {
 	Val interface{}
 }
@@ -70,7 +69,8 @@ func (l LiteralExpr) GetType() string {
 	return fmt.Sprintf("%T", l)
 }
 
-// TODO: Add docstring
+// A VariableExpr represents the declaration a user-defined variable.
+// VariableExpr successuflly fulfills all of the Expr interface's methods.
 type VariableExpr struct {
 	Identifier Token
 }
@@ -83,7 +83,8 @@ func (v VariableExpr) GetType() string {
 	return fmt.Sprintf("%T", v)
 }
 
-// TODO: Add docstring
+// An AssignmentExpr represents either the assignment of a previously defined variable.
+// AssignmentExpr successuflly fulfills all of the Expr interface's methods.
 type AssignmentExpr struct {
 	Identifier Token
 	Val        Expr
@@ -97,9 +98,11 @@ func (a AssignmentExpr) GetType() string {
 	return fmt.Sprintf("%T", a)
 }
 
+// A LogicalExpr encapsulates the control flow constructs of 'AND' and 'OR'.
+// LogicalExpr successfully fulfills all of the Expr interface's methods.
 type LogicalExpr struct {
 	LeftOperand  Expr
-	Operator     Token
+	Operator     Token // Either '&&' or '||'
 	RightOperand Expr
 }
 
@@ -111,6 +114,8 @@ func (l LogicalExpr) GetType() string {
 	return fmt.Sprintf("%T", l)
 }
 
+// A CallExpr represents the invokation of a user-defined function or structure.
+// CallExpr successfully fulfills all of the Expr interface's methods.
 type CallExpr struct {
 	Callee Expr
 	Paren  Token
@@ -125,9 +130,11 @@ func (c CallExpr) GetType() string {
 	return fmt.Sprintf("%T", c)
 }
 
+// A GetExpr represents the retrieval of an instance variable or attribute of a structure.
+// GetExpr successfully fulfills all of the Expr interface's methods.
 type GetExpr struct {
 	Object   Expr
-	Property Token
+	Property Token // As represented by this.property
 }
 
 func NewGetExpr(object Expr, property Token) *GetExpr {
@@ -138,6 +145,8 @@ func (g GetExpr) GetType() string {
 	return fmt.Sprintf("%T", g)
 }
 
+// A SetExpr represents the alteration of an instance variable or attribute of a structure.
+// SetExpr successfully fulfills all of the Expr interface's methods.
 type SetExpr struct {
 	Object   Expr
 	Property Token
@@ -152,8 +161,11 @@ func (s SetExpr) GetType() string {
 	return fmt.Sprintf("%T", s)
 }
 
+// A ThisExpr represents the declaration and assignment of an instance variable
+// or attribute within the constructor of a user-defined structure.
+// ThisExpr successfully fulfills all of the Expr interface's methods.
 type ThisExpr struct {
-	Keyword Token
+	Keyword Token // Will always be 'this'
 }
 
 func NewThisExpr(keyword Token) *ThisExpr {

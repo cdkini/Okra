@@ -4,12 +4,16 @@ import (
 	"fmt"
 )
 
-// TODO: Explain Visitor design pattern better!
+// A Stmt groups together source code that results in a side-effect or notable change in program state.
+// We use this generic interface in the method signatures of our parser
+// and interpreter due to not knowing the specific type until runtime.
 type Stmt interface {
 	GetType() string
 }
 
-// TODO: Add docstring
+// An ExpressionStmt is a wrapper around an Expr. One is only instantiated if the
+// evaluated Stmt does not meet the criteria of any other Stmt, making it an Expr by default.
+// ExpressionStmt successfully fulfills all of the Stmt interface's methods.
 type ExpressionStmt struct {
 	Expr Expr
 }
@@ -22,7 +26,8 @@ func (e ExpressionStmt) GetType() string {
 	return fmt.Sprintf("%T", e)
 }
 
-// TODO: Add docstring
+// A PrintSmt encapsulates an Expr that's result is to be displayed to the console or terminal.
+// PrintStmt successfully fulfills all of the Stmt interface's methods.
 type PrintStmt struct {
 	Expr Expr
 }
@@ -35,7 +40,8 @@ func (p PrintStmt) GetType() string {
 	return fmt.Sprintf("%T", p)
 }
 
-// TODO: Add docstring
+// A VariableStmt covers both the declaration and assignment of a user-defined variable.
+// VariableStmt successfully fulfills all of the Stmt interface's methods.
 type VariableStmt struct {
 	Identifier Token
 	Expr       Expr
@@ -49,6 +55,8 @@ func (v VariableStmt) GetType() string {
 	return fmt.Sprintf("%T", v)
 }
 
+// A BlockStmt wraps around a slice of additional Stmt and signifies a change in scoping.
+// BlockStmt successfully fulfills all of the Stmt interface's methods.
 type BlockStmt struct {
 	Stmts []Stmt
 }
@@ -61,6 +69,8 @@ func (b BlockStmt) GetType() string {
 	return fmt.Sprintf("%T", b)
 }
 
+// A IfStmt represents a control flow construct based on the evaluation of a boolean condition.
+// IfStmt successfully fulfills all of the Stmt interface's methods.
 type IfStmt struct {
 	Condition  Expr
 	ThenBranch Stmt
@@ -75,6 +85,8 @@ func (i IfStmt) GetType() string {
 	return fmt.Sprintf("%T", i)
 }
 
+// A ForStmt represents a control flow construct that loops based on evaluation of a boolean condition.
+// ForStmt successfully fulfills all of the Stmt interface's methods.
 type ForStmt struct {
 	Condition Expr
 	Body      Stmt
@@ -88,6 +100,8 @@ func (f ForStmt) GetType() string {
 	return fmt.Sprintf("%T", f)
 }
 
+// A FuncStmt represents the definition of a function or method.
+// FuncStmt successfully fulfills all of the Stmt interface's methods.
 type FuncStmt struct {
 	Identifier Token
 	Params     []Token
@@ -102,8 +116,10 @@ func (f FuncStmt) GetType() string {
 	return fmt.Sprintf("%T", f)
 }
 
+// A ReturnStmt is used to cease function execution and return an evaluated Expr back to the user.
+// ReturnStmt successfully fulfills all of the Stmt interface's methods.
 type ReturnStmt struct {
-	Keyword Token
+	Keyword Token // Will always be 'return'
 	Val     Expr
 }
 
@@ -115,6 +131,8 @@ func (g ReturnStmt) GetType() string {
 	return fmt.Sprintf("%T", g)
 }
 
+// A StructStmt represents the definition of a struct.
+// Struct successfully fulfills all of the Stmt interface's methods.
 type StructStmt struct {
 	Name    Token
 	Methods []FuncStmt

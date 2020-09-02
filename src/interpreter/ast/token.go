@@ -1,15 +1,14 @@
 package ast
 
-// A Token is a substring of source text given context or meaning by the scanner
+// A Token is a substring of source text given context or meaning by the scanner.
 type Token struct {
-	Type    TokenType
-	Lexeme  string // Exact substring lexed by scanner
-	Literal interface{}
+	Type    TokenType   // Token enum
+	Lexeme  string      // Exact piece of source code tokenized
+	Literal interface{} // Value associated with source code
 	Line    int
 	Col     int
 }
 
-// Only used for testing purposes within interpret_test package
 func NewToken(tokenType TokenType, lexeme string, literal interface{}, line int, col int) *Token {
 	return &Token{tokenType, lexeme, literal, line, col}
 }
@@ -57,6 +56,7 @@ const (
 	Variable
 )
 
+// Used to differentiate between user defined object declaration and built-in keywords.
 var KeywordDict = map[string]TokenType{
 	"struct": Struct,
 	"else":   Else,
