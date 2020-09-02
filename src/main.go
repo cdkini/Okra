@@ -43,7 +43,7 @@ func runFile(path string) {
 
 	// Parse tokens into AST
 	parser := parse.NewParser(tokens)
-	stmts, _ := parser.Parse()
+	stmts := parser.Parse()
 
 	// Traverse AST to generate output
 	interpreter := interpret.NewInterpreter()
