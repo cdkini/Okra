@@ -7,9 +7,9 @@ import (
 	"unicode"
 )
 
-// A Scanner takes in some stream of characters and tokenizes them based on Okra's syntax
+// A Scanner takes in some stream of characters and tokenizes them based on Okra's syntax.
 type Scanner struct {
-	source []rune
+	source []rune      // Source file written in Okra
 	tokens []ast.Token // Populated as result of ScanTokens()
 	start  int         // Where the current token begins
 	curr   int         // Where the scanner is within the source
@@ -37,10 +37,16 @@ func (s *Scanner) ScanTokens() []ast.Token {
 		s.start = s.curr
 		s.scan()
 	}
+	// All tokenized files end with EOF to ensure parser/interpreter know when to cease execution
 	s.tokens = append(s.tokens, ast.Token{ast.EOF, "EOF", nil, s.line, s.col})
 	return s.tokens
 }
 
+// scan is a helper method used in ScanTokens that actually performs the tokenization
+// by comparing source text to predefined grammar rules.
+//   Args: nil
+//   Returns: nil
+//   Raises: OkraError if a substring of source text fails to meet any of Okra's grammar conditions.
 func (s *Scanner) scan() {
 	c := s.advance()
 	switch c {
@@ -105,13 +111,13 @@ func (s *Scanner) scan() {
 			s.addToken(ast.And, nil)
 			break
 		}
-		okraerr.ReportErr(s.line, s.col, "Invalid character")
+		okraerr.ReportErr(s.line, s.col, "Invalid character.")
 	case '|':
 		if s.match('|') {
 			s.addToken(ast.Or, nil)
 			break
 		}
-		okraerr.ReportErr(s.line, s.col, "Invalid character")
+		okraerr.ReportErr(s.line, s.col, "Invalid character.")
 
 	// Comments
 	case '/':
@@ -133,7 +139,7 @@ func (s *Scanner) scan() {
 		} else if unicode.IsLetter(c) {
 			s.addIdentifierToken()
 		} else {
-			okraerr.ReportErr(s.line, s.col, "Invalid character")
+			okraerr.ReportErr(s.line, s.col, "Invalid character.")
 		}
 	}
 }
@@ -181,7 +187,7 @@ func (s *Scanner) addStringToken() {
 	}
 
 	if s.curr >= len(s.source) {
-		okraerr.ReportErr(s.line, s.col, "Unterminated character")
+		okraerr.ReportErr(s.line, s.col, "Unterminated character.")
 	}
 
 	s.advance()
@@ -203,7 +209,7 @@ func (s *Scanner) addNumericToken() {
 	}
 
 	num, err := strconv.ParseFloat(string(s.source[s.start:s.curr]), 64)
-	okraerr.CheckErr(err, s.line, s.col, "Could not scan numeric")
+	okraerr.CheckErr(err, s.line, s.col, "Could not scan numeric.")
 	s.addToken(ast.Numeric, num)
 }
 
