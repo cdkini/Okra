@@ -1,27 +1,34 @@
 package parse
 
 import (
-	"Okra/src/interpreter/scan"
+	. "Okra/src/interpreter/ast"
 	"testing"
 )
 
+func mock(tokens ...TokenType) []Token {
+	var input []Token
+	for _, t := range tokens {
+		input = append(input, Token{t, "", nil, 0, 0})
+	}
+	input = append(input, Token{EOF, "", nil, 0, 0})
+	return input
+}
+
 func TestParseUnaryExpr(t *testing.T) {
 	table := []struct {
-		input  string
-		output string
+		input  []Token
+		output Expr
 	}{
-		{"-1", "ast.UnaryExpr"},
-		{"!true", "ast.UnaryExpr"},
+		{mock(Minus, Numeric), UnaryExpr{}}, // Test "-1"
+		{mock(Bang, True), UnaryExpr{}},     // Test "!true;"
 	}
 
 	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
+		t.Run("TestParseUnaryExpr", func(t *testing.T) {
+			parser := NewParser(test.input)
 			expr := parser.Expression()
 
-			if expr.GetType() != test.output {
+			if expr.GetType() != test.output.GetType() {
 				t.Errorf("Expected *%v, received %T", test.output, expr)
 			}
 		})
@@ -30,29 +37,27 @@ func TestParseUnaryExpr(t *testing.T) {
 
 func TestParseBinaryExpr(t *testing.T) {
 	table := []struct {
-		input  string
-		output string
+		input  []Token
+		output Expr
 	}{
-		{"1 + 2", "ast.BinaryExpr"},
-		{"3 - 4", "ast.BinaryExpr"},
-		{"5 * 6", "ast.BinaryExpr"},
-		{"7 / 8", "ast.BinaryExpr"},
-		{"9 > 10", "ast.BinaryExpr"},
-		{"11 >= 12", "ast.BinaryExpr"},
-		{"13 < 14", "ast.BinaryExpr"},
-		{"14 <= 15", "ast.BinaryExpr"},
-		{"16 = 17", "ast.BinaryExpr"},
-		{"18 != 19", "ast.BinaryExpr"},
+		{mock(Numeric, Plus, Numeric), BinaryExpr{}},         // Test "1 + 2"
+		{mock(Numeric, Minus, Numeric), BinaryExpr{}},        // Test "3 - 4"
+		{mock(Numeric, Star, Numeric), BinaryExpr{}},         // Test "5 * 6"
+		{mock(Numeric, Slash, Numeric), BinaryExpr{}},        // Test "7 / 8"
+		{mock(Numeric, Greater, Numeric), BinaryExpr{}},      // Test "9 > 10"
+		{mock(Numeric, GreaterEqual, Numeric), BinaryExpr{}}, // Test "11 >= 12"
+		{mock(Numeric, Less, Numeric), BinaryExpr{}},         // Test "13 < 14"
+		{mock(Numeric, LessEqual, Numeric), BinaryExpr{}},    // Test "14 <= 15"
+		{mock(Numeric, Equal, Numeric), BinaryExpr{}},        // Test "16 = 17"
+		{mock(Numeric, BangEqual, Numeric), BinaryExpr{}},    // Test "18 != 19"
 	}
 
 	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
+		t.Run("TestParseBinaryExpr", func(t *testing.T) {
+			parser := NewParser(test.input)
 			expr := parser.Expression()
 
-			if expr.GetType() != test.output {
+			if expr.GetType() != test.output.GetType() {
 				t.Errorf("Expected *%v, received %T", test.output, expr)
 			}
 		})
@@ -61,21 +66,20 @@ func TestParseBinaryExpr(t *testing.T) {
 
 func TestParseGroupingExpr(t *testing.T) {
 	table := []struct {
-		input  string
-		output string
+		input  []Token
+		output Expr
 	}{
-		{"(1 + 2)", "ast.GroupingExpr"},
-		{"((1 + 2) * (3 / 4))", "ast.GroupingExpr"},
+		{mock(LeftParen, Numeric, Plus, Numeric, RightParen), GroupingExpr{}}, // Test "(1 + 2)"
+		{mock(LeftParen, LeftParen, Numeric, Plus, Numeric, RightParen, Star,
+			LeftParen, Numeric, RightParen, RightParen), GroupingExpr{}}, // Test "((1 + 2) * (3))""
 	}
 
 	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
+		t.Run("TestParseBinaryExpr", func(t *testing.T) {
+			parser := NewParser(test.input)
 			expr := parser.Expression()
 
-			if expr.GetType() != test.output {
+			if expr.GetType() != test.output.GetType() {
 				t.Errorf("Expected *%v, received %T", test.output, expr)
 			}
 		})
@@ -84,24 +88,22 @@ func TestParseGroupingExpr(t *testing.T) {
 
 func TestParseLiteralExpr(t *testing.T) {
 	table := []struct {
-		input  string
-		output string
+		input  []Token
+		output Expr
 	}{
-		{"true", "ast.LiteralExpr"},
-		{"false", "ast.LiteralExpr"},
-		{"null", "ast.LiteralExpr"},
-		{"3.1415", "ast.LiteralExpr"},
-		{"\"abc\"", "ast.LiteralExpr"},
+		{mock(True), LiteralExpr{}},    // Test "true"
+		{mock(False), LiteralExpr{}},   // Test "false"
+		{mock(Null), LiteralExpr{}},    // Test "null"
+		{mock(Numeric), LiteralExpr{}}, // Test "3.1415"
+		{mock(String), LiteralExpr{}},  // Test "\"abc\""
 	}
 
 	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
+		t.Run("TestParseBinaryExpr", func(t *testing.T) {
+			parser := NewParser(test.input)
 			expr := parser.Expression()
 
-			if expr.GetType() != test.output {
+			if expr.GetType() != test.output.GetType() {
 				t.Errorf("Expected *%v, received %T", test.output, expr)
 			}
 		})
@@ -110,21 +112,19 @@ func TestParseLiteralExpr(t *testing.T) {
 
 func TestParseVariableExpr(t *testing.T) {
 	table := []struct {
-		input  string
-		output string
+		input  []Token
+		output Expr
 	}{
-		{"foo", "ast.VariableExpr"},
-		{"bar", "ast.VariableExpr"},
+		{mock(Identifier), VariableExpr{}}, // Test "foo"
+		{mock(Identifier), VariableExpr{}}, // Test "bar"
 	}
 
 	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
+		t.Run("TestParseVariableExpr", func(t *testing.T) {
+			parser := NewParser(test.input)
 			expr := parser.Expression()
 
-			if expr.GetType() != test.output {
+			if expr.GetType() != test.output.GetType() {
 				t.Errorf("Expected *%v, received %T", test.output, expr)
 			}
 		})
@@ -133,23 +133,21 @@ func TestParseVariableExpr(t *testing.T) {
 
 func TestParseAssignmentExpr(t *testing.T) {
 	table := []struct {
-		input  string
-		output string
+		input  []Token
+		output Expr
 	}{
-		{"a: 5;", "ast.AssignmentExpr"},
-		{"b: \"abc\";", "ast.AssignmentExpr"},
-		{"c: true;", "ast.AssignmentExpr"},
-		{"d: null;", "ast.AssignmentExpr"},
+		{mock(Identifier, Colon, Numeric, Semicolon), AssignmentExpr{}}, // Test "a: 5;"
+		{mock(Identifier, Colon, String, Semicolon), AssignmentExpr{}},  // Test "b: \"abc\";"
+		{mock(Identifier, Colon, True, Semicolon), AssignmentExpr{}},    // Test "c: true;"
+		{mock(Identifier, Colon, Null, Semicolon), AssignmentExpr{}},    // Test "d: null;"
 	}
 
 	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
+		t.Run("TestParseVariableExpr", func(t *testing.T) {
+			parser := NewParser(test.input)
 			expr := parser.Expression()
 
-			if expr.GetType() != test.output {
+			if expr.GetType() != test.output.GetType() {
 				t.Errorf("Expected *%v, received %T", test.output, expr)
 			}
 		})
@@ -158,21 +156,19 @@ func TestParseAssignmentExpr(t *testing.T) {
 
 func TestParseLogicalExpr(t *testing.T) {
 	table := []struct {
-		input  string
-		output string
+		input  []Token
+		output Expr
 	}{
-		{"a && b;", "ast.LogicalExpr"},
-		{"c || d;", "ast.LogicalExpr"},
+		{mock(Identifier, And, Identifier, Semicolon), LogicalExpr{}}, // Test "a && b;"
+		{mock(Identifier, Or, Identifier, Semicolon), LogicalExpr{}},  // Test "c || d;"
 	}
 
 	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
+		t.Run("TestParseVariableExpr", func(t *testing.T) {
+			parser := NewParser(test.input)
 			expr := parser.Expression()
 
-			if expr.GetType() != test.output {
+			if expr.GetType() != test.output.GetType() {
 				t.Errorf("Expected *%v, received %T", test.output, expr)
 			}
 		})
@@ -181,21 +177,19 @@ func TestParseLogicalExpr(t *testing.T) {
 
 func TestParseCallExpr(t *testing.T) {
 	table := []struct {
-		input  string
-		output string
+		input  []Token
+		output Expr
 	}{
-		{"funcName();", "ast.CallExpr"},
-		{"StructName();", "ast.CallExpr"},
+		{mock(Identifier, LeftParen, RightParen, Semicolon), CallExpr{}}, // Test "funcName();"
+		{mock(Identifier, LeftParen, RightParen, Semicolon), CallExpr{}}, // Test "StructName();"
 	}
 
 	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
+		t.Run("TestParseVariableExpr", func(t *testing.T) {
+			parser := NewParser(test.input)
 			expr := parser.Expression()
 
-			if expr.GetType() != test.output {
+			if expr.GetType() != test.output.GetType() {
 				t.Errorf("Expected *%v, received %T", test.output, expr)
 			}
 		})
@@ -204,24 +198,22 @@ func TestParseCallExpr(t *testing.T) {
 
 func TestParseStructExprs(t *testing.T) {
 	table := []struct {
-		input  string
-		output string
+		input  []Token
+		output Expr
 	}{
-		{"class.property", "ast.GetExpr"},
-		{"this.value", "ast.GetExpr"},
-		{"class.property: newProperty", "ast.SetExpr"},
-		{"this.value: value", "ast.SetExpr"},
-		{"this", "ast.ThisExpr"},
+		{mock(Identifier, Dot, Identifier), GetExpr{}},                    // Test "class.property"
+		{mock(This, Dot, Identifier), GetExpr{}},                          // Test "this.value"
+		{mock(Identifier, Dot, Identifier, Colon, Identifier), SetExpr{}}, // Test "class.property: newProperty"
+		{mock(This, Dot, Identifier, Colon, Identifier), SetExpr{}},       // Test "this.value: value"
+		{mock(This), ThisExpr{}},                                          // Test "this"
 	}
 
 	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
+		t.Run("TestParseVariableExpr", func(t *testing.T) {
+			parser := NewParser(test.input)
 			expr := parser.Expression()
 
-			if expr.GetType() != test.output {
+			if expr.GetType() != test.output.GetType() {
 				t.Errorf("Expected *%v, received %T", test.output, expr)
 			}
 		})
