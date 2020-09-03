@@ -131,13 +131,15 @@ func TestParseVariableExpr(t *testing.T) {
 	}
 }
 
-// TODO: Fill out tests!
 func TestParseAssignmentExpr(t *testing.T) {
 	table := []struct {
 		input  string
 		output string
 	}{
-		// {},
+		{"a: 5;", "ast.AssignmentExpr"},
+		{"b: \"abc\";", "ast.AssignmentExpr"},
+		{"c: true;", "ast.AssignmentExpr"},
+		{"d: null;", "ast.AssignmentExpr"},
 	}
 
 	for _, test := range table {
@@ -154,13 +156,13 @@ func TestParseAssignmentExpr(t *testing.T) {
 	}
 }
 
-// TODO: Fill out tests!
 func TestParseLogicalExpr(t *testing.T) {
 	table := []struct {
 		input  string
 		output string
 	}{
-		// {},
+		{"a && b;", "ast.LogicalExpr"},
+		{"c || d;", "ast.LogicalExpr"},
 	}
 
 	for _, test := range table {
@@ -177,13 +179,13 @@ func TestParseLogicalExpr(t *testing.T) {
 	}
 }
 
-// TODO: Fill out tests!
 func TestParseCallExpr(t *testing.T) {
 	table := []struct {
 		input  string
 		output string
 	}{
-		// {},
+		{"funcName();", "ast.CallExpr"},
+		{"StructName();", "ast.CallExpr"},
 	}
 
 	for _, test := range table {
@@ -200,59 +202,16 @@ func TestParseCallExpr(t *testing.T) {
 	}
 }
 
-// TODO: Fill out tests!
-func TestParseGetExpr(t *testing.T) {
+func TestParseStructExprs(t *testing.T) {
 	table := []struct {
 		input  string
 		output string
 	}{
-		// {},
-	}
-
-	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
-			expr := parser.Expression()
-
-			if expr.GetType() != test.output {
-				t.Errorf("Expected *%v, received %T", test.output, expr)
-			}
-		})
-	}
-}
-
-// TODO: Fill out tests!
-func TestParseSetExpr(t *testing.T) {
-	table := []struct {
-		input  string
-		output string
-	}{
-		// {},
-	}
-
-	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
-			expr := parser.Expression()
-
-			if expr.GetType() != test.output {
-				t.Errorf("Expected *%v, received %T", test.output, expr)
-			}
-		})
-	}
-}
-
-// TODO: Fill out tests!
-func TestParseThisExpr(t *testing.T) {
-	table := []struct {
-		input  string
-		output string
-	}{
-		// {},
+		{"class.property", "ast.GetExpr"},
+		{"this.value", "ast.GetExpr"},
+		{"class.property: newProperty", "ast.SetExpr"},
+		{"this.value: value", "ast.SetExpr"},
+		{"this", "ast.ThisExpr"},
 	}
 
 	for _, test := range table {
