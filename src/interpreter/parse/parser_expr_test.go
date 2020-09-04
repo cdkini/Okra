@@ -75,7 +75,7 @@ func TestParseGroupingExpr(t *testing.T) {
 	}
 
 	for _, test := range table {
-		t.Run("TestParseBinaryExpr", func(t *testing.T) {
+		t.Run("TestParseGroupingExpr", func(t *testing.T) {
 			parser := NewParser(test.input)
 			expr := parser.Expression()
 
@@ -99,7 +99,7 @@ func TestParseLiteralExpr(t *testing.T) {
 	}
 
 	for _, test := range table {
-		t.Run("TestParseBinaryExpr", func(t *testing.T) {
+		t.Run("TestParseLiteralExpr", func(t *testing.T) {
 			parser := NewParser(test.input)
 			expr := parser.Expression()
 
@@ -143,7 +143,7 @@ func TestParseAssignmentExpr(t *testing.T) {
 	}
 
 	for _, test := range table {
-		t.Run("TestParseVariableExpr", func(t *testing.T) {
+		t.Run("TestParseAssignmentExpr", func(t *testing.T) {
 			parser := NewParser(test.input)
 			expr := parser.Expression()
 
@@ -164,7 +164,7 @@ func TestParseLogicalExpr(t *testing.T) {
 	}
 
 	for _, test := range table {
-		t.Run("TestParseVariableExpr", func(t *testing.T) {
+		t.Run("TestParseLogicalExpr", func(t *testing.T) {
 			parser := NewParser(test.input)
 			expr := parser.Expression()
 
@@ -185,7 +185,7 @@ func TestParseCallExpr(t *testing.T) {
 	}
 
 	for _, test := range table {
-		t.Run("TestParseVariableExpr", func(t *testing.T) {
+		t.Run("TestParseCallExpr", func(t *testing.T) {
 			parser := NewParser(test.input)
 			expr := parser.Expression()
 
@@ -209,7 +209,7 @@ func TestParseStructExprs(t *testing.T) {
 	}
 
 	for _, test := range table {
-		t.Run("TestParseVariableExpr", func(t *testing.T) {
+		t.Run("TestParseStructExpr", func(t *testing.T) {
 			parser := NewParser(test.input)
 			expr := parser.Expression()
 

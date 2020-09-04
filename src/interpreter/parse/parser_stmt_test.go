@@ -1,29 +1,27 @@
 package parse
 
 import (
-	"Okra/src/interpreter/scan"
+	. "Okra/src/interpreter/ast"
 	"testing"
 )
 
 func TestParseExpressionStmt(t *testing.T) {
 	table := []struct {
-		input  string
-		output string
+		input  []Token
+		output Stmt
 	}{
-		{"1 + 1 = 2;", "ast.ExpressionStmt"},
-		{"a + b >= c;", "ast.ExpressionStmt"},
-		{"!d;", "ast.ExpressionStmt"},
-		{"true != false;", "ast.ExpressionStmt"},
+		{mock(Numeric, Plus, Numeric, Equal, Numeric, Semicolon), ExpressionStmt{}},                 // Test "1 + 1 = 2;"
+		{mock(Identifier, Plus, Identifier, GreaterEqual, Identifier, Semicolon), ExpressionStmt{}}, // Test "a + b >= c;"
+		{mock(Bang, Identifier, Semicolon), ExpressionStmt{}},                                       // Test "!d;
+		{mock(True, BangEqual, False, Semicolon), ExpressionStmt{}},                                 // Test "true != false;"
 	}
 
 	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
+		t.Run("TestParseExpressionStmt", func(t *testing.T) {
+			parser := NewParser(test.input)
 			stmt := parser.Parse()[0]
 
-			if stmt.GetType() != test.output {
+			if stmt.GetType() != test.output.GetType() {
 				t.Errorf("Expected *%v, received %T", test.output, stmt)
 			}
 		})
@@ -32,22 +30,20 @@ func TestParseExpressionStmt(t *testing.T) {
 
 func TestParsePrintStmt(t *testing.T) {
 	table := []struct {
-		input  string
-		output string
+		input  []Token
+		output Stmt
 	}{
-		{"print 1;", "ast.PrintStmt"},
-		{"print \"Hello, World!\";", "ast.PrintStmt"},
-		{"print abc;", "ast.PrintStmt"},
+		{mock(Print, Numeric, Semicolon), PrintStmt{}},    // Test "print 1;"
+		{mock(Print, String, Semicolon), PrintStmt{}},     // Test "print \"Hello, World!\";"
+		{mock(Print, Identifier, Semicolon), PrintStmt{}}, // Test "print abc;"
 	}
 
 	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
+		t.Run("TestParsePrintStmt", func(t *testing.T) {
+			parser := NewParser(test.input)
 			stmt := parser.Parse()[0]
 
-			if stmt.GetType() != test.output {
+			if stmt.GetType() != test.output.GetType() {
 				t.Errorf("Expected *%v, received %T", test.output, stmt)
 			}
 		})
@@ -56,22 +52,20 @@ func TestParsePrintStmt(t *testing.T) {
 
 func TestParseVariableStmt(t *testing.T) {
 	table := []struct {
-		input  string
-		output string
+		input  []Token
+		output Stmt
 	}{
-		{"var a: 1;", "ast.VariableStmt"},
-		{"var name: \"Bob\";", "ast.VariableStmt"},
-		{"var abc;", "ast.VariableStmt"},
+		{mock(Variable, Identifier, Colon, Numeric, Semicolon), VariableStmt{}}, // Test "var a: 1;"
+		{mock(Variable, Identifier, Colon, String, Semicolon), VariableStmt{}},  // Test "var name: \"Bob\";"
+		{mock(Variable, Identifier, Semicolon), VariableStmt{}},                 // Test "var abc;"
 	}
 
 	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
+		t.Run("TestParseVariableStmt", func(t *testing.T) {
+			parser := NewParser(test.input)
 			stmt := parser.Parse()[0]
 
-			if stmt.GetType() != test.output {
+			if stmt.GetType() != test.output.GetType() {
 				t.Errorf("Expected *%v, received %T", test.output, stmt)
 			}
 		})
@@ -80,22 +74,20 @@ func TestParseVariableStmt(t *testing.T) {
 
 func TestParseBlockStmt(t *testing.T) {
 	table := []struct {
-		input  string
-		output string
+		input  []Token
+		output Stmt
 	}{
-		{"{}", "ast.BlockStmt"},
-		{"{var x: 1;}", "ast.BlockStmt"},
-		{"{1 + 1;}", "ast.BlockStmt"},
+		{mock(LeftBrace, RightBrace), BlockStmt{}},                                                  // Test "{}"
+		{mock(LeftBrace, Variable, Identifier, Colon, Numeric, Semicolon, RightBrace), BlockStmt{}}, // Test {var x: 1;}
+		{mock(LeftBrace, Numeric, Plus, Numeric, Semicolon, RightBrace), BlockStmt{}},               // Test {1 + 1;}
 	}
 
 	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
+		t.Run("TestParseBlockStmt", func(t *testing.T) {
+			parser := NewParser(test.input)
 			stmt := parser.Parse()[0]
 
-			if stmt.GetType() != test.output {
+			if stmt.GetType() != test.output.GetType() {
 				t.Errorf("Expected *%v, received %T", test.output, stmt)
 			}
 		})
@@ -104,22 +96,20 @@ func TestParseBlockStmt(t *testing.T) {
 
 func TestParseIfStmt(t *testing.T) {
 	table := []struct {
-		input  string
-		output string
+		input  []Token
+		output Stmt
 	}{
-		{"if (true) {}", "ast.IfStmt"},
-		{"if (x < 5) {}", "ast.IfStmt"},
-		{"if (!y) {}", "ast.IfStmt"},
+		{mock(If, LeftParen, True, RightParen, LeftBrace, RightBrace), IfStmt{}},                      // Test "if (true) {}"
+		{mock(If, LeftParen, Identifier, Less, Numeric, RightParen, LeftBrace, RightBrace), IfStmt{}}, // Test "if (x < 5) {}"
+		{mock(If, LeftParen, Bang, Identifier, RightParen, LeftBrace, RightBrace), IfStmt{}},          // Test "if (!y) {}"
 	}
 
 	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
+		t.Run("TestParseIfStmt", func(t *testing.T) {
+			parser := NewParser(test.input)
 			stmt := parser.Parse()[0]
 
-			if stmt.GetType() != test.output {
+			if stmt.GetType() != test.output.GetType() {
 				t.Errorf("Expected *%v, received %T", test.output, stmt)
 			}
 		})
@@ -128,22 +118,20 @@ func TestParseIfStmt(t *testing.T) {
 
 func TestParseForStmt(t *testing.T) {
 	table := []struct {
-		input  string
-		output string
+		input  []Token
+		output Stmt
 	}{
-		{"for (true) {}", "ast.ForStmt"},
-		{"for (x < 5) {}", "ast.ForStmt"},
-		{"for (!y) {}", "ast.ForStmt"},
+		{mock(For, LeftParen, True, RightParen, LeftBrace, RightBrace), ForStmt{}},                      // Test "for (true) {}"
+		{mock(For, LeftParen, Identifier, Less, Numeric, RightParen, LeftBrace, RightBrace), ForStmt{}}, // Test "for (x < 5) {}"
+		{mock(For, LeftParen, Bang, Identifier, RightParen, LeftBrace, RightBrace), ForStmt{}},          // Test "for (!y) {}"
 	}
 
 	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
+		t.Run("TestParseForStmt", func(t *testing.T) {
+			parser := NewParser(test.input)
 			stmt := parser.Parse()[0]
 
-			if stmt.GetType() != test.output {
+			if stmt.GetType() != test.output.GetType() {
 				t.Errorf("Expected *%v, received %T", test.output, stmt)
 			}
 		})
@@ -152,22 +140,20 @@ func TestParseForStmt(t *testing.T) {
 
 func TestParseFuncStmt(t *testing.T) {
 	table := []struct {
-		input  string
-		output string
+		input  []Token
+		output Stmt
 	}{
-		{"func abs :: {}", "ast.FuncStmt"},
-		{"func hello : name : { print \"Hello\" + name; }", "ast.FuncStmt"},
-		{"func addOne : x : { return x + 1; }", "ast.FuncStmt"},
+		{mock(Func, Identifier, Colon, Colon, LeftBrace, RightBrace), FuncStmt{}},                                                           // Test "func abs :: {}"
+		{mock(Func, Identifier, Colon, Identifier, Colon, LeftBrace, Print, Identifier, Semicolon, RightBrace), FuncStmt{}},                 // Test "func hello : name : { print name; }"
+		{mock(Func, Identifier, Colon, Identifier, Colon, LeftBrace, Return, Identifier, Plus, Numeric, Semicolon, RightBrace), FuncStmt{}}, // Test "func addOne : x : { return x + 1; }"
 	}
 
 	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
+		t.Run("TestParseFuncStmt", func(t *testing.T) {
+			parser := NewParser(test.input)
 			stmt := parser.Parse()[0]
 
-			if stmt.GetType() != test.output {
+			if stmt.GetType() != test.output.GetType() {
 				t.Errorf("Expected *%v, received %T", test.output, stmt)
 			}
 		})
@@ -176,21 +162,19 @@ func TestParseFuncStmt(t *testing.T) {
 
 func TestParseReturnStmt(t *testing.T) {
 	table := []struct {
-		input  string
-		output string
+		input  []Token
+		output Stmt
 	}{
-		{"return 1;", "ast.ReturnStmt"},
-		{"return;", "ast.ReturnStmt"},
+		{mock(Return, Numeric, Semicolon), ReturnStmt{}}, // Test "return 1;"
+		{mock(Return, Semicolon), ReturnStmt{}},          // Test "return;""
 	}
 
 	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
+		t.Run("TestParseReturnStmt", func(t *testing.T) {
+			parser := NewParser(test.input)
 			stmt := parser.Parse()[0]
 
-			if stmt.GetType() != test.output {
+			if stmt.GetType() != test.output.GetType() {
 				t.Errorf("Expected *%v, received %T", test.output, stmt)
 			}
 		})
@@ -199,21 +183,19 @@ func TestParseReturnStmt(t *testing.T) {
 
 func TestParseStructStmt(t *testing.T) {
 	table := []struct {
-		input  string
-		output string
+		input  []Token
+		output Stmt
 	}{
-		{"struct Dog {}", "ast.StructStmt"},
-		{"struct Person { construct :: {} }", "ast.StructStmt"},
+		{mock(Struct, Identifier, LeftBrace, RightBrace), StructStmt{}},                                                  // Test "struct Dog {}"
+		{mock(Struct, Identifier, LeftBrace, Identifier, Colon, Colon, LeftBrace, RightBrace, RightBrace), StructStmt{}}, // Test "struct Person { construct :: {} }"
 	}
 
 	for _, test := range table {
-		t.Run(test.input, func(t *testing.T) {
-			scanner := scan.NewScanner(test.input)
-			scanner.ScanTokens()
-			parser := NewParser(scanner.Tokens())
+		t.Run("TestParseStructStmt", func(t *testing.T) {
+			parser := NewParser(test.input)
 			stmt := parser.Parse()[0]
 
-			if stmt.GetType() != test.output {
+			if stmt.GetType() != test.output.GetType() {
 				t.Errorf("Expected *%v, received %T", test.output, stmt)
 			}
 		})
