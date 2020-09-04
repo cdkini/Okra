@@ -5,7 +5,8 @@ import (
 	"fmt"
 )
 
-// TODO:
+// interpretStmt is a helper function used in Interpret that does the brunt of the interpretation of the
+// Stmts produced by the parser. The method determines which interpret method to use at runtime based on Stmt type.
 func (i *Interpreter) interpretStmt(stmt ast.Stmt) interface{} {
 	switch t := stmt.(type) {
 
@@ -111,7 +112,7 @@ func (i *Interpreter) interpretStructStmt(stmt *ast.StructStmt) interface{} {
 	for _, method := range stmt.Methods {
 		methods[method.Identifier.Lexeme] = NewFunction(method, i.env, method.Identifier.Lexeme == "construct")
 	}
-	i.env.Assign(stmt.Name, NewStruct(stmt.Name.Lexeme, methods))
+	i.env.Assign(stmt.Name, NewStructure(stmt.Name.Lexeme, methods))
 	return nil
 }
 

@@ -5,24 +5,25 @@ import (
 	"Okra/src/okraerr"
 )
 
-// TODO:
-type Struct struct {
+// A Structure encapsulates a set of variables and methods to represent a user-created object.
+// Structure successfully fulfills all of the Callable interface's methods.
+type Structure struct {
 	name    string
 	methods map[string]*Function
 }
 
-func NewStruct(name string, methods map[string]*Function) *Struct {
-	return &Struct{name, methods}
+func NewStructure(name string, methods map[string]*Function) *Structure {
+	return &Structure{name, methods}
 }
 
-func (s *Struct) Arity() int {
+func (s *Structure) Arity() int {
 	if init := s.findMethod("construct"); init != nil {
 		return init.Arity()
 	}
 	return 0
 }
 
-func (s *Struct) Call(i *Interpreter, args []interface{}) interface{} {
+func (s *Structure) Call(i *Interpreter, args []interface{}) interface{} {
 	instance := NewInstance(*s)
 	if init := s.findMethod("construct"); init != nil {
 		init.bind(instance).Call(i, args)
@@ -30,21 +31,22 @@ func (s *Struct) Call(i *Interpreter, args []interface{}) interface{} {
 	return NewInstance(*s)
 }
 
-func (s *Struct) findMethod(method string) *Function {
+func (s *Structure) findMethod(method string) *Function {
 	if _, ok := s.methods[method]; ok {
 		return s.methods[method]
 	}
 	return nil
 }
 
-// TODO:
+// Instance represents a specific instance of a previous defined Structure.
+// It's usage is limited to the retrieval and storage of instance fields ('this').
 type Instance struct {
-	class  Struct
+	class  Structure
 	fields map[string]interface{}
 }
 
-func NewInstance(class Struct) *Instance {
-	return &Instance{class, make(map[string]interface{})}
+func NewInstance(s Structure) *Instance {
+	return &Instance{s, make(map[string]interface{})}
 }
 
 func (i *Instance) get(property ast.Token) interface{} {

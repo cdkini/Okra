@@ -6,7 +6,6 @@ import (
 )
 
 // An Interpreter takes in a given expression and evaluates it into its most basic literal form.
-// Interpreter inherits from the Visitor interface, allowing it interact with all Expr types.
 type Interpreter struct {
 	env     *Environment
 	globals *Environment // stdlib imports or other preprocessed objects
@@ -24,7 +23,8 @@ func NewInterpreter() *Interpreter {
 // 	}
 // }
 
-// TODO: Update docstring after changes from stmt
+// Interpret sets of the interpreting process, evaluating either Stmts or Exprs depending on the contents recieved by
+// the parser's output. The method does so by using the interpretStmt and interpretExpr helper methods.
 func (i *Interpreter) Interpret(stmts []ast.Stmt) {
 	for _, stmt := range stmts {
 		i.interpretStmt(stmt)

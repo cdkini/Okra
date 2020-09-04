@@ -6,6 +6,7 @@ import (
 
 // A Function is a wrapper around a FuncStmt and is instantiated upon the interpreter
 // visiting a parsed function or structure declaration.
+// Function successfully fulfills all of the Callable interface's methods.
 type Function struct {
 	declaration   ast.FuncStmt
 	closure       *Environment // Key-value mapping to enable appropriate lexical scoping for closures
@@ -36,7 +37,6 @@ func (f *Function) Call(i *Interpreter, args []interface{}) interface{} {
 	return nil
 }
 
-// TODO:
 func (f *Function) bind(instance *Instance) *Function {
 	env := NewEnvironment(f.closure)
 	env.Define("this", instance)

@@ -6,7 +6,8 @@ import (
 	"strconv"
 )
 
-// TODO:
+// interpretExpr is a helper function used to interpret Expr attributes of Stmt instances and evaluating them
+// into returnable values. The method determines which interpret method to use at runtime based on Expr type.
 func (i *Interpreter) interpretExpr(expr ast.Expr) interface{} {
 	switch t := expr.(type) {
 
@@ -163,7 +164,7 @@ func (i *Interpreter) interpretSetExpr(s *ast.SetExpr) interface{} {
 }
 
 func (i *Interpreter) interpretThisExpr(t *ast.ThisExpr) interface{} {
-	// TODO: Not currently working; open to check and write tests
+	// FIXME: Not currently working; open to check and write tests
 	return i.env.Get(t.Keyword)
 }
 
