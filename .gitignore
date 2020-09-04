@@ -1,5 +1,5 @@
-okra/test_main.okr
+src/test_main.okr
 .vscode/
 tools
-okra/__debug_bin
+src/__debug_bin
 bin
