@@ -2,7 +2,7 @@
 <h2 align="center"><i>A Simple Yet Extensible Scripting Language</i></h2>
 
 ### Intro
-Okra is an interpreted, high-level, general-purpose programming language designed to make scripting easy and maintainable. Taking inspiration from the likes of Python, JavaScript, and Go, Okra emphasizes readability through a digestible syntax. Although largely procedural, Okra supports an object-oriented paradigm by means of structs, interfaces, and struct embedding. While Okra may not be "batteries included" like Python, an extensive standard library to cover basic file I/O, mathematics, and key data structures and algorithms is accessible from the get-go. To promote consistency across the language's community, a built-in formatter akin to `go fmt` is included.
+Okra is an interpreted, high-level, general-purpose programming language designed to make scripting easy and maintainable. Taking inspiration from the likes of Python, JavaScript, and Go, Okra emphasizes readability through a digestible syntax. Although largely procedural, Okra supports an object-oriented paradigm by means of structs, interfaces, and struct embedding. While Okra may not be "batteries included" like Python, an extensive standard library to cover basic error handling, mathematics, and key data structures and algorithms is accessible from the get-go. To promote consistency across the language's community, a built-in formatter akin to `go fmt` is included.
 
 <i>Please note that the contents of this repository were designed and implemented solely for educational purposes. The Okra development team has no intentions of monetization or commercialization and exists solely to reinforce the value of open source software and its community.</i>
 
@@ -59,11 +59,21 @@ Okra strongly encourages usage of the native formatting rules to ensure consiste
 
 ## Updates
 ### Releases
-- 1.0.0: Initial release (TBD)
+- <b>1.0.0</b>: Initial release (9/5/2020)
+
 ### Roadmap
 ##### High Priority:
+- Built-ins (hash, casting, range, round, etc.)
+- Increment/decrement syntactic sugar (i++/i--)
+- Operator syntactic sugar (+=, -=, /=, *=)
+- Built-in lists (outside of stdlib import)
+- Modulo operator (%)
+- Square root operator (**)
 ##### Low Priority:
-
+- Ternary operator (?)
+- Struct inheritance
+- break/continue within loops
+- Multiline strings and comments
 
 ## Contributing
 Although Okra was designed as an educational project, any contributions or suggestions are greatly appreciated! If you would like to contribute to the codebase, please follow these steps:
