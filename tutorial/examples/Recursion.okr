@@ -1,0 +1,13 @@
+// A very basic example of recursion in Okra!
+
+
+func areWeThereYet : n : {
+    if (n = 0) {
+        print "We are finally there, please stop asking.";
+    } else {
+        print "Are we there yet?";
+        return areWeThereYet(n-1);
+    }
+}
+
+areWeThereYet(5);

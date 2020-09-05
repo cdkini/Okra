@@ -1,0 +1,20 @@
+// Finding the greatest common denominator (GCD) of two numbers in Okra!
+
+
+func modulo : number, divider : {
+    var num: number;
+	for (num >= 0) {
+		num: num - divider;
+	}
+	return num + divider;
+}
+
+func gcd : a, b : {
+    if (b = 0) {
+		print a;
+	} else {
+		return gcd(b, modulo(a, b));
+	}
+}
+
+gcd(36, 45);

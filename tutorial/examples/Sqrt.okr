@@ -1,14 +1,12 @@
-// Finding the approximate square root of a number in Okra!
+// Finding the approximate square root of a number using the Babylonian method in Okra!
 
 
-func sqrt : x, iterations : {
-    var z: 1;
-    var i: 1;
-    for (i <= iterations) {
-        z: z - (z*z - x) / (2*z);
-        i: i + 1;
+func sqrt : number, precision : {
+    var s: number;
+    for ((s - number / s) > precision) {
+        s: (s + number / s) / 2;
     }
-    return z;
+    return s;
 }
 
-print sqrt(2, 20);
+print sqrt(5, 0.00001);
