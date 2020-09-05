@@ -37,7 +37,7 @@ You can either:
 
 
 ### Writing Scripts
-To learn more about Okra's syntax and the language's features, please see our dedicated [tutorial](https://github.com/cdkini/Okra/tree/master/tutorial). We've included code snippets therein but we highly recommend testing and breaking the sample files on your own machine or [the playground](https://repl.it/@ChetanKini/OkraPlayground).
+To learn more about Okra's syntax and the language's features, please see our dedicated [tutorial](https://github.com/cdkini/Okra/tree/master/tutorial). We've included code snippets therein but we highly recommend testing and breaking the sample files on your own machine or the [playground](https://repl.it/@ChetanKini/OkraPlayground).
 
 
 ### Running Executable
@@ -52,7 +52,7 @@ okra run [script]
 okra fmt [script/dir]
 ```
 
-Okra strongly encourages usage of the native formatting rules to ensure consistency between file and codebases; we recommend reading [the 'Style' section](https://github.com/cdkini/Okra/tree/master/tutorial#style) of the tutorial to learn the language's standards.
+Okra strongly encourages usage of the native formatting rules to ensure consistency between file and codebases; we recommend reading the ['Style' section](https://github.com/cdkini/Okra/tree/master/tutorial#style) of the tutorial to learn the language's standards.
 
 <i>Please note that both commands will only work on files with a `.okr` extension. The formatter will ignore invalid files if used on a directory.</i>
 

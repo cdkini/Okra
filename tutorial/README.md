@@ -4,7 +4,7 @@
 ### Preface
 This tutorial assumes two things:
 1. You've followed the installation instructions or have a playground instance up and running
-   <br><i>If this is not applicable to you:</i> Follow [the installation instructions](https://github.com/cdkini/Okra#installation) or visit [the playground](https://repl.it/@ChetanKini/OkraPlayground)
+   <br><i>If this is not applicable to you:</i> Follow the [installation instructions](https://github.com/cdkini/Okra#installation) or visit the [playground](https://repl.it/@ChetanKini/OkraPlayground)
 2. You have a decent understanding of programming fundamentals (variables, conditionals, loops, structs, etc)
    <br><i>If this is not applicable to you:</i> Learn an established language first! I'd recommend Python 🐍🐍🐍
 
@@ -262,7 +262,7 @@ var c: Circle(7);        // Raises an error due to Circle not implementing the p
 ### Packages
 Packages, which are inclusive of functions and structures defined in other files, are imported at the top of a script using the `import` keyword. In importing a particular package, the global scope of the current program gains access to the objects defined in that package.
 
-<i>As of release <b>1.0.0</b>, the only imports that are supported are those for the standard library. Current stdlib packages can be found in [the stdlib directory](https://github.com/cdkini/Okra/tree/master/src/stdlib).</i>
+<i>As of release <b>1.0.0</b>, the only imports that are supported are those for the standard library. Current stdlib packages can be found in the [stdlib directory](https://github.com/cdkini/Okra/tree/master/src/stdlib).</i>
 
 <i>Code Snippet</i>:
 ```
