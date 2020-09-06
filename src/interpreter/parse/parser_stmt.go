@@ -1,6 +1,6 @@
 package parse
 
-import "Okra/src/interpreter/ast"
+import "github.com/cdkini/Okra/src/interpreter/ast"
 
 // declaration is a helper method that is at the very start of the recursive descent process. If the current item being
 // parsed fits the requirements of a structure, function, or variable declaration, subsequent helper methods are

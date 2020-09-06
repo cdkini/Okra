@@ -1,13 +1,14 @@
 package main
 
 import (
-	"Okra/src/interpreter/interpret"
-	"Okra/src/interpreter/parse"
-	"Okra/src/interpreter/scan"
-	"Okra/src/okraerr"
 	"io/ioutil"
 	"os"
 	"strings"
+
+	"github.com/cdkini/Okra/src/interpreter/interpret"
+	"github.com/cdkini/Okra/src/interpreter/parse"
+	"github.com/cdkini/Okra/src/interpreter/scan"
+	"github.com/cdkini/Okra/src/okraerr"
 )
 
 func main() {

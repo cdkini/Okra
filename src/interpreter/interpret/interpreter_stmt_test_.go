@@ -1,8 +1,9 @@
 package interpret
 
 import (
-	. "Okra/src/interpreter/ast"
 	"testing"
+
+	. "github.com/cdkini/Okra/src/interpreter/ast"
 )
 
 func TestInterpretBlockStmt(t *testing.T) {

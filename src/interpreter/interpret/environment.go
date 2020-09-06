@@ -1,8 +1,8 @@
 package interpret
 
 import (
-	"Okra/src/interpreter/ast"
-	"Okra/src/okraerr"
+	"github.com/cdkini/Okra/src/interpreter/ast"
+	"github.com/cdkini/Okra/src/okraerr"
 )
 
 // An Environment is a wrapper around Go's map and is used to keep track of lexical scopes and state of Okra objects.

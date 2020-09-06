@@ -1,8 +1,8 @@
 package parse
 
 import (
-	"Okra/src/interpreter/ast"
-	"Okra/src/okraerr"
+	"github.com/cdkini/Okra/src/interpreter/ast"
+	"github.com/cdkini/Okra/src/okraerr"
 )
 
 // Expression is triggered to parse an Expr or the contents of a Stmt that includes an Expr as a property.

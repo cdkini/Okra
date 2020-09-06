@@ -1,8 +1,9 @@
 package scan
 
 import (
-	. "Okra/src/interpreter/ast"
 	"testing"
+
+	. "github.com/cdkini/Okra/src/interpreter/ast"
 )
 
 func TestScanWhitespace(t *testing.T) {

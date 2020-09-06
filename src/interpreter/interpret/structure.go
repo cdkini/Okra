@@ -1,8 +1,8 @@
 package interpret
 
 import (
-	"Okra/src/interpreter/ast"
-	"Okra/src/okraerr"
+	"github.com/cdkini/Okra/src/interpreter/ast"
+	"github.com/cdkini/Okra/src/okraerr"
 )
 
 // A Structure encapsulates a set of variables and methods to represent a user-created object.

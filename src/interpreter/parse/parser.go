@@ -1,8 +1,9 @@
 package parse
 
 import (
-	"Okra/src/interpreter/ast"
-	"Okra/src/okraerr"
+	"github.com/cdkini/Okra/src/okraerr"
+
+	"github.com/cdkini/Okra/src/interpreter/ast"
 )
 
 // A Parser evaluates a collection of tokens and constructs abstract syntax trees (ASTs) out of
