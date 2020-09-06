@@ -1,7 +1,7 @@
 ![Okra logo](img/logo.jpg)
 <h2 align="center"><i>A Simple Yet Extensible Scripting Language</i></h2>
 
-![Travis (.org) branch](https://img.shields.io/travis/cdkini/Okra/master?style=flat-square) 
+![Travis (.org) branch](https://img.shields.io/travis/cdkini/Okra/master?style=flat-square)
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/cdkini/Okra?style=flat-square) 
 ![GitHub](https://img.shields.io/github/license/cdkini/Okra?color=red&style=flat-square) 
 ![Version](https://img.shields.io/badge/version-v1.0.0-yellow?style=flat-square) 
