@@ -90,27 +90,57 @@ struct Math {
     return res;
   }
   
-  // TODO:
-  Sqrt : x : {
-  
+  // Sqrt returns the square root of a number to a user-specified degree of precision.
+  // Args:
+  //   number    (numeric): The number to be evaluated
+  //   precision (numeric): The degree of precision to which the user wants to result
+  // Returns:
+  //   numeric: The square root of the given number at the level of precision provided.
+  Sqrt : number, precision : {
+    var s: number;
+    for ((s - number / s) > precision) {
+        s: (s + number / s) / 2;
+    }
+    return s;
   }
   
   // TODO:
   Log : x, base : {
   
   }
-  
+
   // TODO:
-  GCD : x, y : {
-  
+  Modulo : number, divider : {
+    var num: number;
+	  for (num >= 0) {
+		  num: num - divider;
+	  }
+	  return num + divider;
   }
   
   // TODO:
+  GCD : x, y : {
+    if (y = 0) {
+		  print x;
+    } else {
+      return gcd(y, this.Modulo(x, y));
+    }
+	}
+  
+  // Pi returns an approximation of the constant pi.
+  // Args:
+  //   null
+  // Returns:
+  //   numeric: Accurate up to 3.1415929
   Pi :: {
     return 355/133;
   }
   
-  // TODO:
+  // E returns an approximation of the constant e.
+  // Args:
+  //   null
+  // Returns:
+  //   numeric: (1 + 1/n)**n where n is > 100,000 (higher level of precision than can be stored by numeric)
   E :: {
     return 2.7182818284590452353602874713527;
   }
