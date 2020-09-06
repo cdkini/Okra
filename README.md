@@ -2,16 +2,16 @@
 <h2 align="center"><i>A Simple Yet Extensible Scripting Language</i></h2>
 
 <p align="center">
-  <a>
+  <a href="https://travis-ci.org/github/cdkini/Okra">
     <img alt="Travis" src="https://img.shields.io/travis/cdkini/Okra/master?style=flat-square">
   </a> 
-  <a>
+  <a href="https://golang.org/doc/go1.14">
     <img alt="Go" src="https://img.shields.io/github/go-mod/go-version/cdkini/Okra?style=flat-square"
   </a> 
-  <a>
+  <a href="https://opensource.org/licenses/MIT">
     <img alt="License" src="https://img.shields.io/github/license/cdkini/Okra?color=red&style=flat-square"
   </a>
-  <a>
+  <a href="https://github.com/cdkini/Okra#releases">
     <img alt="Okra" src="https://img.shields.io/badge/version-v1.0.0-yellow?style=flat-square"
   </a>
 </p>
