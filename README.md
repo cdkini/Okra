@@ -11,7 +11,7 @@
   <a href="https://opensource.org/licenses/MIT">
     <img alt="License" src="https://img.shields.io/github/license/cdkini/Okra?color=red&style=flat-square"
   </a>
-  <a href="https://github.com/cdkini/Okra#releases">
+  <a>
     <img alt="Okra" src="https://img.shields.io/badge/version-v1.0.0-yellow?style=flat-square"
   </a>
 </p>
