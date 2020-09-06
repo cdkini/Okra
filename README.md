@@ -61,11 +61,11 @@ Upon building the executable and setting up your path, there are two ways in whi
 
 ```
 // Run the interpreter on a script
-okra run [script]
+./okra run [script]
 
 
 // Run the formatter on a script or directory
-okra fmt [script/dir]
+./okra fmt [script/dir]
 ```
 
 Okra strongly encourages usage of the native formatting rules to ensure consistency between file and codebases; we recommend reading the ['Style' section](https://github.com/cdkini/Okra/tree/master/tutorial#style) of the tutorial to learn the language's standards.
