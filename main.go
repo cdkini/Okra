@@ -48,7 +48,7 @@ func runFile(path string) {
 
 	// Traverse AST to generate output
 	interpreter := interpret.NewInterpreter()
-	// interpreter.LoadStdlib(stdlib.BuildStdlib())
+	// interpreter.LoadStdlib(stdlib.BuildStdlib()) // TODO: Open to add stdlib import
 	interpreter.Interpret(stmts)
 }
 
