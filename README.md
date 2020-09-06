@@ -1,5 +1,6 @@
 ![Okra logo](img/logo.jpg)
 <h2 align="center"><i>A Simple Yet Extensible Scripting Language</i></h2>
+![Travis (.org)](https://img.shields.io/travis/cdkini/Okra)
 
 ### Intro
 Okra is an interpreted, high-level, general-purpose programming language designed to make scripting easy and maintainable. Taking inspiration from the likes of Python, JavaScript, and Go, Okra emphasizes readability through a digestible syntax. Although largely procedural, Okra supports an object-oriented paradigm by means of structs, interfaces, and struct embedding. While Okra may not be "batteries included" like Python, an extensive standard library to cover basic error handling, mathematics, and key data structures and algorithms is accessible from the get-go. To promote consistency across the language's community, a built-in formatter akin to `go fmt` is included.
