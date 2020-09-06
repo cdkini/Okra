@@ -1,10 +1,15 @@
-language: go
+GOCMD=go
+GOBUILD=$(GOCMD) build
+GOCLEAN=$(GOCMD) clean
+GOTEST=$(GOCMD) test
+GOGET=$(GOCMD) get
+BINARY_NAME=okra
+LINTER=golangci-lint
 
-go:
-  - 1.x
+all: test build
 
-before_install:
-  - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.30.0
+test: $(GOTEST) ./... -v
 
-script:
-  - make lint test
+build: $(GOBUILD) -o $(BINARY_NAME) -v
+
+lint: $(LINTER) run
