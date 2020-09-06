@@ -1,8 +1,9 @@
 package interpret
 
 import (
-	"Okra/src/interpreter/ast"
 	"fmt"
+
+	"github.com/cdkini/Okra/src/interpreter/ast"
 )
 
 // interpretStmt is a helper function used in Interpret that does the brunt of the interpretation of the

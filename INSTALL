@@ -2,9 +2,7 @@
 
 chmod u+x INSTALL
 
-cd src
 go build -o okra
-mkdir ../bin
-mv okra ../bin/
-cd ..
+mkdir bin
+mv okra bin
 echo "Executable successfully downloaded to ./bin"

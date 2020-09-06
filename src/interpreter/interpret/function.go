@@ -1,7 +1,7 @@
 package interpret
 
 import (
-	"Okra/src/interpreter/ast"
+	"github.com/cdkini/Okra/src/interpreter/ast"
 )
 
 // A Function is a wrapper around a FuncStmt and is instantiated upon the interpreter

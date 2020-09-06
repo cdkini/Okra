@@ -1,10 +1,11 @@
 package scan
 
 import (
-	"Okra/src/interpreter/ast"
-	"Okra/src/okraerr"
 	"strconv"
 	"unicode"
+
+	"github.com/cdkini/Okra/src/interpreter/ast"
+	"github.com/cdkini/Okra/src/okraerr"
 )
 
 // A Scanner takes in some stream of characters and tokenizes them based on Okra's syntax.

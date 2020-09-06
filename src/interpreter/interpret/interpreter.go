@@ -1,8 +1,8 @@
 package interpret
 
 import (
-	"Okra/src/interpreter/ast"
-	"Okra/src/okraerr"
+	"github.com/cdkini/Okra/src/interpreter/ast"
+	"github.com/cdkini/Okra/src/okraerr"
 )
 
 // An Interpreter takes in a given expression and evaluates it into its most basic literal form.

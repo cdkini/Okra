@@ -1,9 +1,10 @@
 package interpret
 
 import (
-	"Okra/src/interpreter/ast"
-	"Okra/src/okraerr"
 	"strconv"
+
+	"github.com/cdkini/Okra/src/interpreter/ast"
+	"github.com/cdkini/Okra/src/okraerr"
 )
 
 // interpretExpr is a helper function used to interpret Expr attributes of Stmt instances and evaluating them
