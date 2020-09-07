@@ -46,7 +46,7 @@ Okra was written on a 64-bit [Ubuntu 20.04 LTS OS](https://releases.ubuntu.com/2
 ### Building Executable
 You can either:
 1. Run the installation script by running `./INSTALL` or `bash INSTALL` to create the `bin` directory. Your executable is located within.
-2. Build the file using the Go compiler by running `go build -o okra` in `src` and moving the executable to your desired location.
+2. Build the file using the Go compiler by running `go build -o okra` and moving the executable to your PATH or other desired location.
 
 
 ## Usage
