@@ -294,4 +294,4 @@ Although style is subjective, we've determined a few base guidelines that are ne
 ##### Miscellaneous
 - Any capitalized object should be documented with a docstring
 - Imports should always be at the very top of the program and nowhere else
-- CamelCase is preferred over snake_case or PascalCase
+- camelCase is preferred over snake_case or PascalCase
